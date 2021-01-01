@@ -1,33 +1,79 @@
 import express from "express";
-import mongoose from "mongoose";
-import userRoutes from "./routes/user";
+import "dotenv-safe/config";
+import mongoose, { CallbackError, Document } from "mongoose";
+import passport from "passport";
+import session from "express-session";
+import authRoutes from "./routes/auth";
+import User from "./models/user";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import mongooseConfig from "./helpers/mongoose-config";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-import "dotenv-safe/config";
 
 const app = express();
-
-// db
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(() => console.log("DB Connected"));
-
-mongoose.connection.on("error", (err) => {
-  console.log(`DB connection error: ${err.message}`);
-});
 
 // middlewares
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// db
+mongoose
+  .connect(process.env.MONGO_URI, mongooseConfig)
+  .then(() => console.log("DB Connected"));
+
+mongoose.connection.on("error", (err) => {
+  console.log(`DB connection error: ${err.message}`);
+});
+
+// passport config
+passport.use(User.createStrategy());
+
+passport.serializeUser((user: Document, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err: CallbackError, user: Document) => {
+    done(err, user);
+  });
+});
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:4000/auth/google/PChub",
+    },
+    (_accessToken, _refreshToken, profile, cb) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (User as any).findOrCreate(
+        {
+          email: (profile.emails as { value: string }[])[0].value,
+        },
+        { name: profile.name?.givenName },
+        (err: Error, user: Document) => {
+          return cb(err, user);
+        }
+      );
+    }
+  )
+);
+
 // route middleware
-app.use("/api", userRoutes);
+app.use("/auth", authRoutes);
 
 const port = process.env.PORT || 4000;
 
