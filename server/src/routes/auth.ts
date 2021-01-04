@@ -4,14 +4,20 @@ import {
   login,
   googleLogin,
   googleAuthResult,
-} from "../controllers/user";
+  logout,
+} from "../controllers/auth";
 
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
-router.get("/auth/google", googleLogin);
+router.get("/google", googleLogin);
+router.get("/google/secrets", googleAuthResult);
+router.get("/logout", logout);
+router.get("/hello", (req, res) => {
+  console.log(req.isAuthenticated());
 
-router.get("/auth/google/secrets", googleAuthResult);
+  res.json({ message: "this is a random route", user: req.user });
+});
 
 export default router;

@@ -4,7 +4,8 @@ import mongoose, { CallbackError, Document } from "mongoose";
 import passport from "passport";
 import session from "express-session";
 import authRoutes from "./routes/auth";
-import User from "./models/user";
+import userRoutes from "./routes/user";
+import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import mongooseConfig from "./helpers/mongoose-config";
 import bodyParser from "body-parser";
@@ -41,10 +42,14 @@ mongoose.connection.on("error", (err) => {
 passport.use(User.createStrategy());
 
 passport.serializeUser((user: Document, done) => {
+  console.log(user.id);
+
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
+  console.log(id);
+
   User.findById(id, (err: CallbackError, user: Document) => {
     done(err, user);
   });
@@ -64,7 +69,7 @@ passport.use(
           email: (profile.emails as { value: string }[])[0].value,
         },
         { name: profile.name?.givenName },
-        (err: Error, user: Document) => {
+        (err: Error, user: IUser) => {
           return cb(err, user);
         }
       );
@@ -74,6 +79,7 @@ passport.use(
 
 // route middleware
 app.use("/auth", authRoutes);
+app.use("/api", userRoutes);
 
 const port = process.env.PORT || 4000;
 

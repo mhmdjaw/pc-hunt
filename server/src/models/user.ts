@@ -3,6 +3,14 @@ import passportLocalMongoose from "passport-local-mongoose";
 import options from "../helpers/passport-local-mongoose-options";
 import findOrCreate from "mongoose-findorcreate";
 
+export interface IUser {
+  name: string;
+  email: string;
+  about?: string;
+  role: number;
+  history: Array<string>;
+}
+
 const userSchema = new mongoose.Schema(
   {
     name: {
