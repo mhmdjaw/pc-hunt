@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv-safe/config";
+import cors from "cors";
 import mongoose, { CallbackError } from "mongoose";
 import passport from "passport";
 import session from "express-session";
@@ -17,8 +18,9 @@ import morgan from "morgan";
 const app = express();
 
 // middlewares
-app.use(morgan("dev"));
 app.use(bodyParser.json());
+app.use(cors());
+app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use(
