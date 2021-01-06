@@ -137,6 +137,133 @@ export const update = (req: Request, res: Response): void => {
   });
 };
 
+/**
+ * sell / arrival
+ * by sell = /products?sortBy=sold&order=desc&limit=4
+ * by arrival = /products?sortBy=createdAt&order=desc&limit=4
+ * if no params are used, then all products are returned
+ */
+
+export const list = (req: Request, res: Response): void => {
+  const order = req.query.order ? req.query.order : "asc";
+  const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  const limit = req.query.limit ? Number(req.query.limit) : 6;
+
+  Product.find()
+    .select("-image")
+    .populate("category")
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, products) => {
+      if (err) {
+        res.status(400).json({
+          message: "Products not found",
+        });
+        return;
+      }
+
+      res.json(products);
+    });
+};
+
+/**
+ * find the products based on the req product category
+ * other products with the same category will be returned
+ */
+
+interface SearchArgs {
+  [key: string]: { $gte: number; $lte: number } | string;
+}
+
+export const listRelated = (req: Request, res: Response): void => {
+  const limit = req.query.limit ? Number(req.query.limit) : 6;
+
+  Product.find({ _id: { $ne: req.product }, category: req.product.category })
+    .limit(limit)
+    .populate("category", "_id name")
+    .exec((err, products) => {
+      if (err) {
+        res.status(400).json({
+          message: "Products not found",
+        });
+        return;
+      }
+
+      res.json(products);
+    });
+};
+
+export const listCategories = (_req: Request, res: Response): void => {
+  Product.distinct("category", {}, (err, categories) => {
+    if (err) {
+      res.status(400).json({
+        message: "Products not found",
+      });
+      return;
+    }
+    res.json(categories);
+  });
+};
+
+export const image = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (req.product.image?.data) {
+    res.set("Content-Type", req.product.image.contentType);
+    res.send(req.product.image.data);
+    return;
+  }
+
+  next();
+};
+
+export const listBySearch = (req: Request, res: Response): void => {
+  const order = req.body.order ? req.body.order : "desc";
+  const sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+  const limit = req.body.limit ? Number(req.body.limit) : 100;
+  const skip = Number(req.body.skip);
+  const searchArgs: SearchArgs = {};
+
+  // console.log(order, sortBy, limit, skip, req.body.filters);
+  // console.log("findArgs", findArgs);
+
+  for (const key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      if (key === "price") {
+        // gte -  greater than price [0-10]
+        // lte - less than
+        searchArgs[key] = {
+          $gte: req.body.filters[key][0],
+          $lte: req.body.filters[key][1],
+        };
+      } else {
+        searchArgs[key] = req.body.filters[key];
+      }
+    }
+  }
+
+  Product.find(searchArgs)
+    .select("-image")
+    .populate("category")
+    .sort([[sortBy, order]])
+    .skip(skip)
+    .limit(limit)
+    .exec((err, data) => {
+      if (err) {
+        res.status(400).json({
+          error: "Products not found",
+        });
+        return;
+      }
+      res.json({
+        size: data.length,
+        data,
+      });
+    });
+};
+
 const saveProduct = (res: Response, product: IProduct): void => {
   product.save((err: Error, result) => {
     if (err) {

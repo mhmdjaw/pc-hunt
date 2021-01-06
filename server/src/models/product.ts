@@ -8,6 +8,7 @@ export interface IProduct extends Document {
   price: number;
   category: typeof ObjectId;
   quantity: number;
+  sold: number;
   image?: {
     data: Buffer;
     contentType: string;
@@ -41,6 +42,10 @@ const productSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       required: [true, "Quantity is required"],
+    },
+    sold: {
+      type: Number,
+      default: 0,
     },
     image: {
       data: Buffer,

@@ -1,6 +1,6 @@
 import express from "express";
 import "dotenv-safe/config";
-import mongoose, { CallbackError, Document } from "mongoose";
+import mongoose, { CallbackError } from "mongoose";
 import passport from "passport";
 import session from "express-session";
 import authRoutes from "./routes/auth";
@@ -43,7 +43,7 @@ mongoose.connection.on("error", (err) => {
 // passport config
 passport.use(User.createStrategy());
 
-passport.serializeUser((user: Document, done) => {
+passport.serializeUser((user: IUser, done) => {
   console.log(user.id);
 
   done(null, user.id);
@@ -52,7 +52,7 @@ passport.serializeUser((user: Document, done) => {
 passport.deserializeUser((id, done) => {
   console.log(id);
 
-  User.findById(id, (err: CallbackError, user: Document) => {
+  User.findById(id, (err: CallbackError, user: IUser) => {
     done(err, user);
   });
 });
