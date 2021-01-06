@@ -1,4 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
+
+export interface ICategory extends Document {
+  name: string;
+}
 
 const categorySchema = new mongoose.Schema(
   {
@@ -12,4 +16,6 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Category", categorySchema);
+const Category: Model<ICategory> = mongoose.model("Category", categorySchema);
+
+export default Category;
