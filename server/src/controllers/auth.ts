@@ -99,7 +99,7 @@ export const isAuth = (
 ): void => {
   if (!req.isAuthenticated()) {
     res.status(403).json({
-      error: "Access denied",
+      message: "Access denied",
     });
   } else {
     next();
@@ -113,7 +113,7 @@ export const isAdmin = (
 ): void => {
   if (req.user?.role === 0) {
     res.status(403).json({
-      error: "Admin resource! Access denied",
+      message: "Admin resource! Access denied",
     });
     return;
   }

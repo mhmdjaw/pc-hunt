@@ -5,6 +5,8 @@ import passport from "passport";
 import session from "express-session";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/user";
+import categoryRoutes from "./routes/category";
+import productRoutes from "./routes/product";
 import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import mongooseConfig from "./helpers/mongoose-config";
@@ -80,6 +82,8 @@ passport.use(
 // route middleware
 app.use("/auth", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 const port = process.env.PORT || 4000;
 

@@ -26,7 +26,11 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "skipLibCheck": true,  
+    "skipLibCheck": true,
+    "typeRoots": [
+      "@types",
+      "./node_modules/@types",
+    ] 
   },
   "exclude": [
     "node_modules",
