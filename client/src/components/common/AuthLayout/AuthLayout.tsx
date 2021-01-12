@@ -3,7 +3,6 @@ import { useTheme } from "@material-ui/core/styles";
 import useAuthLayoutStyles from "./auth-layout-styles";
 import { Box, Container, Paper, Typography } from "@material-ui/core";
 import { ReactComponent as LogoPrimary } from "../../../assets/logo-primary.svg";
-import { ReactComponent as LogoPrimaryy } from "../../../assets/logo-primary-test.svg";
 import OrSplitter from "../OrSplitter";
 import ContainedButton from "../ContainedButton";
 import GoogleIcon from "../../../assets/GoogleIcon";
@@ -28,7 +27,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
     <Container maxWidth="sm">
       <Box my="15vh">
         <Box flexDirection="column" alignItems="center" display="flex" mb="5vh">
-          <LogoPrimaryy
+          <LogoPrimary
             width="20%"
             height="20%"
             fill={theme.palette.primary.main}
