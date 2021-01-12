@@ -21,7 +21,7 @@ export const categoryById = (
   Category.findById(id).exec((err, category) => {
     if (err || !category) {
       res.status(400).json({
-        message: "Category not found",
+        error: "Category not found",
       });
       return;
     }
@@ -53,17 +53,17 @@ export const remove = (req: Request, res: Response): void => {
     .then((deletedCategory: ICategory) => {
       if (!deletedCategory) {
         res.status(400).json({
-          message: "Category not found",
+          error: "Category not found",
         });
         return;
       }
       res.json({
-        message: "Category successfully remove",
+        error: "Category successfully remove",
       });
     })
     .catch((err) => {
       res.status(500).json({
-        message: err.message,
+        error: err.message,
       });
     });
 };
@@ -72,7 +72,7 @@ export const list = (_req: Request, res: Response): void => {
   Category.find().exec((err, data) => {
     if (err) {
       res.status(500).json({
-        message: err.message,
+        error: err.message,
       });
       return;
     }
@@ -86,11 +86,11 @@ const saveCategory = (res: Response, category: ICategory): void => {
     if (err) {
       if (err.errors && err.errors.name) {
         res.status(400).json({
-          message: err.errors.name.message,
+          error: err.errors.name.message,
         });
       } else {
         res.status(500).json({
-          message: err?.message,
+          error: err?.message,
         });
       }
     } else {

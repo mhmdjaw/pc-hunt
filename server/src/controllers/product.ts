@@ -36,7 +36,7 @@ export const productById = (
   Product.findById(id).exec((err, product) => {
     if (err || !product) {
       res.status(400).json({
-        message: "Product not found",
+        error: "Product not found",
       });
       return;
     }
@@ -57,7 +57,7 @@ export const create = (req: Request, res: Response): void => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       res.status(400).json({
-        message: "Image could not be parsed",
+        error: "Image could not be parsed",
       });
       return;
     }
@@ -67,7 +67,7 @@ export const create = (req: Request, res: Response): void => {
       // check the image size
       if ((files.image as File).size > 1000000) {
         res.status(400).json({
-          message: "Image size is too large",
+          error: "Image size is too large",
         });
         return;
       }
@@ -89,17 +89,17 @@ export const remove = (req: Request, res: Response): void => {
     .then((deletedProduct: IProduct) => {
       if (!deletedProduct) {
         res.status(400).json({
-          message: "Product not found",
+          error: "Product not found",
         });
         return;
       }
       res.json({
-        message: "Product successfully removed",
+        error: "Product successfully removed",
       });
     })
     .catch((err) => {
       res.status(500).json({
-        message: err.message,
+        error: err.message,
       });
     });
 };
@@ -111,7 +111,7 @@ export const update = (req: Request, res: Response): void => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       res.status(400).json({
-        message: "Image could not be parsed",
+        error: "Image could not be parsed",
       });
       return;
     }
@@ -122,7 +122,7 @@ export const update = (req: Request, res: Response): void => {
       // check the image size
       if ((files.image as File).size > 1000000) {
         res.status(400).json({
-          message: "Image size is too large",
+          error: "Image size is too large",
         });
         return;
       }
@@ -157,7 +157,7 @@ export const list = (req: Request, res: Response): void => {
     .exec((err, products) => {
       if (err) {
         res.status(400).json({
-          message: "Products not found",
+          error: "Products not found",
         });
         return;
       }
@@ -184,7 +184,7 @@ export const listRelated = (req: Request, res: Response): void => {
     .exec((err, products) => {
       if (err) {
         res.status(400).json({
-          message: "Products not found",
+          error: "Products not found",
         });
         return;
       }
@@ -197,7 +197,7 @@ export const listCategories = (_req: Request, res: Response): void => {
   Product.distinct("category", {}, (err, categories) => {
     if (err) {
       res.status(400).json({
-        message: "Products not found",
+        error: "Products not found",
       });
       return;
     }
@@ -269,31 +269,31 @@ const saveProduct = (res: Response, product: IProduct): void => {
     if (err) {
       if (err.errors && err.errors.name) {
         res.status(400).json({
-          message: err.errors.name.message,
+          error: err.errors.name.message,
         });
         return;
       }
       if (err.errors && err.errors.description) {
         res.status(400).json({
-          message: err.errors.description.message,
+          error: err.errors.description.message,
         });
         return;
       }
       if (err.errors && err.errors.price) {
         res.status(400).json({
-          message: err.errors.price.message,
+          error: err.errors.price.message,
         });
         return;
       }
       if (err.errors && err.errors.category) {
         res.status(400).json({
-          message: err.errors.category.message,
+          error: err.errors.category.message,
         });
         return;
       }
       if (err.errors && err.errors.quantity) {
         res.status(400).json({
-          message: err.errors.quantity.message,
+          error: err.errors.quantity.message,
         });
         return;
       }

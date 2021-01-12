@@ -9,20 +9,20 @@ export const signup = (req: Request, res: Response): void => {
     if (err) {
       if (err.errors && err.errors.email) {
         res.status(400).json({
-          message: err.errors.email.message,
+          error: err.errors.email.message,
         });
       } else if (err.errors && err.errors.name) {
         res.status(400).json({
-          message: err.errors.name.message,
+          error: err.errors.name.message,
         });
       } else {
         if (err.name === "UserExistsError") {
           res.status(409).json({
-            message: err.message,
+            error: err.message,
           });
         } else {
           res.status(400).json({
-            message: err.message || err,
+            error: err.message || err,
           });
         }
       }
@@ -39,17 +39,17 @@ export const signup = (req: Request, res: Response): void => {
 export const login = (req: Request, res: Response): void => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ error: err.message });
       return;
     }
     if (!user) {
-      res.status(401).json({ message: info.message });
+      res.status(401).json({ error: info.message });
       return;
     }
     req.login(user, (err) => {
       if (err) {
         res.status(500).json({
-          message: err.message,
+          error: err.message,
         });
         return;
       }
@@ -68,17 +68,17 @@ export const googleLogin = passport.authenticate("google", {
 export const googleAuthResult = (req: Request, res: Response): void => {
   passport.authenticate("google", (err, user, info) => {
     if (err) {
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ error: err.message });
       return;
     }
     if (!user) {
-      res.status(401).json({ message: info.message });
+      res.status(401).json({ error: info.message });
       return;
     }
     req.login(user, (err) => {
       if (err) {
         res.status(500).json({
-          message: err.message,
+          error: err.message,
         });
         return;
       }
@@ -89,7 +89,7 @@ export const googleAuthResult = (req: Request, res: Response): void => {
 
 export const logout = (req: Request, res: Response): void => {
   req.logout();
-  res.json({ message: "log out success" });
+  res.json({ error: "log out success" });
 };
 
 export const isAuth = (
@@ -99,7 +99,7 @@ export const isAuth = (
 ): void => {
   if (!req.isAuthenticated()) {
     res.status(403).json({
-      message: "Access denied",
+      error: "Access denied",
     });
   } else {
     next();
@@ -113,7 +113,7 @@ export const isAdmin = (
 ): void => {
   if (req.user?.role === 0) {
     res.status(403).json({
-      message: "Admin resource! Access denied",
+      error: "Admin resource! Access denied",
     });
     return;
   }

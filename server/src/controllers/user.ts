@@ -13,7 +13,7 @@ export const update = (req: Request, res: Response): void => {
     (err, user) => {
       if (err) {
         res.status(500).json({
-          message: err.message,
+          error: err.message,
         });
         return;
       }
