@@ -1,1 +1,1 @@
-export { hexToRgba } from "./helpers";
+export { hexToRgba, rgbToRgba } from "./helpers";
