@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   FormControl,
   FormHelperText,
-  IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
@@ -10,6 +9,7 @@ import {
 import { Field, FieldProps } from "formik";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import CustomIconButton from "../../common/CustomIconButton";
 
 const PasswordInputField: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,14 +45,14 @@ const PasswordInputField: React.FC = () => {
               fullWidth
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton
+                  <CustomIconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
+                  </CustomIconButton>
                 </InputAdornment>
               }
             />

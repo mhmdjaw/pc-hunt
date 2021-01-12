@@ -1,22 +1,9 @@
 import React from "react";
 import { Button, ButtonProps } from "@material-ui/core";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    focusVisible: {
-      backgroundColor: theme.palette.primary.dark,
-    },
-    buttonActive: {
-      "&:active": {
-        backgroundColor: theme.palette.primary.light,
-      },
-    },
-  })
-);
+import useContainedIconStyles from "./contained-button-styles";
 
 const ContainedButton: React.FC<ButtonProps> = (props) => {
-  const classes = useStyles();
+  const classes = useContainedIconStyles();
 
   return (
     <Button
