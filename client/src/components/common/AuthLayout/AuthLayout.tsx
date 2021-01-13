@@ -2,6 +2,7 @@ import React from "react";
 import { useTheme } from "@material-ui/core/styles";
 import useAuthLayoutStyles from "./auth-layout-styles";
 import { Box, Container, Paper, Typography } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { ReactComponent as LogoPrimary } from "../../../assets/logo-primary.svg";
 import OrSplitter from "../OrSplitter";
 import ContainedButton from "../ContainedButton";
@@ -12,6 +13,8 @@ interface AuthLayoutProps {
   AuthType: "login" | "signup";
   footer: string;
   children: JSX.Element | null;
+  error: string | undefined;
+  success: string | undefined;
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({
@@ -19,6 +22,8 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
   AuthType,
   footer,
   children,
+  error,
+  success,
 }: AuthLayoutProps) => {
   const classes = useAuthLayoutStyles();
   const theme = useTheme();
@@ -38,6 +43,12 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
         </Box>
 
         <Paper className={classes.paper} elevation={7}>
+          {(error || success) && (
+            <Box mb="5vh">
+              {error && <Alert severity="error">{error}</Alert>}
+              {success && <Alert severity="success">{success}</Alert>}
+            </Box>
+          )}
           {children}
           <OrSplitter />
           <Box display="flex" justifyContent="center">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Grid } from "@material-ui/core";
+import { Box, CircularProgress, Grid } from "@material-ui/core";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -7,24 +7,36 @@ import ContainedButton from "../../common/ContainedButton";
 import AuthLayout from "../../common/AuthLayout/AuthLayout";
 import useSignupStyles from "./signup-styles";
 import PasswordInputField from "./PasswordInputField";
+import { shallowEqual } from "recompose";
+import axios from "axios";
+import { AUTH } from "../../../config";
 
 interface Values {
+  name: string;
   email: string;
   password: string;
-  username: string;
 }
 
 interface State {
+  error: string | undefined;
+  success: string | undefined;
+  lastSubmission: Values;
   barBgColor: string;
   barColor: string;
   barValue: number;
 }
 
+const initialValues: Values = {
+  name: "",
+  email: "",
+  password: "",
+};
+
 const validate = (values: Values) => {
   const errors: Partial<Values> = {};
   let conditionsFulfilled = 0;
-  if (!values.username) {
-    errors.username = "Required";
+  if (!values.name) {
+    errors.name = "Required";
   }
   if (!values.email) {
     errors.email = "Required";
@@ -55,20 +67,16 @@ const validate = (values: Values) => {
   return { errors, conditionsFulfilled };
 };
 
-const onSubmit = (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-  setTimeout(() => {
-    setSubmitting(false);
-    alert(JSON.stringify(values, null, 2));
-  }, 500);
-};
-
 const Signup: React.FC = () => {
   const classes = useSignupStyles();
 
   const [state, setState] = useState<State>({
+    error: undefined,
+    success: undefined,
     barBgColor: "colorPrimary",
     barColor: "barColorPrimary",
     barValue: 0,
+    lastSubmission: { ...initialValues },
   });
 
   const handleProgressBar = (conditionsFulfilled: number) => {
@@ -101,30 +109,72 @@ const Signup: React.FC = () => {
     });
   };
 
+  const signup = (values: Values) =>
+    axios.post<Values>(`${AUTH}/signup`, values, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+  const onSubmit = (
+    values: Values,
+    { setSubmitting, resetForm }: FormikHelpers<Values>
+  ) => {
+    signup(values)
+      .then((response) => {
+        setState({
+          ...state,
+          success: "Account successfully created",
+          error: undefined,
+          lastSubmission: {
+            ...values,
+          },
+        });
+        resetForm();
+        setSubmitting(false);
+      })
+      .catch((err) => {
+        setState({
+          ...state,
+          error: err.response.data.error,
+          success: undefined,
+          lastSubmission: {
+            ...values,
+          },
+        });
+        setSubmitting(false);
+      });
+  };
+
   return (
-    <AuthLayout AuthType="signup" headline="Create your account" footer="hey">
+    <AuthLayout
+      AuthType="signup"
+      headline="Create your account"
+      footer="hey"
+      error={state.error}
+      success={state.success}
+    >
       <Formik
-        initialValues={{
-          username: "",
-          email: "",
-          password: "",
-        }}
+        initialValues={initialValues}
         validate={(values) => {
+          if (state.error) state.error = undefined;
+          if (state.success) state.success = undefined;
           const { errors, conditionsFulfilled } = validate(values);
           handleProgressBar(conditionsFulfilled);
           return errors;
         }}
         onSubmit={onSubmit}
       >
-        {({ submitForm, isSubmitting, isValid, dirty }) => (
+        {({ submitForm, isSubmitting, isValid, dirty, values }) => (
           <Form>
             <Box mb="5vh">
               <Field
                 component={TextField}
                 variant="outlined"
-                name="username"
-                type="username"
-                label="Username *"
+                name="name"
+                type="name"
+                label="Name *"
                 fullWidth
               />
             </Box>
@@ -162,12 +212,25 @@ const Signup: React.FC = () => {
             </Box>
 
             <Box mb="5vh" display="flex" justifyContent="flex-end">
-              <ContainedButton
-                disabled={isSubmitting || !(dirty && isValid)}
-                onClick={submitForm}
-              >
-                create account
-              </ContainedButton>
+              <Box position="relative">
+                {isSubmitting && (
+                  <Box className={classes.circularProgress}>
+                    <CircularProgress size={25} />
+                  </Box>
+                )}
+                <Box position="relative">
+                  <ContainedButton
+                    disabled={
+                      isSubmitting ||
+                      !(dirty && isValid) ||
+                      shallowEqual(state.lastSubmission, values)
+                    }
+                    onClick={submitForm}
+                  >
+                    create account
+                  </ContainedButton>
+                </Box>
+              </Box>
             </Box>
           </Form>
         )}
