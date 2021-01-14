@@ -1,19 +1,35 @@
 import React from "react";
-import { Button, ButtonProps } from "@material-ui/core";
+import { Box, Button, ButtonProps, CircularProgress } from "@material-ui/core";
 import useContainedIconStyles from "./contained-button-styles";
 
-const ContainedButton: React.FC<ButtonProps> = (props) => {
+interface ContainedButtonProps extends ButtonProps {
+  isSubmitting?: boolean;
+}
+
+const ContainedButton: React.FC<ContainedButtonProps> = ({
+  isSubmitting,
+  ...props
+}: ContainedButtonProps) => {
   const classes = useContainedIconStyles();
 
   return (
-    <Button
-      {...props}
-      variant="contained"
-      color="primary"
-      disableRipple
-      focusVisibleClassName={classes.focusVisible}
-      className={classes.buttonActive}
-    />
+    <Box position="relative" width={props.fullWidth && "100%"}>
+      {isSubmitting && (
+        <Box className={classes.circularProgress}>
+          <CircularProgress size={25} />
+        </Box>
+      )}
+      <Box position="relative">
+        <Button
+          {...props}
+          variant="contained"
+          color="primary"
+          disableRipple
+          focusVisibleClassName={classes.focusVisible}
+          className={classes.buttonActive}
+        />
+      </Box>
+    </Box>
   );
 };
 

@@ -4,13 +4,14 @@ import Home from "../Home";
 import NavBar from "../NavBar/NavBar";
 import Login from "../../user/Login";
 import Signup from "../../user/Signup";
+import { AuthSuccess } from "../../user/Auth";
 
 const Routes: React.FC = () => {
   return (
     <Router>
       {/* <NavBar /> */}
       <Route exact path="/">
-        <Signup />
+        <Login />
       </Route>
       <Switch>
         <Route exact path="/home">
@@ -23,6 +24,9 @@ const Routes: React.FC = () => {
           <Signup />
         </Route>
       </Switch>
+      <Route path="/auth/success">
+        <AuthSuccess />
+      </Route>
     </Router>
   );
 };

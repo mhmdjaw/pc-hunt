@@ -6,6 +6,7 @@ const useAuthLayoutStyles = makeStyles({
   },
   paper: {
     padding: "10%",
+    marginBottom: "5vh",
   },
 });
 

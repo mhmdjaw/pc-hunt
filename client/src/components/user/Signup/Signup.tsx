@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -8,8 +8,7 @@ import AuthLayout from "../../common/AuthLayout/AuthLayout";
 import useSignupStyles from "./signup-styles";
 import PasswordInputField from "./PasswordInputField";
 import { shallowEqual } from "recompose";
-import axios from "axios";
-import { AUTH } from "../../../config";
+import { signup } from "../../../auth";
 
 interface Values {
   name: string;
@@ -109,20 +108,12 @@ const Signup: React.FC = () => {
     });
   };
 
-  const signup = (values: Values) =>
-    axios.post<Values>(`${AUTH}/signup`, values, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
   const onSubmit = (
     values: Values,
     { setSubmitting, resetForm }: FormikHelpers<Values>
   ) => {
     signup(values)
-      .then((response) => {
+      .then(() => {
         setState({
           ...state,
           success: "Account successfully created",
@@ -149,9 +140,9 @@ const Signup: React.FC = () => {
 
   return (
     <AuthLayout
-      AuthType="signup"
+      authType="signup"
       headline="Create your account"
-      footer="hey"
+      footer="Already have an account?"
       error={state.error}
       success={state.success}
     >
@@ -212,25 +203,17 @@ const Signup: React.FC = () => {
             </Box>
 
             <Box mb="5vh" display="flex" justifyContent="flex-end">
-              <Box position="relative">
-                {isSubmitting && (
-                  <Box className={classes.circularProgress}>
-                    <CircularProgress size={25} />
-                  </Box>
-                )}
-                <Box position="relative">
-                  <ContainedButton
-                    disabled={
-                      isSubmitting ||
-                      !(dirty && isValid) ||
-                      shallowEqual(state.lastSubmission, values)
-                    }
-                    onClick={submitForm}
-                  >
-                    create account
-                  </ContainedButton>
-                </Box>
-              </Box>
+              <ContainedButton
+                disabled={
+                  isSubmitting ||
+                  !(dirty && isValid) ||
+                  shallowEqual(state.lastSubmission, values)
+                }
+                isSubmitting={isSubmitting}
+                onClick={submitForm}
+              >
+                create account
+              </ContainedButton>
             </Box>
           </Form>
         )}

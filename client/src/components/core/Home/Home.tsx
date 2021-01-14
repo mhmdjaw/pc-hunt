@@ -1,8 +1,8 @@
 import React from "react";
-import { API } from "../../../config";
+import { BASE_URL } from "../../../config";
 
 const Home: React.FC = () => {
-  return <div>{API}</div>;
+  return <div>{BASE_URL}</div>;
 };
 
 export default Home;
