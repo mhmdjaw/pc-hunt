@@ -6,6 +6,7 @@ import ContainedButton from "../../common/ContainedButton";
 import AuthLayout from "../../common/AuthLayout/AuthLayout";
 import { shallowEqual } from "recompose";
 import { login } from "../../../auth";
+import { useHistory } from "react-router-dom";
 
 interface Values {
   email: string;
@@ -43,6 +44,8 @@ const validate = (values: Values) => {
 };
 
 const Login: React.FC = () => {
+  const history = useHistory();
+
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
@@ -54,7 +57,8 @@ const Login: React.FC = () => {
     { setSubmitting, resetForm }: FormikHelpers<Values>
   ) => {
     login(values)
-      .then(() => {
+      .then((user) => {
+        localStorage.setItem("user", JSON.stringify(user));
         setState({
           ...state,
           success: "Authentication successfull",
@@ -65,6 +69,7 @@ const Login: React.FC = () => {
         });
         resetForm();
         setSubmitting(false);
+        history.push("/home");
       })
       .catch((err) => {
         setState({

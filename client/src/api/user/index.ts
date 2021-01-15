@@ -1,0 +1,29 @@
+import axios from "axios";
+import { API } from "../../config";
+import { User } from "./user-types";
+
+export const getUser = (): Promise<boolean> =>
+  axios
+    .get<User>(`${API}/user`, {
+      withCredentials: true,
+    })
+    .then((user) => {
+      localStorage.setItem("user", JSON.stringify(user));
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
+
+export const getAdmin = (): Promise<boolean> =>
+  axios
+    .get<User>(`${API}/admin`, {
+      withCredentials: true,
+    })
+    .then((user) => {
+      localStorage.setItem("user", JSON.stringify(user));
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });

@@ -5,24 +5,25 @@ import NavBar from "../NavBar/NavBar";
 import Login from "../../user/Login";
 import Signup from "../../user/Signup";
 import { AuthSuccess } from "../../user/Auth";
+import AuthRoute from "../../user/Auth/AuthRoute";
 
 const Routes: React.FC = () => {
   return (
     <Router>
       {/* <NavBar /> */}
-      <Route exact path="/">
+      <AuthRoute exact path="/" authType="guest">
         <Login />
-      </Route>
+      </AuthRoute>
       <Switch>
-        <Route exact path="/home">
+        <AuthRoute exact path="/home" authType="admin">
           <Home />
-        </Route>
+        </AuthRoute>
         <Route exact path="/login">
           <Login />
         </Route>
-        <Route exact path="/signup">
+        <AuthRoute exact path="/signup" authType="guest">
           <Signup />
-        </Route>
+        </AuthRoute>
       </Switch>
       <Route path="/auth/success">
         <AuthSuccess />

@@ -9,6 +9,7 @@ import useSignupStyles from "./signup-styles";
 import PasswordInputField from "./PasswordInputField";
 import { shallowEqual } from "recompose";
 import { signup } from "../../../auth";
+import { useHistory } from "react-router-dom";
 
 interface Values {
   name: string;
@@ -68,6 +69,7 @@ const validate = (values: Values) => {
 
 const Signup: React.FC = () => {
   const classes = useSignupStyles();
+  const history = useHistory();
 
   const [state, setState] = useState<State>({
     error: undefined,
@@ -113,7 +115,8 @@ const Signup: React.FC = () => {
     { setSubmitting, resetForm }: FormikHelpers<Values>
   ) => {
     signup(values)
-      .then(() => {
+      .then((user) => {
+        localStorage.setItem("user", JSON.stringify(user));
         setState({
           ...state,
           success: "Account successfully created",
@@ -124,6 +127,7 @@ const Signup: React.FC = () => {
         });
         resetForm();
         setSubmitting(false);
+        history.push("/home");
       })
       .catch((err) => {
         setState({
