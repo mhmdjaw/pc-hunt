@@ -5,6 +5,7 @@ import menuItems from "./menu-items";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Button, Link, Menu, MenuItem } from "@material-ui/core";
 import { useHistory, useLocation, Link as RouterLink } from "react-router-dom";
+import { logout } from "../../../auth";
 //import { v4 as uuidv4 } from "uuid";
 import useNavBarStyles from "./nav-bar-styles";
 import clsx from "clsx";
@@ -54,6 +55,14 @@ const NavBar: React.FC = () => {
               </Link>
             );
           })}
+          <Link
+            className={classes.menuItem}
+            underline="none"
+            color="inherit"
+            onClick={() => logout(() => history.push("/login"))}
+          >
+            SIGN OUT
+          </Link>
           <div className={classes.grow}></div>
         </Toolbar>
       </AppBar>

@@ -60,6 +60,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
         } else {
           const proceed =
             authType === "guest" || authType === "unprotected" ? true : false;
+
           setState({
             isLoading: false,
             proceed: proceed,
@@ -84,7 +85,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
     ) : authType === "guest" ? (
       <Redirect
         to={{
-          pathname: "/home",
+          pathname: "/",
           state: { from: location },
         }}
       />

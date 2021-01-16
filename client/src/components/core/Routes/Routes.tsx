@@ -10,19 +10,18 @@ import AuthRoute from "../../user/Auth/AuthRoute";
 const Routes: React.FC = () => {
   return (
     <Router>
-      {/* <NavBar /> */}
-      <AuthRoute exact path="/" authType="guest">
-        <Login />
-      </AuthRoute>
       <Switch>
-        <AuthRoute exact path="/home" authType="admin">
-          <Home />
-        </AuthRoute>
-        <Route exact path="/login">
+        <AuthRoute key={0} exact path="/login" authType="guest">
           <Login />
-        </Route>
-        <AuthRoute exact path="/signup" authType="guest">
+        </AuthRoute>
+        <AuthRoute key={1} exact path="/signup" authType="guest">
           <Signup />
+        </AuthRoute>
+        <AuthRoute key={2} exact path="/" authType="unprotected">
+          <NavBar />
+          <AuthRoute exact path="/" authType="unprotected">
+            <Home />
+          </AuthRoute>
         </AuthRoute>
       </Switch>
       <Route path="/auth/success">

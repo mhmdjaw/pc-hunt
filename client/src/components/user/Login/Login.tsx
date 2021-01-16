@@ -46,6 +46,10 @@ const validate = (values: Values) => {
 const Login: React.FC = () => {
   const history = useHistory();
 
+  if (history.action === "POP") {
+    history.push(history.location);
+  }
+
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
@@ -69,7 +73,7 @@ const Login: React.FC = () => {
         });
         resetForm();
         setSubmitting(false);
-        history.push("/home");
+        history.push("/");
       })
       .catch((err) => {
         setState({

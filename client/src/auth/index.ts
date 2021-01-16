@@ -21,11 +21,21 @@ export const login = (values: LoginValues): Promise<AxiosResponse<User>> =>
     },
   });
 
+export const logout = (next: CallableFunction): void => {
+  localStorage.removeItem("user");
+  axios
+    .get(`${AUTH}/logout`, { withCredentials: true })
+    .then(() => {
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const verifyAuth = (): Promise<boolean> =>
   axios
-    .get<User>(`${AUTH}/verify`, {
-      withCredentials: true,
-    })
+    .get<User>(`${AUTH}/verify`, { withCredentials: true })
     .then(() => {
       return true;
     })
@@ -37,9 +47,7 @@ export const verifyAuth = (): Promise<boolean> =>
 
 export const verifyAdmin = (): Promise<boolean> =>
   axios
-    .get<User>(`${AUTH}/verify/admin`, {
-      withCredentials: true,
-    })
+    .get<User>(`${AUTH}/verify/admin`, { withCredentials: true })
     .then(() => {
       return true;
     })

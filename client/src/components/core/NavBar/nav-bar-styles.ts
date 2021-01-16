@@ -7,6 +7,7 @@ const useNavBarStyles = makeStyles((theme) => ({
     "&:hover, &$active": {
       color: theme.palette.primary.main,
     },
+    cursor: "pointer",
   },
   active: {},
   iconButton: {
