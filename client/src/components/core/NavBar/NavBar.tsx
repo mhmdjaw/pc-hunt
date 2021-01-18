@@ -9,11 +9,13 @@ import { logout } from "../../../auth";
 //import { v4 as uuidv4 } from "uuid";
 import useNavBarStyles from "./nav-bar-styles";
 import clsx from "clsx";
+import { useAuth } from "../../../context";
 
 const NavBar: React.FC = () => {
   const classes = useNavBarStyles();
   const history = useHistory();
   const { pathname } = useLocation();
+  const auth = useAuth();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -59,7 +61,8 @@ const NavBar: React.FC = () => {
             className={classes.menuItem}
             underline="none"
             color="inherit"
-            onClick={() => logout(() => history.push("/login"))}
+            // onClick={() => logout(() => history.push("/login"))}
+            onClick={() => auth.logout(() => history.push("/login"))}
           >
             SIGN OUT
           </Link>

@@ -1,7 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import { User } from "../api/user/user-types";
+import history from "../components/core/Routes/history";
 import { AUTH } from "../config";
-import { SignupValues, LoginValues } from "./values-types";
+import { SignupValues, LoginValues, SessionResponse } from "./values-types";
+export type {
+  SignupValues,
+  LoginValues,
+  SessionResponse,
+} from "./values-types";
 
 export const signup = (values: SignupValues): Promise<AxiosResponse<User>> =>
   axios.post<User>(`${AUTH}/signup`, values, {
@@ -21,36 +27,18 @@ export const login = (values: LoginValues): Promise<AxiosResponse<User>> =>
     },
   });
 
-export const logout = (next: CallableFunction): void => {
-  localStorage.removeItem("user");
-  axios
-    .get(`${AUTH}/logout`, { withCredentials: true })
-    .then(() => {
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+export const validateSession = (): Promise<AxiosResponse<SessionResponse>> =>
+  axios.get(`${AUTH}/session`, { withCredentials: true });
 
-export const verifyAuth = (): Promise<boolean> =>
-  axios
-    .get<User>(`${AUTH}/verify`, { withCredentials: true })
-    .then(() => {
-      return true;
-    })
-    .catch((err) => {
-      console.log(err);
+export const logout = (): Promise<AxiosResponse> =>
+  axios.get(`${AUTH}/logout`, { withCredentials: true });
 
-      return false;
-    });
-
-export const verifyAdmin = (): Promise<boolean> =>
-  axios
-    .get<User>(`${AUTH}/verify/admin`, { withCredentials: true })
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 403) history.push("/login");
+    return Promise.reject(error);
+  }
+);

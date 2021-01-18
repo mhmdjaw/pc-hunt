@@ -11,7 +11,7 @@ const AuthSuccess: React.FC = () => {
     window.opener.focus();
     window.close();
   } else {
-    history.push("/");
+    history.replace("/");
   }
 
   return <div>SUCCESSFULLY AUTHENTICATED!</div>;

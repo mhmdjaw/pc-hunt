@@ -8,8 +8,9 @@ import AuthLayout from "../../common/AuthLayout/AuthLayout";
 import useSignupStyles from "./signup-styles";
 import PasswordInputField from "./PasswordInputField";
 import { shallowEqual } from "recompose";
-import { signup } from "../../../auth";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { useAuth } from "../../../context";
+import { LocationState } from "../../core/Routes";
 
 interface Values {
   name: string;
@@ -70,6 +71,8 @@ const validate = (values: Values) => {
 const Signup: React.FC = () => {
   const classes = useSignupStyles();
   const history = useHistory();
+  const location = useLocation<LocationState>();
+  const { signup } = useAuth();
 
   const [state, setState] = useState<State>({
     error: undefined,
@@ -114,12 +117,11 @@ const Signup: React.FC = () => {
     values: Values,
     { setSubmitting, resetForm }: FormikHelpers<Values>
   ) => {
-    signup(values)
-      .then((user) => {
-        localStorage.setItem("user", JSON.stringify(user));
+    signup(values, (authStatus, message) => {
+      if (authStatus) {
         setState({
           ...state,
-          success: "Account successfully created",
+          success: message,
           error: undefined,
           lastSubmission: {
             ...values,
@@ -127,19 +129,22 @@ const Signup: React.FC = () => {
         });
         resetForm();
         setSubmitting(false);
-        history.push("/home");
-      })
-      .catch((err) => {
+        if (location.state && location.state.from) {
+          history.replace(location.state.from.pathname);
+        }
+        history.replace("/");
+      } else {
         setState({
           ...state,
-          error: err.response.data.error,
+          error: message,
           success: undefined,
           lastSubmission: {
             ...values,
           },
         });
         setSubmitting(false);
-      });
+      }
+    });
   };
 
   return (

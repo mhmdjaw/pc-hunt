@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API } from "../../config";
 import { User } from "./user-types";
+export type { User } from "./user-types";
 
 export const getUser = (): Promise<boolean> =>
   axios

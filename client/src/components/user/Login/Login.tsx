@@ -5,8 +5,9 @@ import { TextField } from "formik-material-ui";
 import ContainedButton from "../../common/ContainedButton";
 import AuthLayout from "../../common/AuthLayout/AuthLayout";
 import { shallowEqual } from "recompose";
-import { login } from "../../../auth";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { useAuth } from "../../../context";
+import { LocationState } from "../../core/Routes";
 
 interface Values {
   email: string;
@@ -45,10 +46,13 @@ const validate = (values: Values) => {
 
 const Login: React.FC = () => {
   const history = useHistory();
+  const location = useLocation<LocationState>();
 
-  if (history.action === "POP") {
-    history.push(history.location);
-  }
+  const { login } = useAuth();
+
+  // if (history.action === "POP") {
+  //   history.push(history.location);
+  // }
 
   const [state, setState] = useState<State>({
     error: undefined,
@@ -60,12 +64,11 @@ const Login: React.FC = () => {
     values: Values,
     { setSubmitting, resetForm }: FormikHelpers<Values>
   ) => {
-    login(values)
-      .then((user) => {
-        localStorage.setItem("user", JSON.stringify(user));
+    login(values, (authStats, message) => {
+      if (authStats) {
         setState({
           ...state,
-          success: "Authentication successfull",
+          success: message,
           error: undefined,
           lastSubmission: {
             ...values,
@@ -73,19 +76,22 @@ const Login: React.FC = () => {
         });
         resetForm();
         setSubmitting(false);
-        history.push("/");
-      })
-      .catch((err) => {
+        if (location.state && location.state.from) {
+          history.replace(location.state.from.pathname);
+        }
+        history.replace("/");
+      } else {
         setState({
           ...state,
-          error: err.response.data.error,
+          error: message,
           success: undefined,
           lastSubmission: {
             ...values,
           },
         });
         setSubmitting(false);
-      });
+      }
+    });
   };
 
   return (

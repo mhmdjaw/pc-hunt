@@ -1,3 +1,5 @@
+import { User } from "../api/user";
+
 export interface SignupValues {
   name: string;
   email: string;
@@ -7,4 +9,9 @@ export interface SignupValues {
 export interface LoginValues {
   email: string;
   password: string;
+}
+
+export interface SessionResponse {
+  user?: User;
+  message: string;
 }
