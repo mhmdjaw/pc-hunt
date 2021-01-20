@@ -2,15 +2,22 @@ import axios, { AxiosResponse } from "axios";
 import { User } from "../api/user/user-types";
 import history from "../components/core/Routes/history";
 import { AUTH } from "../config";
-import { SignupValues, LoginValues, SessionResponse } from "./values-types";
+import {
+  SignupValues,
+  LoginValues,
+  SessionResponse,
+  UserResponse,
+} from "./values-types";
 export type {
   SignupValues,
   LoginValues,
   SessionResponse,
 } from "./values-types";
 
-export const signup = (values: SignupValues): Promise<AxiosResponse<User>> =>
-  axios.post<User>(`${AUTH}/signup`, values, {
+export const signup = (
+  values: SignupValues
+): Promise<AxiosResponse<UserResponse>> =>
+  axios.post<UserResponse>(`${AUTH}/signup`, values, {
     withCredentials: true,
     headers: {
       Accept: "application/json",
@@ -18,8 +25,10 @@ export const signup = (values: SignupValues): Promise<AxiosResponse<User>> =>
     },
   });
 
-export const login = (values: LoginValues): Promise<AxiosResponse<User>> =>
-  axios.post<User>(`${AUTH}/login`, values, {
+export const login = (
+  values: LoginValues
+): Promise<AxiosResponse<UserResponse>> =>
+  axios.post<UserResponse>(`${AUTH}/login`, values, {
     withCredentials: true,
     headers: {
       Accept: "application/json",
@@ -32,13 +41,3 @@ export const validateSession = (): Promise<AxiosResponse<SessionResponse>> =>
 
 export const logout = (): Promise<AxiosResponse> =>
   axios.get(`${AUTH}/logout`, { withCredentials: true });
-
-axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response.status === 403) history.push("/login");
-    return Promise.reject(error);
-  }
-);

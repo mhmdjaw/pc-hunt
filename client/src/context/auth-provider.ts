@@ -1,6 +1,8 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { User } from "../api/user";
 import * as Auth from "../auth";
+import history from "../components/core/Routes/history";
 import { AuthContext, AuthResultCallback } from "./auth-context-types";
 
 interface AuthState {
@@ -15,6 +17,22 @@ const useProvideAuth = (): AuthContext => {
   });
 
   useEffect(() => {
+    axios.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        if (error.response.status === 403) {
+          setState({
+            isLoading: false,
+            user: null,
+          });
+          history.push("/login");
+        }
+        return Promise.reject(error);
+      }
+    );
+
     Auth.validateSession().then((response) => {
       if (response.data.user) {
         setState({
@@ -34,8 +52,8 @@ const useProvideAuth = (): AuthContext => {
     Auth.login(values)
       .then((response) => {
         setState({
-          ...state,
-          user: response.data,
+          isLoading: false,
+          user: response.data.user,
         });
         cb(true, "Authentication successfull");
       })
@@ -48,8 +66,8 @@ const useProvideAuth = (): AuthContext => {
     Auth.signup(values)
       .then((response) => {
         setState({
-          ...state,
-          user: response.data,
+          isLoading: false,
+          user: response.data.user,
         });
         cb(true, "Account successfully created");
       })
@@ -62,12 +80,17 @@ const useProvideAuth = (): AuthContext => {
     Auth.logout()
       .then(() => {
         setState({
-          ...state,
+          isLoading: false,
           user: null,
         });
         cb();
       })
       .catch((err) => {
+        setState({
+          isLoading: false,
+          user: null,
+        });
+        cb();
         console.log(err);
       });
   };

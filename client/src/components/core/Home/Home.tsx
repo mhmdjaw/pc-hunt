@@ -1,8 +1,24 @@
 import React from "react";
-import { BASE_URL } from "../../../config";
+import axios from "axios";
+import { API } from "../../../config";
+import { Box } from "@material-ui/core";
+import ContainedButton from "../../common/ContainedButton";
 
 const Home: React.FC = () => {
-  return <div>{BASE_URL}</div>;
+  const handleClick = () => {
+    axios
+      .get(`${API}/user`, {
+        withCredentials: true,
+      })
+      .then((response) => console.log(response))
+      .catch(() => console.log("didn't make it"));
+  };
+
+  return (
+    <Box mt="50vh" textAlign="center">
+      <ContainedButton onClick={handleClick}>test interceptor</ContainedButton>
+    </Box>
+  );
 };
 
 export default Home;

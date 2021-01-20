@@ -12,16 +12,19 @@ import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import mongooseConfig from "./helpers/mongoose-config";
 import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
 import morgan from "morgan";
 
 const app = express();
 
 // middlewares
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 app.use(morgan("dev"));
-app.use(cookieParser());
 
 app.use(
   session({
@@ -64,7 +67,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:4000/auth/google/PChub",
+      callbackURL: "http://localhost:4000/auth/google/pchunt",
     },
     (_accessToken, _refreshToken, profile, cb) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

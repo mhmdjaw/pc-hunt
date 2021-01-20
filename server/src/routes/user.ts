@@ -11,6 +11,7 @@ router.get("/secret", isAuth, isAdmin, (req, res) => {
 });
 
 router.get("/user", isAuth, read);
+router.get("/admin", isAuth, isAdmin, read);
 router.put("/user", isAuth, update);
 
 export default router;

@@ -15,7 +15,8 @@ const NavBar: React.FC = () => {
   const classes = useNavBarStyles();
   const history = useHistory();
   const { pathname } = useLocation();
-  const auth = useAuth();
+  const { logout, user } = useAuth();
+  console.log(user?.role);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -40,7 +41,7 @@ const NavBar: React.FC = () => {
     <>
       <AppBar color="inherit">
         <Toolbar>
-          {menuItems.map((menuItem, i) => {
+          {/* {menuItems.map((menuItem, i) => {
             const { itemTitle, itemURL } = menuItem;
             return (
               <Link
@@ -56,16 +57,68 @@ const NavBar: React.FC = () => {
                 {itemTitle}
               </Link>
             );
-          })}
+          })} */}
           <Link
-            className={classes.menuItem}
+            className={clsx(classes.menuItem, {
+              [classes.active]: "/" === pathname,
+            })}
+            component={RouterLink}
+            to="/"
             underline="none"
             color="inherit"
-            // onClick={() => logout(() => history.push("/login"))}
-            onClick={() => auth.logout(() => history.push("/login"))}
           >
-            SIGN OUT
+            HOME
           </Link>
+          {!user && (
+            <Link
+              className={clsx(classes.menuItem, {
+                [classes.active]: "/login" === pathname,
+              })}
+              component={RouterLink}
+              to="/login"
+              underline="none"
+              color="inherit"
+            >
+              LOG IN
+            </Link>
+          )}
+          {!user && (
+            <Link
+              className={clsx(classes.menuItem, {
+                [classes.active]: "/signup" === pathname,
+              })}
+              component={RouterLink}
+              to="/signup"
+              underline="none"
+              color="inherit"
+            >
+              SIGN UP
+            </Link>
+          )}
+          {user?.role === 1 && (
+            <Link
+              className={clsx(classes.menuItem, {
+                [classes.active]: "/dashboard" === pathname,
+              })}
+              component={RouterLink}
+              to="/dashboard"
+              underline="none"
+              color="inherit"
+            >
+              DASHBOARD
+            </Link>
+          )}
+          {user && (
+            <Link
+              className={classes.menuItem}
+              underline="none"
+              color="inherit"
+              // onClick={() => logout(() => history.push("/login"))}
+              onClick={() => logout(() => history.push("/login"))}
+            >
+              LOG OUT
+            </Link>
+          )}
           <div className={classes.grow}></div>
         </Toolbar>
       </AppBar>

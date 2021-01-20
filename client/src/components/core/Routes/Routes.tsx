@@ -7,6 +7,7 @@ import Signup from "../../user/Signup";
 import { AuthSuccess } from "../../user/Auth";
 import { AuthRoute } from "../../user/Auth";
 import history from "./history";
+import Dashboard from "../Dashboard/Dashboard";
 
 const Routes: React.FC = () => {
   return (
@@ -22,6 +23,9 @@ const Routes: React.FC = () => {
       </AuthRoute>
       <AuthRoute path="/signup" authType="guest">
         <Signup />
+      </AuthRoute>
+      <AuthRoute path="/dashboard" authType="admin">
+        <Dashboard />
       </AuthRoute>
       <Route path="/auth/success">
         <AuthSuccess />

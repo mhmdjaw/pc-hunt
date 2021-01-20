@@ -15,3 +15,7 @@ export interface SessionResponse {
   user?: User;
   message: string;
 }
+
+export interface UserResponse {
+  user: User;
+}

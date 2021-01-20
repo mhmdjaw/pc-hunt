@@ -82,14 +82,18 @@ export const googleAuthResult = (req: Request, res: Response): void => {
         });
         return;
       }
-      res.redirect("http://localhost:3000");
+      res.redirect(`${process.env.CLIENT_BASE_URL}/auth/success`);
     });
   })(req, res);
 };
 
 export const logout = (req: Request, res: Response): void => {
   req.logout();
-  res.json({ error: "log out success" });
+  req.session.destroy(() => {
+    res
+      .clearCookie("connect.sid", { path: "/", httpOnly: true })
+      .sendStatus(200);
+  });
 };
 
 export const isAuth = (
@@ -99,7 +103,7 @@ export const isAuth = (
 ): void => {
   if (!req.isAuthenticated()) {
     res.status(403).json({
-      error: "Access denied",
+      error: "Not authenticated",
     });
   } else {
     next();
@@ -118,4 +122,16 @@ export const isAdmin = (
     return;
   }
   next();
+};
+
+export const validateSession = (req: Request, res: Response): void => {
+  if (req.isAuthenticated())
+    res.json({
+      user: req.user,
+      message: "Session valid",
+    });
+  else
+    res.json({
+      message: "No available session",
+    });
 };
