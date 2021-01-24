@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/user";
 
 export const read = (req: Request, res: Response): void => {
-  res.json(req.user);
+  res.json({ user: req.user });
 };
 
 export const update = (req: Request, res: Response): void => {

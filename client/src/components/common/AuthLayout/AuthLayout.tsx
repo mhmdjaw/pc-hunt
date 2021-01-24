@@ -3,10 +3,10 @@ import { useTheme } from "@material-ui/core/styles";
 import useAuthLayoutStyles from "./auth-layout-styles";
 import { Box, Container, Link, Paper, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { ReactComponent as LogoPrimary } from "../../../assets/logo-primary.svg";
+import { LogoPrimary } from "../../../assets";
 import OrSplitter from "../OrSplitter";
 import ContainedButton from "../ContainedButton";
-import GoogleIcon from "../../../assets/GoogleIcon";
+import { GoogleIcon } from "../../../assets";
 import { Link as RouterLink } from "react-router-dom";
 import { AUTH } from "../../../config";
 

@@ -95,17 +95,17 @@ const NavBar: React.FC = () => {
               SIGN UP
             </Link>
           )}
-          {user?.role === 1 && (
+          {user && (
             <Link
               className={clsx(classes.menuItem, {
-                [classes.active]: "/dashboard" === pathname,
+                [classes.active]: "/account" === pathname,
               })}
               component={RouterLink}
-              to="/dashboard"
+              to="/account"
               underline="none"
               color="inherit"
             >
-              DASHBOARD
+              ACCOUNT
             </Link>
           )}
           {user && (

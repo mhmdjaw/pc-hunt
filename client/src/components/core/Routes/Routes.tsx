@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import Home from "../Home";
 import NavBar from "../NavBar/NavBar";
 import Login from "../../user/Login";
@@ -7,29 +7,35 @@ import Signup from "../../user/Signup";
 import { AuthSuccess } from "../../user/Auth";
 import { AuthRoute } from "../../user/Auth";
 import history from "./history";
-import Dashboard from "../Dashboard/Dashboard";
+import Account from "../Account";
 
 const Routes: React.FC = () => {
   return (
     <Router history={history}>
-      <AuthRoute exact path="/" authType="unprotected">
-        <NavBar />
-        <AuthRoute path="/" authType="unprotected">
-          <Home />
+      <Switch>
+        <AuthRoute path="/login" authType="guest">
+          <Login />
         </AuthRoute>
-      </AuthRoute>
-      <AuthRoute path="/login" authType="guest">
-        <Login />
-      </AuthRoute>
-      <AuthRoute path="/signup" authType="guest">
-        <Signup />
-      </AuthRoute>
-      <AuthRoute path="/dashboard" authType="admin">
-        <Dashboard />
-      </AuthRoute>
-      <Route path="/auth/success">
-        <AuthSuccess />
-      </Route>
+        <AuthRoute path="/signup" authType="guest">
+          <Signup />
+        </AuthRoute>
+        <Route exact path="/auth/success">
+          <AuthSuccess />
+        </Route>
+
+        <AuthRoute path="/" authType="unprotected">
+          <NavBar />
+          <AuthRoute exact path="/" authType="unprotected">
+            <Home />
+          </AuthRoute>
+          <AuthRoute exact path="/account" authType="protected">
+            <Account />
+          </AuthRoute>
+          <AuthRoute path="/account/update" authType="protected"></AuthRoute>
+          <AuthRoute path="/category" authType="admin"></AuthRoute>
+          <AuthRoute path="/product" authType="admin"></AuthRoute>
+        </AuthRoute>
+      </Switch>
     </Router>
   );
 };

@@ -1,6 +1,6 @@
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 
-const useContainedIconStyles = makeStyles((theme: Theme) =>
+const useContainedIconStyles = makeStyles((theme) =>
   createStyles({
     focusVisible: {
       backgroundColor: theme.palette.primary.dark,

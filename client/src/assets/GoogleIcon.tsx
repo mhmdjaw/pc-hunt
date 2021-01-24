@@ -1,13 +1,13 @@
 import React from "react";
 import SvgIcon, { SvgIconProps } from "@material-ui/core/SvgIcon";
 
-const GoogleIcon: React.FC<SvgIconProps> = (props: SvgIconProps) => {
+export const GoogleIcon: React.FC<SvgIconProps> = (props: SvgIconProps) => {
   return (
     <SvgIcon
       {...props}
       height="512"
       width="512"
-      enable-background="new 0 0 128 128"
+      enableBackground="new 0 0 128 128"
       id="Social_Icons"
       viewBox="0 0 128 128"
       xmlns="http://www.w3.org/2000/svg"
@@ -50,5 +50,3 @@ const GoogleIcon: React.FC<SvgIconProps> = (props: SvgIconProps) => {
     </SvgIcon>
   );
 };
-
-export default GoogleIcon;

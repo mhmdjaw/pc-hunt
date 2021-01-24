@@ -10,7 +10,7 @@ const Home: React.FC = () => {
       .get(`${API}/user`, {
         withCredentials: true,
       })
-      .then((response) => console.log(response))
+      .then((response) => console.log(response.data))
       .catch(() => console.log("didn't make it"));
   };
 

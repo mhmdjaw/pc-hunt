@@ -1,9 +1,9 @@
-interface menuItem {
+interface MenuItem {
   itemTitle: string;
   itemURL: string;
 }
 
-const menuItems: menuItem[] = [
+const menuItems: MenuItem[] = [
   {
     itemTitle: "HOME",
     itemURL: "/",

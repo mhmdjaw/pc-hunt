@@ -16,6 +16,11 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+categorySchema.path("name").validate(async (name: string) => {
+  const nameCount = await mongoose.models.Category.countDocuments({ name });
+  return !nameCount;
+}, "Category already exists");
+
 const Category: Model<ICategory> = mongoose.model("Category", categorySchema);
 
 export default Category;
