@@ -8,6 +8,7 @@ import { AuthSuccess } from "../../user/Auth";
 import { AuthRoute } from "../../user/Auth";
 import history from "./history";
 import Account from "../Account";
+import Category from "../Category";
 
 const Routes: React.FC = () => {
   return (
@@ -32,7 +33,9 @@ const Routes: React.FC = () => {
             <Account />
           </AuthRoute>
           <AuthRoute path="/account/update" authType="protected"></AuthRoute>
-          <AuthRoute path="/category" authType="admin"></AuthRoute>
+          <AuthRoute path="/category" authType="admin">
+            <Category />
+          </AuthRoute>
           <AuthRoute path="/product" authType="admin"></AuthRoute>
         </AuthRoute>
       </Switch>

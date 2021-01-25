@@ -50,10 +50,6 @@ const Login: React.FC = () => {
 
   const { login } = useAuth();
 
-  // if (history.action === "POP") {
-  //   history.push(history.location);
-  // }
-
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
@@ -67,7 +63,6 @@ const Login: React.FC = () => {
     login(values, (authStats, message) => {
       if (authStats) {
         setState({
-          ...state,
           success: message,
           error: undefined,
           lastSubmission: {
@@ -82,7 +77,6 @@ const Login: React.FC = () => {
         history.replace("/");
       } else {
         setState({
-          ...state,
           error: message,
           success: undefined,
           lastSubmission: {

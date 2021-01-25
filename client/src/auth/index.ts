@@ -1,6 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { User } from "../api/user/user-types";
-import history from "../components/core/Routes/history";
 import { AUTH } from "../config";
 import {
   SignupValues,

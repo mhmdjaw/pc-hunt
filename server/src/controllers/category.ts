@@ -94,7 +94,7 @@ const saveCategory = (res: Response, category: ICategory): void => {
         });
       }
     } else {
-      res.json({ data });
+      res.json({ category: data });
     }
   });
 };
