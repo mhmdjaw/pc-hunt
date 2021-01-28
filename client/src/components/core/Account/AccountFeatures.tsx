@@ -39,7 +39,14 @@ const AccountFeatures: React.FC = () => {
           user &&
           user?.role >= role && (
             <Grid key={i} item xs={12} md={6} lg={4}>
-              <Card className={classes.card} onClick={() => history.push(url)}>
+              <Card
+                tabIndex={0}
+                className={classes.card}
+                onClick={() => history.push(url)}
+                onKeyDown={(event) =>
+                  event.key === "Enter" && history.push(url)
+                }
+              >
                 <CardContent className={classes.cardContent}>
                   <SvgIcon
                     className={classes.icon}

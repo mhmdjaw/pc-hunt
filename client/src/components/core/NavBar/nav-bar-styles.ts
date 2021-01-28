@@ -4,12 +4,11 @@ const useNavBarStyles = makeStyles((theme) => ({
   menuItem: {
     marginLeft: "2%",
     fontWeight: "bold",
-    "&:hover, &$active": {
+    "&:hover, &:focus-visible": {
       color: theme.palette.primary.main,
     },
     cursor: "pointer",
   },
-  active: {},
   iconButton: {
     margin: "0 1%",
   },

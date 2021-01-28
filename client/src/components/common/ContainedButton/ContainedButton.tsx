@@ -24,7 +24,6 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
           {...props}
           variant="contained"
           color="primary"
-          disableRipple
           focusVisibleClassName={classes.focusVisible}
           className={classes.buttonActive}
         />

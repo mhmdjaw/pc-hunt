@@ -31,7 +31,6 @@ const CustomIconButton: React.FC<IconButtonProps> = (
   return (
     <IconButton
       {...props}
-      disableRipple
       focusVisibleClassName={classes.focusVisible}
       className={classes.buttonActive}
     />

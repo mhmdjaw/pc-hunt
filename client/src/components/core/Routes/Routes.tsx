@@ -9,6 +9,7 @@ import { AuthRoute } from "../../user/Auth";
 import history from "./history";
 import Account from "../Account";
 import Category from "../Category";
+import Product from "../Product";
 
 const Routes: React.FC = () => {
   return (
@@ -36,7 +37,9 @@ const Routes: React.FC = () => {
           <AuthRoute path="/category" authType="admin">
             <Category />
           </AuthRoute>
-          <AuthRoute path="/product" authType="admin"></AuthRoute>
+          <AuthRoute path="/product" authType="admin">
+            <Product />
+          </AuthRoute>
         </AuthRoute>
       </Switch>
     </Router>

@@ -18,7 +18,8 @@ const useAccountStyles = makeStyles((theme) =>
       height: 100,
       display: "flex",
       alignContent: "center",
-      "&:hover": {
+      "&:hover, &:focus-visible": {
+        outline: "none",
         backgroundColor: theme.palette.primary.main,
         cursor: "pointer",
         transform: "scale(1.1)",

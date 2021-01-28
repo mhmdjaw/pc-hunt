@@ -16,7 +16,7 @@ const NavBar: React.FC = () => {
   const history = useHistory();
   const { pathname } = useLocation();
   const { logout, user } = useAuth();
-  console.log(user?.role);
+  console.log(pathname);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -59,57 +59,51 @@ const NavBar: React.FC = () => {
             );
           })} */}
           <Link
-            className={clsx(classes.menuItem, {
-              [classes.active]: "/" === pathname,
-            })}
+            className={classes.menuItem}
             component={RouterLink}
             to="/"
             underline="none"
-            color="inherit"
+            color={"/" === pathname ? "primary" : "inherit"}
           >
             HOME
           </Link>
           {!user && (
             <Link
-              className={clsx(classes.menuItem, {
-                [classes.active]: "/login" === pathname,
-              })}
+              className={classes.menuItem}
               component={RouterLink}
               to="/login"
               underline="none"
-              color="inherit"
+              color={"/login" === pathname ? "primary" : "inherit"}
             >
               LOG IN
             </Link>
           )}
           {!user && (
             <Link
-              className={clsx(classes.menuItem, {
-                [classes.active]: "/signup" === pathname,
-              })}
+              className={classes.menuItem}
               component={RouterLink}
               to="/signup"
               underline="none"
-              color="inherit"
+              color={"/signup" === pathname ? "primary" : "inherit"}
             >
               SIGN UP
             </Link>
           )}
           {user && (
             <Link
-              className={clsx(classes.menuItem, {
-                [classes.active]: "/account" === pathname,
-              })}
+              className={classes.menuItem}
               component={RouterLink}
               to="/account"
               underline="none"
-              color="inherit"
+              color={"/account" === pathname ? "primary" : "inherit"}
             >
               ACCOUNT
             </Link>
           )}
           {user && (
             <Link
+              component={RouterLink}
+              to="#"
               className={classes.menuItem}
               underline="none"
               color="inherit"

@@ -11,6 +11,13 @@ export const darkTheme = responsiveFontSizes(
         main: "#448aff",
       },
     },
+    props: {
+      // Name of the component ⚛️
+      MuiButtonBase: {
+        // The default props to change
+        disableRipple: true, // No more ripple, on the whole application 💣!
+      },
+    },
   })
 );
 
@@ -23,6 +30,13 @@ export const lightTheme = responsiveFontSizes(
       },
       secondary: {
         main: "#2979ff",
+      },
+    },
+    props: {
+      // Name of the component ⚛️
+      MuiButtonBase: {
+        // The default props to change
+        disableRipple: true, // No more ripple, on the whole application 💣!
       },
     },
   })
