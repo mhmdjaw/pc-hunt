@@ -30,9 +30,8 @@ const productSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
-      trim: true,
       required: [true, "Price is required"],
-      maxlength: 32,
+      min: [0, "Price should be greater than 0"],
     },
     category: {
       type: ObjectId,
@@ -42,6 +41,7 @@ const productSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       required: [true, "Quantity is required"],
+      min: [0, "Quantity should be 0 or greater"],
     },
     sold: {
       type: Number,
