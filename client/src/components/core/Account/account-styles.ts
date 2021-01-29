@@ -15,7 +15,7 @@ const useAccountStyles = makeStyles((theme) =>
       marginBottom: "15vh",
     },
     card: {
-      height: 100,
+      minHeight: 100,
       display: "flex",
       alignContent: "center",
       "&:hover, &:focus-visible": {

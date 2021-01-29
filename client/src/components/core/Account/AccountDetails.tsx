@@ -6,8 +6,8 @@ import {
   Grid,
   Typography,
   useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
 import { AccountCircle, Email } from "@material-ui/icons";
 import React from "react";
 import useAccountStyles from "./account-styles";

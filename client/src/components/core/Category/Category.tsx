@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, Paper, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import ContainedButton from "../../common/ContainedButton";
 import { shallowEqual } from "recompose";
 import { createCategory } from "../../../api/admin";
 import { Alert } from "@material-ui/lab";
+import useCategoryStyles from "./category-styles";
 
 interface Values {
   name: string;
@@ -31,15 +32,8 @@ const validate = (values: Values) => {
   return errors;
 };
 
-const useStyles = makeStyles({
-  paper: {
-    padding: "60px 5vw",
-    marginBottom: "10vh",
-  },
-});
-
 const Category: React.FC = () => {
-  const classes = useStyles();
+  const classes = useCategoryStyles();
 
   const [state, setState] = useState<State>({
     error: undefined,

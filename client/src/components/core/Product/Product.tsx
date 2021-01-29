@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import {
   Box,
@@ -7,13 +7,16 @@ import {
   Paper,
   Typography,
   useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
 import { TextField } from "formik-material-ui";
 import ContainedButton from "../../common/ContainedButton";
 import { shallowEqual } from "recompose";
 import { createCategory } from "../../../api/admin";
 import { Alert } from "@material-ui/lab";
+import { Add, Delete } from "@material-ui/icons";
+import TextButton from "../../common/TextButton";
+import CustomIconButton from "../../common/CustomIconButton";
 
 interface Values {
   name: string;
@@ -27,6 +30,8 @@ interface State {
   error: string | undefined;
   success: string | undefined;
   lastSubmission: Values;
+  imageURL: string;
+  image: File | null;
 }
 
 const initialValues = {
@@ -68,6 +73,11 @@ const useStyles = makeStyles({
     padding: "60px 5vw",
     marginBottom: "10vh",
   },
+  image: {
+    width: "100px",
+    height: "100px",
+    objectFit: "contain",
+  },
 });
 
 const Product: React.FC = () => {
@@ -79,6 +89,8 @@ const Product: React.FC = () => {
     error: undefined,
     success: undefined,
     lastSubmission: { ...initialValues },
+    imageURL: "",
+    image: null,
   });
 
   const onSubmit = (
@@ -88,6 +100,7 @@ const Product: React.FC = () => {
     createCategory(values)
       .then(() => {
         setState({
+          ...state,
           success: "Category successfully created",
           error: undefined,
           lastSubmission: {
@@ -99,6 +112,7 @@ const Product: React.FC = () => {
       })
       .catch((err) => {
         setState({
+          ...state,
           error: err.response.data.error,
           success: undefined,
           lastSubmission: {
@@ -107,6 +121,27 @@ const Product: React.FC = () => {
         });
         setSubmitting(false);
       });
+  };
+
+  const setImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const image = e.target.files[0];
+      const url = URL.createObjectURL(image);
+      setState({
+        ...state,
+        imageURL: url,
+        image: image,
+      });
+    }
+  };
+
+  // in case there are multiple images pass the index of the image in the array
+  const removeImage = () => {
+    setState({
+      ...state,
+      imageURL: "",
+      image: null,
+    });
   };
 
   return (
@@ -163,7 +198,7 @@ const Product: React.FC = () => {
                 </Box>
                 <Box
                   display="flex"
-                  width="330px"
+                  maxWidth="350px"
                   flexDirection={isMobile ? "column" : "row"}
                   justifyContent="space-between"
                 >
@@ -178,23 +213,58 @@ const Product: React.FC = () => {
                       fullWidth
                     />
                   </Box>
-                  <Box mb="5vh" maxWidth="100px">
+                  <Box mb="5vh" maxWidth="120px">
                     <Field
                       component={TextField}
                       variant="outlined"
                       name="quantity"
                       type="number"
-                      label="Qantity"
+                      label="Quantity"
                       inputProps={{ min: 0 }}
                       fullWidth
                     />
                   </Box>
                 </Box>
+                <Box mb="5vh">
+                  <TextButton
+                    component="label"
+                    color="primary"
+                    startIcon={<Add />}
+                  >
+                    add image
+                    <input
+                      type="file"
+                      accept="image/jpg, image/png, image/jpeg, image/bmp"
+                      onChange={(event) => setImage(event)}
+                      hidden
+                    />
+                  </TextButton>
+                </Box>
+                <Box mb="5vh">
+                  {state.image && (
+                    <Box
+                      display="flex"
+                      maxWidth="200px"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <img className={classes.image} src={state.imageURL} />
+                      <CustomIconButton
+                        aria-label="remove image"
+                        onClick={removeImage}
+                        color="primary"
+                      >
+                        <Delete />
+                      </CustomIconButton>
+                    </Box>
+                  )}
+                </Box>
                 <ContainedButton
                   disabled={
                     isSubmitting ||
                     !(dirty && isValid) ||
-                    shallowEqual(state.lastSubmission, values)
+                    shallowEqual(state.lastSubmission, values) ||
+                    !state.image
                   }
                   isSubmitting={isSubmitting}
                   onClick={submitForm}

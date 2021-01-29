@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { useTheme } from "@material-ui/core/styles";
 import useAuthLayoutStyles from "./auth-layout-styles";
-import { Box, Container, Link, Paper, Typography } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Link,
+  Paper,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { LogoPrimary } from "../../../assets";
 import OrSplitter from "../OrSplitter";

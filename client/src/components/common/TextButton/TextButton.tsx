@@ -1,12 +1,14 @@
-import { IconButton, IconButtonProps, useTheme } from "@material-ui/core";
-import useCustomIconButtonStyles from "./custom-icon-button-styles";
 import React from "react";
+import { Button, ButtonProps, useTheme } from "@material-ui/core";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 import { hexToRgba } from "../../../helpers";
+import useTextButtonStyles from "./text-button-styles";
 
-const CustomIconButton: React.FC<IconButtonProps> = (
-  props: IconButtonProps
-) => {
+interface TextButtonProps extends ButtonProps {
+  component: string;
+}
+
+const TextButton: React.FC<TextButtonProps> = (props: TextButtonProps) => {
   const theme = useTheme();
 
   const stylesProps = {
@@ -25,15 +27,17 @@ const CustomIconButton: React.FC<IconButtonProps> = (
     );
   }
 
-  const classes = useCustomIconButtonStyles(stylesProps);
+  const classes = useTextButtonStyles(stylesProps);
 
   return (
-    <IconButton
+    <Button
       {...props}
       focusVisibleClassName={classes.focusVisible}
       className={classes.buttonActive}
-    />
+    >
+      {props.children}
+    </Button>
   );
 };
 
-export default CustomIconButton;
+export default TextButton;

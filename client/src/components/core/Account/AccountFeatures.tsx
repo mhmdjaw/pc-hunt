@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Card, CardContent, Grid, Typography } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import {
   OrdersIcon,
   AccountEditIcon,
@@ -28,9 +36,11 @@ const AccountFeatures: React.FC = () => {
   const classes = useAccountStyles();
   const history = useHistory();
   const { user } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
-    <Grid container spacing={6} justify="center">
+    <Grid container spacing={isMobile ? 4 : 6} justify="center">
       {accountFeaturesItems.map((feature, i) => {
         const { svg, title, subtitle, url, role } = feature;
         const SvgIcon = svgMapping[svg as keyof typeof svgMapping];
