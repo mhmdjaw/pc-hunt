@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { API } from "../../config";
-import { Product, ProductValues } from "./product-types";
-export type { Product, ProductValues } from "./product-types";
+import { Product } from "./product-types";
+export type { Product } from "./product-types";
 
 export const createProduct = (
-  product: ProductValues
+  product: FormData
 ): Promise<AxiosResponse<Product>> =>
   axios.post<Product>(`${API}/product/create`, product, {
     withCredentials: true,

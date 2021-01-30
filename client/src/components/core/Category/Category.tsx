@@ -4,7 +4,7 @@ import { Box, Paper, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import ContainedButton from "../../common/ContainedButton";
 import { shallowEqual } from "recompose";
-import { createCategory } from "../../../api/admin";
+import { createCategory } from "../../../api/category";
 import { Alert } from "@material-ui/lab";
 import useCategoryStyles from "./category-styles";
 

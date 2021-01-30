@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { API } from "../../config";
-import { Category } from "./admin-types";
-export type { Category } from "./admin-types";
+import { Category, CategoryValues } from "./category-types";
+export type { Category } from "./category-types";
 
 export const createCategory = (
-  values: Category
+  values: CategoryValues
 ): Promise<AxiosResponse<Category>> =>
   axios.post<Category>(`${API}/category/create`, values, {
     withCredentials: true,
@@ -13,3 +13,6 @@ export const createCategory = (
       "Content-Type": "application/json",
     },
   });
+
+export const getCategories = (): Promise<AxiosResponse<Category[]>> =>
+  axios.get<Category[]>(`${API}/categories`);

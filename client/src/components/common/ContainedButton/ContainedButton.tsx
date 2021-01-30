@@ -13,13 +13,17 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
   const classes = useContainedIconStyles();
 
   return (
-    <Box position="relative" width={props.fullWidth && "100%"}>
+    <Box
+      position="relative"
+      display="inline-flex"
+      width={props.fullWidth && "100%"}
+    >
       {isSubmitting && (
         <Box className={classes.circularProgress}>
           <CircularProgress size={25} />
         </Box>
       )}
-      <Box position="relative">
+      <Box position="inherit" display="inherit" width="inherit">
         <Button
           {...props}
           variant="contained"

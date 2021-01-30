@@ -1,13 +1,4 @@
-import { Category } from "../admin/admin-types";
-
-export interface ProductValues {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  quantity: number;
-  image: File;
-}
+import { Category } from "../category";
 
 export interface Product {
   name: string;

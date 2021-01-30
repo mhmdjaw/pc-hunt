@@ -1,8 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import {
   Box,
-  makeStyles,
   MenuItem,
   Paper,
   Typography,
@@ -12,11 +11,13 @@ import {
 import { TextField } from "formik-material-ui";
 import ContainedButton from "../../common/ContainedButton";
 import { shallowEqual } from "recompose";
-import { createCategory } from "../../../api/admin";
 import { Alert } from "@material-ui/lab";
 import { Add, Delete } from "@material-ui/icons";
 import TextButton from "../../common/TextButton";
 import CustomIconButton from "../../common/CustomIconButton";
+import useProductStyles from "./product-styles";
+import { createProduct } from "../../../api/product";
+import { Category, getCategories } from "../../../api/category";
 
 interface Values {
   name: string;
@@ -29,7 +30,11 @@ interface Values {
 interface State {
   error: string | undefined;
   success: string | undefined;
-  lastSubmission: Values;
+  categories: Category[];
+  lastSubmission: {
+    values: Values;
+    image: File | null;
+  };
   imageURL: string;
   image: File | null;
 }
@@ -54,12 +59,12 @@ const validate = (values: Values) => {
   if (!values.category) {
     errors.category = "Required";
   }
-  if (!values.price) {
+  if (values.price.length === 0) {
     errors.price = "Required";
   } else if (Number(values.price) < 0) {
     errors.price = "Price can't be negative";
   }
-  if (!values.quantity) {
+  if (values.quantity.length === 0) {
     errors.quantity = "Required";
   } else if (Number(values.quantity) < 0) {
     errors.quantity = "Quantity can't be negative";
@@ -68,43 +73,64 @@ const validate = (values: Values) => {
   return errors;
 };
 
-const useStyles = makeStyles({
-  paper: {
-    padding: "60px 5vw",
-    marginBottom: "10vh",
-  },
-  image: {
-    width: "100px",
-    height: "100px",
-    objectFit: "contain",
-  },
-});
-
 const Product: React.FC = () => {
-  const classes = useStyles();
+  const classes = useProductStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
-    lastSubmission: { ...initialValues },
+    categories: [],
+    lastSubmission: { values: { ...initialValues }, image: null },
     imageURL: "",
     image: null,
   });
 
+  useEffect(() => {
+    getCategories()
+      .then((response) => {
+        setState((s) => ({
+          ...s,
+          categories: response.data,
+        }));
+      })
+      .catch((err) => [
+        setState((s) => ({
+          ...s,
+          error: err.response.data.error,
+        })),
+      ]);
+  }, []);
+
   const onSubmit = (
-    values: Values,
+    formikValues: Values,
     { setSubmitting, resetForm }: FormikHelpers<Values>
   ) => {
-    createCategory(values)
+    const { name, description, category, price, quantity } = formikValues;
+
+    const values = new FormData();
+
+    values.append("name", name);
+    values.append("description", description);
+    values.append("category", category);
+    values.append("price", price);
+    values.append("quantity", quantity);
+    if (state.image) {
+      values.append("image", state.image);
+    }
+
+    createProduct(values)
       .then(() => {
         setState({
           ...state,
-          success: "Category successfully created",
+          success: "Product successfully created",
           error: undefined,
+          imageURL: "",
+          image: null,
           lastSubmission: {
-            ...values,
+            values: { ...formikValues },
+            image: state.image,
           },
         });
         resetForm();
@@ -116,7 +142,8 @@ const Product: React.FC = () => {
           error: err.response.data.error,
           success: undefined,
           lastSubmission: {
-            ...values,
+            values: { ...formikValues },
+            image: state.image,
           },
         });
         setSubmitting(false);
@@ -193,7 +220,11 @@ const Product: React.FC = () => {
                     select
                     fullWidth
                   >
-                    <MenuItem value="5ff3749cc01bc5144c80af9a">Node</MenuItem>
+                    {state.categories.map((category, i) => (
+                      <MenuItem key={i} value={category._id}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
                   </Field>
                 </Box>
                 <Box
@@ -263,7 +294,8 @@ const Product: React.FC = () => {
                   disabled={
                     isSubmitting ||
                     !(dirty && isValid) ||
-                    shallowEqual(state.lastSubmission, values) ||
+                    (shallowEqual(state.lastSubmission.values, values) &&
+                      state.lastSubmission.image?.size === state.image?.size) ||
                     !state.image
                   }
                   isSubmitting={isSubmitting}
