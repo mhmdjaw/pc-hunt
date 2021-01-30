@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { API } from "../../config";
 import { Category } from "./admin-types";
+export type { Category } from "./admin-types";
 
 export const createCategory = (
   values: Category

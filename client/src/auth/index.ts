@@ -5,12 +5,8 @@ import {
   LoginValues,
   SessionResponse,
   UserResponse,
-} from "./values-types";
-export type {
-  SignupValues,
-  LoginValues,
-  SessionResponse,
-} from "./values-types";
+} from "./auth-types";
+export type { SignupValues, LoginValues, SessionResponse } from "./auth-types";
 
 export const signup = (
   values: SignupValues

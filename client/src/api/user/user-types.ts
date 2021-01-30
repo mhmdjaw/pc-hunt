@@ -1,7 +1,7 @@
 export interface User {
   id: string;
   role: number;
-  history: Array;
+  history: string[];
   name: string;
   email: string;
 }
