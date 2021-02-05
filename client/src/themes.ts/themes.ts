@@ -8,7 +8,7 @@ export const darkTheme = responsiveFontSizes(
         main: "#26a69a",
       },
       secondary: {
-        main: "#448aff",
+        main: "#ffff00",
       },
     },
     props: {
@@ -29,7 +29,7 @@ export const lightTheme = responsiveFontSizes(
         main: "#009688",
       },
       secondary: {
-        main: "#2979ff",
+        main: "#ffea00",
       },
     },
     props: {
