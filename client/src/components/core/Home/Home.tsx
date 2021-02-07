@@ -1,10 +1,21 @@
 import React from "react";
 import axios from "axios";
 import { API } from "../../../config";
-import { Box } from "@material-ui/core";
+import { Box, createStyles, makeStyles } from "@material-ui/core";
 import ContainedButton from "../../common/ContainedButton";
+import Slider from "react-slick";
+import "../../../slick-carousel/slick.css";
+import "../../../slick-carousel/slick-theme.css";
+
+const useHomeStyles = makeStyles((theme) =>
+  createStyles({
+    slider: {},
+  })
+);
 
 const Home: React.FC = () => {
+  const classes = useHomeStyles();
+
   const handleClick = () => {
     axios
       .get(`${API}/user`, {
@@ -18,6 +29,9 @@ const Home: React.FC = () => {
     <Box mt="50vh" textAlign="center">
       <ContainedButton onClick={handleClick}>test interceptor</ContainedButton>
     </Box>
+    // <Slider >
+
+    // </Slider>
   );
 };
 

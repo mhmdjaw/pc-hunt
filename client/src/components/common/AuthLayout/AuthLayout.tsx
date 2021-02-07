@@ -82,6 +82,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
           <Box display="flex" justifyContent="center">
             <ContainedButton
               startIcon={<GoogleIcon />}
+              color="primary"
               onClick={googleAuth}
               disabled={isAuthenticating}
               isSubmitting={isAuthenticating}

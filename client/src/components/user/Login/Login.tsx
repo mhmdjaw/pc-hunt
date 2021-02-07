@@ -125,6 +125,7 @@ const Login: React.FC = () => {
             </Box>
             <Box mb="5vh" display="flex" justifyContent="flex-end">
               <ContainedButton
+                color="primary"
                 disabled={
                   isSubmitting ||
                   !(dirty && isValid) ||

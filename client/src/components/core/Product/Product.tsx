@@ -291,6 +291,7 @@ const Product: React.FC = () => {
                   )}
                 </Box>
                 <ContainedButton
+                  color="primary"
                   disabled={
                     isSubmitting ||
                     !(dirty && isValid) ||

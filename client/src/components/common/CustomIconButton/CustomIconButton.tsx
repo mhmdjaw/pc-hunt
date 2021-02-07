@@ -1,8 +1,8 @@
-import { IconButton, IconButtonProps, useTheme } from "@material-ui/core";
-import useCustomIconButtonStyles from "./custom-icon-button-styles";
 import React from "react";
+import { IconButton, IconButtonProps, useTheme } from "@material-ui/core";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 import { hexToRgba } from "../../../helpers";
+import useTextButtonStyles from "../TextButton/text-button-styles";
 
 const CustomIconButton: React.FC<IconButtonProps> = (
   props: IconButtonProps
@@ -11,7 +11,6 @@ const CustomIconButton: React.FC<IconButtonProps> = (
 
   const stylesProps = {
     focusBackgroundColor: theme.palette.action.hover,
-    activeBackgroundColor: theme.palette.action.disabled,
   };
 
   if (props.color && props.color !== "inherit") {
@@ -19,13 +18,9 @@ const CustomIconButton: React.FC<IconButtonProps> = (
       (theme.palette[props.color as keyof Palette] as PaletteColor).main,
       theme.palette.action.hoverOpacity
     );
-    stylesProps.activeBackgroundColor = hexToRgba(
-      (theme.palette[props.color as keyof Palette] as PaletteColor).main,
-      0.3
-    );
   }
 
-  const classes = useCustomIconButtonStyles(stylesProps);
+  const classes = useTextButtonStyles(stylesProps);
 
   return (
     <IconButton

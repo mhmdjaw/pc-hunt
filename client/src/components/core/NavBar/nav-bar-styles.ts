@@ -3,7 +3,7 @@ import { hexToRgba } from "../../../helpers";
 
 const useNavBarStyles = makeStyles((theme) => ({
   menuItem: {
-    marginLeft: "2%",
+    marginLeft: "4%",
     fontWeight: "bold",
     "&:hover, &:focus-visible": {
       color: theme.palette.secondary.main,
@@ -33,7 +33,7 @@ const useNavBarStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.contrastText,
     textTransform: "uppercase",
     fontWeight: "bolder",
-    marginLeft: "2%",
+    marginLeft: "4%",
     flexGrow: 1,
     [theme.breakpoints.down("xs")]: {
       textAlign: "center",
@@ -47,10 +47,10 @@ const useNavBarStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       display: "none",
     },
+    marginRight: "4%",
   },
   categoryBar: {
-    height: "40px",
-    backgroundColor: theme.palette.primary.dark,
+    minHeight: "48px",
   },
 }));
 

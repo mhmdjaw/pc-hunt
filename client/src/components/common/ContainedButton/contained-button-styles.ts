@@ -1,27 +1,30 @@
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useContainedIconStyles = makeStyles((theme) =>
-  createStyles({
-    focusVisible: {
-      backgroundColor: theme.palette.primary.dark,
+interface StylesProps {
+  focusBackgroundColor: string;
+  activeBackgroundColor: string;
+}
+
+const useContainedIconStyles = makeStyles({
+  focusVisible: {
+    backgroundColor: (props: StylesProps) => props.focusBackgroundColor,
+  },
+  buttonActive: {
+    "&:active": {
+      backgroundColor: (props: StylesProps) => props.activeBackgroundColor,
     },
-    buttonActive: {
-      "&:active": {
-        backgroundColor: theme.palette.primary.light,
-      },
-    },
-    circularProgress: {
-      position: "absolute",
-      zIndex: 1,
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0,
-      margin: "auto",
-      width: "25px",
-      height: "25px",
-    },
-  })
-);
+  },
+  circularProgress: {
+    position: "absolute",
+    zIndex: 1,
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    margin: "auto",
+    width: "25px",
+    height: "25px",
+  },
+});
 
 export default useContainedIconStyles;

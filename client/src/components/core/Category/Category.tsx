@@ -99,6 +99,7 @@ const Category: React.FC = () => {
                   />
                 </Box>
                 <ContainedButton
+                  color="primary"
                   disabled={
                     isSubmitting ||
                     !(dirty && isValid) ||

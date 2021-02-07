@@ -25,6 +25,11 @@ interface HideOnScrollProps {
   children: React.ReactElement;
 }
 
+interface ElevationScrollProps {
+  children: React.ReactElement;
+  isHomePage: boolean;
+}
+
 const HideOnScroll: React.FC<HideOnScrollProps> = ({
   children,
 }: HideOnScrollProps) => {
@@ -35,6 +40,20 @@ const HideOnScroll: React.FC<HideOnScrollProps> = ({
       {children}
     </Collapse>
   );
+};
+
+const ElevationScroll: React.FC<ElevationScrollProps> = ({
+  children,
+  isHomePage,
+}: ElevationScrollProps) => {
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
+  return React.cloneElement(children, {
+    elevation: isHomePage ? (trigger ? 4 : 0) : 4,
+  });
 };
 
 const NavBar: React.FC = () => {
@@ -65,24 +84,25 @@ const NavBar: React.FC = () => {
 
   return (
     <>
-      <AppBar>
-        <HideOnScroll>
-          <Box className={classes.topBar}>
-            <Typography className={classes.topBarText} variant="subtitle2">
-              hunt down the pc of your dream!
-            </Typography>
-            <Link
-              className={classes.topBarLink}
-              underline="none"
-              component={RouterLink}
-              to="#"
-            >
-              Contact Us
-            </Link>
-          </Box>
-        </HideOnScroll>
-        <Toolbar className={classes.toolbar}>
-          {/* {menuItems.map((menuItem, i) => {
+      <ElevationScroll isHomePage={pathname === "/" ? true : false}>
+        <AppBar>
+          <HideOnScroll>
+            <Box className={classes.topBar}>
+              <Typography className={classes.topBarText} variant="subtitle2">
+                hunt down the pc of your dream!
+              </Typography>
+              <Link
+                className={classes.topBarLink}
+                underline="none"
+                component={RouterLink}
+                to="#"
+              >
+                Contact Us
+              </Link>
+            </Box>
+          </HideOnScroll>
+          <Toolbar className={classes.toolbar}>
+            {/* {menuItems.map((menuItem, i) => {
             const { itemTitle, itemURL } = menuItem;
             return (
               <Link
@@ -99,67 +119,67 @@ const NavBar: React.FC = () => {
               </Link>
             );
           })} */}
-          <Link
-            className={classes.menuItem}
-            component={RouterLink}
-            to="/"
-            underline="none"
-            color={"/" === pathname ? "secondary" : "inherit"}
-          >
-            HOME
-          </Link>
-          {!user && (
             <Link
               className={classes.menuItem}
               component={RouterLink}
-              to="/login"
+              to="/"
               underline="none"
-              color={"/login" === pathname ? "secondary" : "inherit"}
+              color={"/" === pathname ? "secondary" : "inherit"}
             >
-              LOG IN
+              HOME
             </Link>
-          )}
-          {!user && (
-            <Link
-              className={classes.menuItem}
-              component={RouterLink}
-              to="/signup"
-              underline="none"
-              color={"/signup" === pathname ? "secondary" : "inherit"}
-            >
-              SIGN UP
-            </Link>
-          )}
-          {user && (
-            <Link
-              className={classes.menuItem}
-              component={RouterLink}
-              to="/account"
-              underline="none"
-              color={"/account" === pathname ? "secondary" : "inherit"}
-            >
-              ACCOUNT
-            </Link>
-          )}
-          {user && (
-            <Link
-              component={RouterLink}
-              to="#"
-              className={classes.menuItem}
-              underline="none"
-              color="inherit"
-              // onClick={() => logout(() => history.push("/login"))}
-              onClick={() => logout(() => history.push("/login"))}
-            >
-              LOG OUT
-            </Link>
-          )}
-          <div className={classes.grow}></div>
-        </Toolbar>
-        <Box className={classes.categoryBar} />
-      </AppBar>
-
-      <Box height="72px" />
+            {!user && (
+              <Link
+                className={classes.menuItem}
+                component={RouterLink}
+                to="/login"
+                underline="none"
+                color={"/login" === pathname ? "secondary" : "inherit"}
+              >
+                LOG IN
+              </Link>
+            )}
+            {!user && (
+              <Link
+                className={classes.menuItem}
+                component={RouterLink}
+                to="/signup"
+                underline="none"
+                color={"/signup" === pathname ? "secondary" : "inherit"}
+              >
+                SIGN UP
+              </Link>
+            )}
+            {user && (
+              <Link
+                className={classes.menuItem}
+                component={RouterLink}
+                to="/account"
+                underline="none"
+                color={"/account" === pathname ? "secondary" : "inherit"}
+              >
+                ACCOUNT
+              </Link>
+            )}
+            {user && (
+              <Link
+                component={RouterLink}
+                to="#"
+                className={classes.menuItem}
+                underline="none"
+                color="inherit"
+                // onClick={() => logout(() => history.push("/login"))}
+                onClick={() => logout(() => history.push("/login"))}
+              >
+                LOG OUT
+              </Link>
+            )}
+            <div className={classes.grow}></div>
+          </Toolbar>
+          <Box className={classes.categoryBar} bgcolor="primary.dark" />
+        </AppBar>
+      </ElevationScroll>
+      <Box height="80px" />
       <Toolbar className={classes.toolbar} />
     </>
   );
