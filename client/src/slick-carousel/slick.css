@@ -66,6 +66,7 @@
 }
 
 .slick-slide {
+  outline: none;
   display: none;
   float: left;
 
@@ -99,4 +100,8 @@
 }
 .slick-arrow.slick-hidden {
   display: none;
+}
+
+.slick-slide div {
+  outline: none;
 }

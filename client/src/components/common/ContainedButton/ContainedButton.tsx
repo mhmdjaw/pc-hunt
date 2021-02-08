@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import useContainedIconStyles from "./contained-button-styles";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
+import clsx from "clsx";
 
 interface ContainedButtonProps extends ButtonProps {
   isSubmitting?: boolean;
@@ -52,7 +53,7 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
           variant="contained"
           color={props.color}
           focusVisibleClassName={classes.focusVisible}
-          className={classes.buttonActive}
+          className={clsx(classes.buttonActive, props.className)}
         />
       </Box>
     </Box>

@@ -3,6 +3,7 @@ import { Button, ButtonProps, useTheme } from "@material-ui/core";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 import { hexToRgba } from "../../../helpers";
 import useTextButtonStyles from "./text-button-styles";
+import clsx from "clsx";
 
 interface TextButtonProps extends ButtonProps {
   component: string;
@@ -33,7 +34,7 @@ const TextButton: React.FC<TextButtonProps> = (props: TextButtonProps) => {
     <Button
       {...props}
       focusVisibleClassName={classes.focusVisible}
-      className={classes.buttonActive}
+      className={clsx(classes.buttonActive, props.className)}
     >
       {props.children}
     </Button>

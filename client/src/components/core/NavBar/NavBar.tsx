@@ -179,8 +179,12 @@ const NavBar: React.FC = () => {
           <Box className={classes.categoryBar} bgcolor="primary.dark" />
         </AppBar>
       </ElevationScroll>
-      <Box height="80px" />
       <Toolbar className={classes.toolbar} />
+      <Box height="48px" />
+      <Box
+        height="32px"
+        bgcolor={pathname === "/" ? "primary.main" : "transparent"}
+      />
     </>
   );
 };

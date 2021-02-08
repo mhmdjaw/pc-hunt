@@ -74,10 +74,10 @@
 }
 
 .slick-prev {
-  left: -25px;
+  left: 0;
 }
 [dir="rtl"] .slick-prev {
-  right: -25px;
+  right: 0;
   left: auto;
 }
 .slick-prev:before {
@@ -88,11 +88,11 @@
 }
 
 .slick-next {
-  right: -25px;
+  right: 0;
 }
 [dir="rtl"] .slick-next {
   right: auto;
-  left: -25px;
+  left: 0;
 }
 .slick-next:before {
   content: "→";
@@ -108,8 +108,9 @@
 
 .slick-dots {
   position: absolute;
-  bottom: -25px;
-
+  bottom: 0;
+  right: 0;
+  left: 0;
   display: block;
 
   width: 100%;

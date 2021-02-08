@@ -3,6 +3,7 @@ import { IconButton, IconButtonProps, useTheme } from "@material-ui/core";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 import { hexToRgba } from "../../../helpers";
 import useTextButtonStyles from "../TextButton/text-button-styles";
+import clsx from "clsx";
 
 const CustomIconButton: React.FC<IconButtonProps> = (
   props: IconButtonProps
@@ -26,7 +27,7 @@ const CustomIconButton: React.FC<IconButtonProps> = (
     <IconButton
       {...props}
       focusVisibleClassName={classes.focusVisible}
-      className={classes.buttonActive}
+      className={clsx(classes.buttonActive, props.className)}
     />
   );
 };

@@ -50,7 +50,7 @@ const useNavBarStyles = makeStyles((theme) => ({
     marginRight: "4%",
   },
   categoryBar: {
-    minHeight: "48px",
+    height: "48px",
   },
 }));
 
