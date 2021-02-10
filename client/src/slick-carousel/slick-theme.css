@@ -131,7 +131,7 @@
   margin: 0 5px;
   padding: 0;
 
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .slick-dots li button {
   font-size: 0;
