@@ -10,10 +10,12 @@ import history from "./history";
 import Account from "../Account";
 import Category from "../Category";
 import Product from "../Product";
+import ScrollToTop from "./ScrollToTop";
 
 const Routes: React.FC = () => {
   return (
     <Router history={history}>
+      <ScrollToTop />
       <Switch>
         <AuthRoute path="/login" authType="guest">
           <Login />

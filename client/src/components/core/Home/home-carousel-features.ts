@@ -1,7 +1,13 @@
 import pc1 from "../../../assets/images/pc1.png";
 import pc2 from "../../../assets/images/pc2.png";
 
-const homeCarouselFeatures = [
+export interface HomeCarouselFeature {
+  headline: string;
+  buttonText: string;
+  image: string;
+}
+
+const homeCarouselFeatures: HomeCarouselFeature[] = [
   {
     headline: "Your hunting experience never made easier.",
     buttonText: "shop now",

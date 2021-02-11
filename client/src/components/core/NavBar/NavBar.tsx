@@ -168,7 +168,6 @@ const NavBar: React.FC = () => {
                 className={classes.menuItem}
                 underline="none"
                 color="inherit"
-                // onClick={() => logout(() => history.push("/login"))}
                 onClick={() => logout(() => history.push("/login"))}
               >
                 LOG OUT

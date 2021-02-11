@@ -8,29 +8,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import {
-  OrdersIcon,
-  AccountEditIcon,
-  AddressIcon,
-  PasswordResetIcon,
-  WishListIcon,
-  CategoryIcon,
-  ProductIcon,
-} from "../../../assets";
+
 import useAccountStyles from "./account-styles";
 import accountFeaturesItems from "./account-features-items";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../../context";
-
-const svgMapping = {
-  AccountEditIcon,
-  AddressIcon,
-  OrdersIcon,
-  PasswordResetIcon,
-  WishListIcon,
-  CategoryIcon,
-  ProductIcon,
-};
 
 const AccountFeatures: React.FC = () => {
   const classes = useAccountStyles();
@@ -42,8 +24,7 @@ const AccountFeatures: React.FC = () => {
   return (
     <Grid container spacing={isMobile ? 4 : 6} justify="center">
       {accountFeaturesItems.map((feature, i) => {
-        const { svg, title, subtitle, url, role } = feature;
-        const SvgIcon = svgMapping[svg as keyof typeof svgMapping];
+        const { Svg, title, subtitle, url, role } = feature;
 
         return (
           user &&
@@ -58,7 +39,7 @@ const AccountFeatures: React.FC = () => {
                 }
               >
                 <CardContent className={classes.cardContent}>
-                  <SvgIcon
+                  <Svg
                     className={classes.icon}
                     color="primary"
                     fontSize="inherit"
