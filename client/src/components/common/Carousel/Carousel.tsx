@@ -46,9 +46,7 @@ const Carousel: React.FC<CarouselProps> = ({ children }: CarouselProps) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const customPaging = (i: number) => {
-    return (
-      <a tabIndex={0} className={classes.dot} aria-label={`Page dot ${i}`} />
-    );
+    return <a href="#" className={classes.dot} aria-label={`Page dot ${i}`} />;
   };
 
   const settings: Settings = {

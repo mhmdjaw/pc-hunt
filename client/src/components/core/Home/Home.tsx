@@ -4,18 +4,20 @@ import HomeCarousel from "./HomeCarousel";
 import homeCarouselFeatures from "./home-carousel-features";
 import homeFeatures from "./home-features";
 import HomeFeatures from "./HomeFeatures";
-import ReviewCarousel from "./ReviewCarousel/ReviewCarousel";
+import ReviewCarousel from "./ReviewCarousel";
+import carouselReviews from "./carousel-reviews";
+import HomeLinks from "./HomeLinks";
+import homeLinks from "./home-links";
 
 const useHomeStyles = makeStyles((theme) => createStyles({}));
 
 const Home: React.FC = () => {
-  const features = homeFeatures;
-
   return (
     <>
       <HomeCarousel features={homeCarouselFeatures} />
-      <HomeFeatures features={features} />
-      <ReviewCarousel hello="abbas" />
+      <HomeFeatures features={homeFeatures} />
+      <ReviewCarousel reviews={carouselReviews} />
+      <HomeLinks links={homeLinks} />
     </>
   );
 };

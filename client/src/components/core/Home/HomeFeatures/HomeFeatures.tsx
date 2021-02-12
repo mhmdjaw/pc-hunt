@@ -16,7 +16,7 @@ const HomeFeatures: React.FC<HomeFeaturesProps> = ({
     <Box p="100px 12% 124px">
       <Grid container justify="space-around">
         {features.map((feature, i) => (
-          <Grid key={i} className={classes.feature} item sm={8} md={3}>
+          <Grid key={i} className={classes.feature} item xs={8} md={3}>
             <Box className={classes.iconContainer}>
               <feature.icon style={{ fontSize: "4.5rem" }} />
             </Box>

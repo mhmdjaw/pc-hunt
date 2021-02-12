@@ -8,7 +8,6 @@ const useNavBarStyles = makeStyles((theme) => ({
     "&:hover, &:focus-visible": {
       color: theme.palette.secondary.main,
     },
-    cursor: "pointer",
   },
   iconButton: {
     margin: "0 1%",
