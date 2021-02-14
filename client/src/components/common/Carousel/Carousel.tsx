@@ -51,7 +51,6 @@ const Carousel: React.FC<CarouselProps> = ({ children }: CarouselProps) => {
 
   const settings: Settings = {
     dots: true,
-    swipeToSlide: false,
     dotsClass: clsx("slick-dots", classes.dotsContainer),
     customPaging: customPaging,
     arrows: isMobile ? false : true,
