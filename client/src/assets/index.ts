@@ -9,3 +9,4 @@ export { WishListIcon } from "./WishListIcon";
 export { CategoryIcon } from "./CategoryIcon";
 export { ProductIcon } from "./ProductIcon";
 export { ReactComponent as LogoPrimary } from "./logo-primary.svg";
+export { ReactComponent as LogoSecondary } from "./logo-secondary.svg";

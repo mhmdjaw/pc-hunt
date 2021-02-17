@@ -6,21 +6,40 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { Rating } from "@material-ui/lab";
+import { Rating, Skeleton } from "@material-ui/lab";
 import useProductCardStyles from "./product-card-styles";
 
-export interface ProductCardProps {
+export interface CardProduct {
   img: string;
   title: string;
   rating: number;
   price: number;
 }
 
+type LoadingProductCardProps = {
+  loading: true;
+  img?: never;
+  title?: never;
+  rating?: never;
+  price?: never;
+};
+
+type LoadedProductCardProps = {
+  loading?: false;
+  img: string;
+  title: string;
+  rating: number;
+  price: number;
+};
+
+type ProductCardProps = LoadedProductCardProps | LoadingProductCardProps;
+
 const ProductCard: React.FC<ProductCardProps> = ({
   img,
   title,
   rating,
   price,
+  loading,
 }: ProductCardProps) => {
   const classes = useProductCardStyles();
   const theme = useTheme();
@@ -32,8 +51,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <CardContent>
         <Box className={classes.imgContainer}>
           <Box>
-            <img className={classes.img} src={img} />
-            {!isTablet && (
+            {loading ? (
+              <Skeleton animation="wave" variant="rect" height="100%" />
+            ) : (
+              <img className={classes.img} src={img} />
+            )}
+            {!(isTablet || loading) && (
               <Box
                 className={classes.cardAction}
                 bgcolor="primary.main"
@@ -46,11 +69,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </Box>
         </Box>
         <Box className={classes.productTitle} fontSize="body2.fontSize">
-          {title}
+          {loading ? (
+            <>
+              <Skeleton />
+              <Skeleton />
+              <Skeleton width="80%" />
+            </>
+          ) : (
+            title
+          )}
         </Box>
-        <Rating className={classes.rating} value={rating} readOnly />
+        <Box m="10px 0">
+          {loading ? (
+            <Skeleton width="120px" />
+          ) : (
+            <Rating className={classes.rating} value={rating} readOnly />
+          )}
+        </Box>
         <Box fontSize="h6.fontSize" fontWeight={700}>
-          ${price}
+          {loading ? <Skeleton width="80px" /> : `$${price}`}
         </Box>
       </CardContent>
     </Card>

@@ -172,7 +172,7 @@ const Product: React.FC = () => {
   };
 
   return (
-    <Box m="60px 10vw">
+    <Box m="60px 10vw 90px">
       <Typography variant="h4">Create Product</Typography>
       <Box mt="30px">
         <Paper className={classes.paper}>

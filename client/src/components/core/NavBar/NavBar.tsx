@@ -175,7 +175,7 @@ const NavBar: React.FC = () => {
             )}
             <div className={classes.grow}></div>
           </Toolbar>
-          <Box className={classes.categoryBar} bgcolor="primary.dark" />
+          <Box className={classes.categoryBar} bgcolor="primary.main" />
         </AppBar>
       </ElevationScroll>
       <Toolbar className={classes.toolbar} />

@@ -1,7 +1,7 @@
-import { ProductCardProps } from "../../common/ProductCard";
+import { CardProduct } from "../../common/ProductCard";
 import product1 from "../../../assets/images/product1.jpg";
 
-const trendingProducts: ProductCardProps[] = [
+const trendingProducts: CardProduct[] = [
   {
     img: product1,
     title:

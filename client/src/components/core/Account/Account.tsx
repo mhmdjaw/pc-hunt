@@ -8,7 +8,7 @@ const Account: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <Box p="60px 5vw">
+    <Box p="60px 5vw 90px">
       <AccountDetails
         name={user?.name || "Name"}
         email={user?.email || "Email"}

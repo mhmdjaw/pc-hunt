@@ -11,6 +11,7 @@ import Account from "../Account";
 import Category from "../Category";
 import Product from "../Product";
 import ScrollToTop from "./ScrollToTop";
+import Footer from "../Footer";
 
 const Routes: React.FC = () => {
   return (
@@ -42,6 +43,7 @@ const Routes: React.FC = () => {
           <AuthRoute path="/product" authType="admin">
             <Product />
           </AuthRoute>
+          <Footer />
         </AuthRoute>
       </Switch>
     </Router>

@@ -20,8 +20,12 @@ const Home: React.FC = () => {
       <HomeFeatures features={homeFeatures} />
       <ReviewCarousel reviews={carouselReviews} />
       <HomeLinks links={homeLinks} />
-      <ProductSlider title="Trending Products" products={trendingProducts} />
-      <Box height="376px" />
+      <Box mb="376px">
+        <ProductSlider
+          title="Trending Products"
+          products={trendingProducts || undefined}
+        />
+      </Box>
     </>
   );
 };
