@@ -1,12 +1,10 @@
 import mongoose, { Document, Model } from "mongoose";
 
-const { ObjectId } = mongoose.Types;
-
 export interface IProduct extends Document {
   name: string;
   description: string;
   price: number;
-  category: typeof ObjectId;
+  categories: mongoose.Schema.Types.ObjectId[];
   quantity: number;
   sold: number;
   image?: {
@@ -33,8 +31,8 @@ const productSchema = new mongoose.Schema(
       required: [true, "Price is required"],
       min: [0, "Price should be greater than 0"],
     },
-    category: {
-      type: ObjectId,
+    categories: {
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Category",
       required: [true, "Category is required"],
     },

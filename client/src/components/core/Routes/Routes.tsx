@@ -8,10 +8,10 @@ import { AuthSuccess } from "../../user/Auth";
 import { AuthRoute } from "../../user/Auth";
 import history from "./history";
 import Account from "../Account";
-import Category from "../Category";
 import Product from "../Product";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "../Footer";
+import CategoryForm from "../CategoryForm";
 
 const Routes: React.FC = () => {
   return (
@@ -38,7 +38,7 @@ const Routes: React.FC = () => {
           </AuthRoute>
           <AuthRoute path="/account/update" authType="protected"></AuthRoute>
           <AuthRoute path="/category" authType="admin">
-            <Category />
+            <CategoryForm />
           </AuthRoute>
           <AuthRoute path="/product" authType="admin">
             <Product />

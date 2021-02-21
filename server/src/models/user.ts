@@ -4,7 +4,7 @@ import mongoose, {
   PassportLocalModel,
 } from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
-import options from "../helpers/passport-local-mongoose-options";
+import { options } from "../helpers";
 import findOrCreate from "mongoose-findorcreate";
 
 export interface IUser extends Document {

@@ -90,17 +90,20 @@ const Product: React.FC = () => {
   useEffect(() => {
     getCategories()
       .then((response) => {
+        const categories = response.data.filter(
+          (category) => category.parent.slug !== "root"
+        );
         setState((s) => ({
           ...s,
-          categories: response.data,
+          categories: categories,
         }));
       })
-      .catch((err) => [
+      .catch((err) => {
         setState((s) => ({
           ...s,
           error: err.response.data.error,
-        })),
-      ]);
+        }));
+      });
   }, []);
 
   const onSubmit = (
@@ -175,7 +178,7 @@ const Product: React.FC = () => {
     <Box m="60px 10vw 90px">
       <Typography variant="h4">Create Product</Typography>
       <Box mt="30px">
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={3}>
           {(state.error || state.success) && (
             <Box mb="5vh" maxWidth="500px">
               {state.error && <Alert severity="error">{state.error}</Alert>}

@@ -10,7 +10,7 @@ import categoryRoutes from "./routes/category";
 import productRoutes from "./routes/product";
 import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import mongooseConfig from "./helpers/mongoose-config";
+import { mongooseConfig } from "./helpers";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 

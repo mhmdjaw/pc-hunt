@@ -4,6 +4,7 @@ import Product, { IProduct } from "../models/product";
 import formidable, { File } from "formidable";
 import _ from "lodash";
 import fs from "fs";
+import Category from "../models/category";
 
 type Error =
   | (CallbackError & {
@@ -17,7 +18,7 @@ type Error =
         price: {
           message: string;
         };
-        category: {
+        categories: {
           message: string;
         };
         quantity: {
@@ -61,24 +62,35 @@ export const create = (req: Request, res: Response): void => {
       });
       return;
     }
-    const product = new Product(fields);
-
-    if (files.image && product.image) {
-      // check the image size
-      if ((files.image as File).size > 1000000) {
+    const { category, ...otherFields } = fields;
+    Category.findById(category).exec((err, cat) => {
+      if (err || !cat) {
         res.status(400).json({
-          error: "Image size is too large",
+          error: "Category not found",
         });
         return;
       }
+      const categories = [cat.id, cat.parent];
 
-      product.image.data = fs.readFileSync(
-        (files.image as File).path
-      ) as Buffer;
-      product.image.contentType = (files.image as File).type;
-    }
+      const product = new Product({ ...otherFields, categories });
 
-    saveProduct(res, product);
+      if (files.image && product.image) {
+        // check the image size
+        if ((files.image as File).size > 1000000) {
+          res.status(400).json({
+            error: "Image size is too large",
+          });
+          return;
+        }
+
+        product.image.data = fs.readFileSync(
+          (files.image as File).path
+        ) as Buffer;
+        product.image.contentType = (files.image as File).type;
+      }
+
+      saveProduct(res, product);
+    });
   });
 };
 
@@ -115,25 +127,41 @@ export const update = (req: Request, res: Response): void => {
       });
       return;
     }
-    let product = req.product;
-    product = (_.extend(product, fields) as unknown) as IProduct;
 
-    if (files.image && product.image) {
-      // check the image size
-      if ((files.image as File).size > 1000000) {
+    const { category, ...otherFields } = fields;
+
+    Category.findById(category).exec((err, cat) => {
+      if (err || !cat) {
         res.status(400).json({
-          error: "Image size is too large",
+          error: "Category not found",
         });
         return;
       }
+      const categories = [cat.id, cat.parent];
 
-      product.image.data = fs.readFileSync(
-        (files.image as File).path
-      ) as Buffer;
-      product.image.contentType = (files.image as File).type;
-    }
+      let product = req.product;
+      product = (_.extend(product, {
+        ...otherFields,
+        categories,
+      }) as unknown) as IProduct;
 
-    saveProduct(res, product);
+      if (files.image && product.image) {
+        // check the image size
+        if ((files.image as File).size > 1000000) {
+          res.status(400).json({
+            error: "Image size is too large",
+          });
+          return;
+        }
+
+        product.image.data = fs.readFileSync(
+          (files.image as File).path
+        ) as Buffer;
+        product.image.contentType = (files.image as File).type;
+      }
+
+      saveProduct(res, product);
+    });
   });
 };
 
@@ -151,7 +179,7 @@ export const list = (req: Request, res: Response): void => {
 
   Product.find()
     .select("-image")
-    .populate("category")
+    .populate("categories")
     .sort([[sortBy, order]])
     .limit(limit)
     .exec((err, products) => {
@@ -167,8 +195,8 @@ export const list = (req: Request, res: Response): void => {
 };
 
 /**
- * find the products based on the req product category
- * other products with the same category will be returned
+ * find the products based on the req product categories
+ * other products with the same categories will be returned
  */
 
 interface SearchArgs {
@@ -178,9 +206,12 @@ interface SearchArgs {
 export const listRelated = (req: Request, res: Response): void => {
   const limit = req.query.limit ? Number(req.query.limit) : 6;
 
-  Product.find({ _id: { $ne: req.product }, category: req.product.category })
+  Product.find({
+    _id: { $ne: req.product },
+    categories: req.product.categories,
+  })
     .limit(limit)
-    .populate("category", "_id name")
+    .populate("categories", "_id name")
     .exec((err, products) => {
       if (err) {
         res.status(400).json({
@@ -191,18 +222,6 @@ export const listRelated = (req: Request, res: Response): void => {
 
       res.json(products);
     });
-};
-
-export const listCategories = (_req: Request, res: Response): void => {
-  Product.distinct("category", {}, (err, categories) => {
-    if (err) {
-      res.status(400).json({
-        error: "Products not found",
-      });
-      return;
-    }
-    res.json(categories);
-  });
 };
 
 export const image = (
@@ -246,7 +265,7 @@ export const listBySearch = (req: Request, res: Response): void => {
 
   Product.find(searchArgs)
     .select("-image")
-    .populate("category")
+    .populate("categories")
     .sort([[sortBy, order]])
     .skip(skip)
     .limit(limit)
@@ -285,9 +304,9 @@ const saveProduct = (res: Response, product: IProduct): void => {
         });
         return;
       }
-      if (err.errors && err.errors.category) {
+      if (err.errors && err.errors.categories) {
         res.status(400).json({
-          error: err.errors.category.message,
+          error: err.errors.categories.message,
         });
         return;
       }

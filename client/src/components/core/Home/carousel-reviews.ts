@@ -7,7 +7,7 @@ export interface CarouselReview {
 const carouselReviews: CarouselReview[] = [
   {
     body:
-      "PChunt has the cheapest and best quality components, they are always up to date on newest products, and the first to bring them. I will continue to buy from them everytime I need parts or a new system.",
+      "PC hunt has the cheapest and best quality components, they are always up to date on newest products, and the first to bring them. I will continue to buy from them everytime I need parts or a new system.",
     name: "Someone",
     date: "03/10/2020",
   },

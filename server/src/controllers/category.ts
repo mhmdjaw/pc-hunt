@@ -30,8 +30,27 @@ export const categoryById = (
   });
 };
 
+export const categoryBySlug = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  slug: string
+): void => {
+  Category.findOne({ slug }).exec((err, category) => {
+    if (err || !category) {
+      res.status(400).json({
+        error: "Category not found",
+      });
+      return;
+    }
+    req.category = category;
+    next();
+  });
+};
+
 export const create = (req: Request, res: Response): void => {
-  const category = new Category(req.body);
+  const parent = req.body.parent ? req.body.parent : null;
+  const category = new Category({ name: req.body.name, parent });
   saveCategory(res, category);
 };
 
@@ -69,16 +88,18 @@ export const remove = (req: Request, res: Response): void => {
 };
 
 export const list = (_req: Request, res: Response): void => {
-  Category.find().exec((err, data) => {
-    if (err) {
-      res.status(500).json({
-        error: err.message,
-      });
-      return;
-    }
+  Category.find({ slug: { $ne: "root" } })
+    .populate("parent")
+    .exec((err, data) => {
+      if (err) {
+        res.status(500).json({
+          error: err.message,
+        });
+        return;
+      }
 
-    res.json(data);
-  });
+      res.json(data);
+    });
 };
 
 const saveCategory = (res: Response, category: ICategory): void => {

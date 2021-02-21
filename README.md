@@ -1,2 +1,3 @@
 # PChunt
-PC Hardware Ecommerce Web App
+
+PC and Components Ecommerce Web App

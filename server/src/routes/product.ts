@@ -8,7 +8,6 @@ import {
   update,
   list,
   listRelated,
-  listCategories,
   listBySearch,
   image,
 } from "../controllers/product";
@@ -22,7 +21,6 @@ router.put("/product/:productId", isAuth, isAdmin, update);
 
 router.get("/products", list);
 router.get("/products/related/:productId", listRelated);
-router.get("/products/categories", listCategories);
 router.post("/products/by/search", listBySearch);
 router.get("/product/image/:productId", image);
 
