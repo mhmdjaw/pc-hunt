@@ -47,6 +47,7 @@ const validate = (values: Values) => {
 const Login: React.FC = () => {
   const history = useHistory();
   const location = useLocation<LocationState>();
+  console.log(location.state);
 
   const { login } = useAuth();
 
@@ -73,8 +74,9 @@ const Login: React.FC = () => {
         setSubmitting(false);
         if (location.state && location.state.from) {
           history.replace(location.state.from.pathname);
+        } else {
+          history.replace("/");
         }
-        history.replace("/");
       } else {
         setState({
           error: message,

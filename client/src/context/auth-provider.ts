@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { User } from "../api/user";
 import * as Auth from "../auth";
-import history from "../components/core/Routes/history";
 import { AuthContext, AuthResultCallback } from "./auth-context-types";
 
 interface AuthState {
@@ -27,7 +26,6 @@ const useProvideAuth = (): AuthContext => {
             isLoading: false,
             user: null,
           });
-          history.push("/login");
         }
         return Promise.reject(error);
       }
@@ -76,21 +74,19 @@ const useProvideAuth = (): AuthContext => {
       });
   };
 
-  const logout = (cb: CallableFunction) => {
+  const logout = () => {
     Auth.logout()
       .then(() => {
         setState({
           isLoading: false,
           user: null,
         });
-        cb();
       })
       .catch((err) => {
         setState({
           isLoading: false,
           user: null,
         });
-        cb();
         console.log(err);
       });
   };

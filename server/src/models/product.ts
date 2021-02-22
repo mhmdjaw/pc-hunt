@@ -1,7 +1,9 @@
 import mongoose, { Document, Model } from "mongoose";
+import { slugify } from "../helpers";
 
 export interface IProduct extends Document {
   name: string;
+  slug: string;
   description: string;
   price: number;
   categories: mongoose.Schema.Types.ObjectId[];
@@ -19,23 +21,27 @@ const productSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: [true, "Name is required"],
-      maxlength: 32,
+    },
+    slug: {
+      type: String,
+      index: true,
     },
     description: {
       type: String,
       required: [true, "Description is required"],
-      maxlength: 200,
     },
     price: {
       type: Number,
       required: [true, "Price is required"],
       min: [0, "Price should be greater than 0"],
     },
-    categories: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "Category",
-      required: [true, "Category is required"],
-    },
+    categories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: [true, "Category is required"],
+      },
+    ],
     quantity: {
       type: Number,
       required: [true, "Quantity is required"],
@@ -52,6 +58,11 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+productSchema.pre("save", async function (this: IProduct, next) {
+  this.slug = slugify(this.name);
+  next();
+});
 
 const Product: Model<IProduct> = mongoose.model("Product", productSchema);
 

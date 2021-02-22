@@ -4,8 +4,9 @@ import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import clsx from "clsx";
 import Slider, { Settings } from "react-slick";
 import CustomIconButton from "../CustomIconButton";
-import ProductCard, { CardProduct } from "../ProductCard";
+import ProductCard from "../ProductCard";
 import useProductSliderStyles from "./product-slider-styles";
+import { Product } from "../../../api/product";
 
 interface ArrowProps {
   direction: "prevArrow" | "nextArrow";
@@ -16,7 +17,7 @@ interface ArrowProps {
 
 interface ProductSliderProps {
   title: string;
-  products?: CardProduct[];
+  products: Product[];
 }
 
 const Arrow: React.FC<ArrowProps> = ({ direction, onClick }: ArrowProps) => {
@@ -88,15 +89,10 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
         {title}
       </Box>
       <Slider className={classes.slider} {...settings}>
-        {products
+        {products.length > 0
           ? products.map((product, i) => (
               <Box key={i} px="8px">
-                <ProductCard
-                  img={product.img}
-                  title={product.title}
-                  rating={product.rating}
-                  price={product.price}
-                />
+                <ProductCard product={product} />
               </Box>
             ))
           : [1, 2, 3, 4, 5, 6].map((i) => (

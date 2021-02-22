@@ -179,7 +179,7 @@ export const list = (req: Request, res: Response): void => {
 
   Product.find()
     .select("-image")
-    .populate("categories")
+    // .populate("categories")
     .sort([[sortBy, order]])
     .limit(limit)
     .exec((err, products) => {

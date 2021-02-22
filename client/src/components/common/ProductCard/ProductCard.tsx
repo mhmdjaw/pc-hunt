@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -8,42 +8,29 @@ import {
 } from "@material-ui/core";
 import { Rating, Skeleton } from "@material-ui/lab";
 import useProductCardStyles from "./product-card-styles";
-
-export interface CardProduct {
-  img: string;
-  title: string;
-  rating: number;
-  price: number;
-}
+import { getProductImage, Product } from "../../../api/product";
+import clsx from "clsx";
 
 type LoadingProductCardProps = {
   loading: true;
-  img?: never;
-  title?: never;
-  rating?: never;
-  price?: never;
+  product?: never;
 };
 
 type LoadedProductCardProps = {
   loading?: false;
-  img: string;
-  title: string;
-  rating: number;
-  price: number;
+  product: Product;
 };
 
 type ProductCardProps = LoadedProductCardProps | LoadingProductCardProps;
 
 const ProductCard: React.FC<ProductCardProps> = ({
-  img,
-  title,
-  rating,
-  price,
+  product,
   loading,
 }: ProductCardProps) => {
   const classes = useProductCardStyles();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   return (
     <Card className={classes.card}>
@@ -51,10 +38,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <CardContent>
         <Box className={classes.imgContainer}>
           <Box>
-            {loading ? (
+            {!imageLoaded && (
               <Skeleton animation="wave" variant="rect" height="100%" />
-            ) : (
-              <img className={classes.img} src={img} />
+            )}
+            {product && (
+              <img
+                className={clsx(classes.img, {
+                  [classes.imgLoaded]: imageLoaded,
+                })}
+                src={getProductImage(product._id)}
+                onLoad={() => setImageLoaded(true)}
+              />
             )}
             {!(isTablet || loading) && (
               <Box
@@ -63,7 +57,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 color="primary.contrastText"
                 fontSize="h5.fontSize"
               >
-                Learn More
+                {product && product?.quantity > 0
+                  ? "Add to Cart"
+                  : "Learn More"}
               </Box>
             )}
           </Box>
@@ -76,18 +72,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <Skeleton width="80%" />
             </>
           ) : (
-            title
+            product?.name
           )}
         </Box>
         <Box m="10px 0">
           {loading ? (
             <Skeleton width="120px" />
           ) : (
-            <Rating className={classes.rating} value={rating} readOnly />
+            <Rating className={classes.rating} value={5} readOnly />
           )}
         </Box>
         <Box fontSize="h6.fontSize" fontWeight={700}>
-          {loading ? <Skeleton width="80px" /> : `$${price}`}
+          {loading ? <Skeleton width="80px" /> : `$${product?.price}`}
         </Box>
       </CardContent>
     </Card>

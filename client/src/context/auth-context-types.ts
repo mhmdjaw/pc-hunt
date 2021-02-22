@@ -8,5 +8,5 @@ export interface AuthContext {
   loading: boolean;
   signup: (values: SignupValues, cb: AuthResultCallback) => void;
   login: (values: LoginValues, cb: AuthResultCallback) => void;
-  logout: (cb: CallableFunction) => void;
+  logout: () => void;
 }

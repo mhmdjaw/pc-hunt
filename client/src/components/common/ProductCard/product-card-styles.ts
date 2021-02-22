@@ -29,6 +29,10 @@ const useProductCardStyles = makeStyles((theme) =>
       width: "100%",
       height: "100%",
       objectFit: "contain",
+      display: "none",
+    },
+    imgLoaded: {
+      display: "inline-block",
     },
     card: {
       position: "relative",

@@ -131,8 +131,9 @@ const Signup: React.FC = () => {
         setSubmitting(false);
         if (location.state && location.state.from) {
           history.replace(location.state.from.pathname);
+        } else {
+          history.replace("/");
         }
-        history.replace("/");
       } else {
         setState({
           ...state,

@@ -12,3 +12,12 @@ export const createProduct = (
       Accept: "application/json",
     },
   });
+
+export const getProducts = (
+  sortBy: string
+): Promise<AxiosResponse<Product[]>> =>
+  axios.get<Product[]>(`${API}/products?sortBy=${sortBy}&order=desc&limit=10`);
+
+export const getProductImage = (id: string): string => {
+  return `${API}/product/image/${id}`;
+};
