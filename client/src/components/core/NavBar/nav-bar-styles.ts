@@ -2,9 +2,11 @@ import { makeStyles } from "@material-ui/core";
 import { hexToRgba } from "../../../helpers";
 
 const useNavBarStyles = makeStyles((theme) => ({
-  menuItem: {
+  link: {
     marginLeft: "4%",
     fontWeight: "bold",
+    display: "inline-block",
+    fontSize: theme.typography.subtitle1.fontSize,
     "&:hover, &:focus-visible": {
       color: theme.palette.secondary.main,
     },
@@ -12,6 +14,49 @@ const useNavBarStyles = makeStyles((theme) => ({
       outline: "3px solid",
       outlineColor: theme.palette.secondary.main,
     },
+    "&.category-menu": {
+      padding: "8px 0",
+      marginLeft: 0,
+    },
+  },
+  expandMore: {
+    position: "relative",
+    top: "0.25rem",
+    fontSize: "1.2rem",
+    marginLeft: "0.2rem",
+  },
+  categoryMenuContainer: {
+    "&::after": {
+      content: "''",
+      position: "absolute",
+      width: 0,
+      height: 0,
+      borderStyle: "solid",
+      borderWidth: "0 8px 8px 8px",
+      borderColor: "transparent transparent #fff transparent",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      margin: "0 auto",
+      opacity: 0,
+      transition: "all .25s",
+      visibility: "hidden",
+    },
+    "&:hover": {
+      "&::after, & $dropDownMenu": {
+        opacity: 1,
+        visibility: "visible",
+      },
+    },
+  },
+  dropDownMenu: {
+    position: "absolute",
+    transition: "all .25s",
+    minWidth: "260px",
+    left: "-15px",
+    boxShadow: theme.shadows[10],
+    visibility: "hidden",
+    opacity: 0,
   },
   iconButton: {
     margin: "0 1%",
@@ -54,6 +99,9 @@ const useNavBarStyles = makeStyles((theme) => ({
   },
   categoryBar: {
     height: "48px",
+    display: "flex",
+    alignItems: "center",
+    padding: "0 24px",
   },
 }));
 

@@ -8,8 +8,12 @@ import {
   Button,
   Collapse,
   Link,
+  List,
+  ListItem,
+  ListItemText,
   Menu,
   MenuItem,
+  Paper,
   Typography,
   useScrollTrigger,
   useTheme,
@@ -20,6 +24,7 @@ import { logout } from "../../../auth";
 import useNavBarStyles from "./nav-bar-styles";
 import clsx from "clsx";
 import { useAuth } from "../../../context";
+import { ExpandMore } from "@material-ui/icons";
 
 interface HideOnScrollProps {
   children: React.ReactElement;
@@ -52,7 +57,7 @@ const ElevationScroll: React.FC<ElevationScrollProps> = ({
   });
 
   return React.cloneElement(children, {
-    elevation: isHomePage ? (trigger ? 4 : 0) : 4,
+    elevation: isHomePage && !trigger ? 0 : 4,
   });
 };
 
@@ -120,62 +125,100 @@ const NavBar: React.FC = () => {
             );
           })} */}
             <Link
-              className={classes.menuItem}
+              className={classes.link}
               component={RouterLink}
               to="/"
               underline="none"
               color={"/" === pathname ? "secondary" : "inherit"}
             >
-              HOME
+              Home
             </Link>
             {!user && (
               <Link
-                className={classes.menuItem}
+                className={classes.link}
                 component={RouterLink}
                 to="/login"
                 underline="none"
                 color={"/login" === pathname ? "secondary" : "inherit"}
               >
-                LOG IN
+                Log In
               </Link>
             )}
             {!user && (
               <Link
-                className={classes.menuItem}
+                className={classes.link}
                 component={RouterLink}
                 to="/signup"
                 underline="none"
                 color={"/signup" === pathname ? "secondary" : "inherit"}
               >
-                SIGN UP
+                Sign Up
               </Link>
             )}
             {user && (
               <Link
-                className={classes.menuItem}
+                className={classes.link}
                 component={RouterLink}
                 to="/account"
                 underline="none"
                 color={"/account" === pathname ? "secondary" : "inherit"}
               >
-                ACCOUNT
+                Account
               </Link>
             )}
             {user && (
               <Link
                 component={RouterLink}
                 to="#"
-                className={classes.menuItem}
+                className={classes.link}
                 underline="none"
                 color="inherit"
                 onClick={() => logout()}
               >
-                LOG OUT
+                Log Out
               </Link>
             )}
             <div className={classes.grow}></div>
           </Toolbar>
-          <Box className={classes.categoryBar} bgcolor="primary.main" />
+          <Box
+            className={classes.categoryBar}
+            bgcolor="primary.main"
+            color="primary.contrastText"
+          >
+            <Box
+              className={classes.categoryMenuContainer}
+              position="relative"
+              ml="4%"
+            >
+              <Link
+                component={RouterLink}
+                to="#"
+                className={clsx(classes.link, "category-menu")}
+                underline="none"
+                color="inherit"
+              >
+                Components
+                <ExpandMore className={classes.expandMore} />
+              </Link>
+
+              <Paper className={classes.dropDownMenu}>
+                <List>
+                  <ListItem button>
+                    <ListItemText primary="Motherboards" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary="Memory" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary="Video Cards" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary="CPUs" />
+                  </ListItem>
+                </List>
+              </Paper>
+            </Box>
+          </Box>
         </AppBar>
       </ElevationScroll>
       <Toolbar className={classes.toolbar} />

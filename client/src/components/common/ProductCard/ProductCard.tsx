@@ -67,9 +67,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <Box className={classes.productTitle} fontSize="body2.fontSize">
           {loading ? (
             <>
-              <Skeleton />
-              <Skeleton />
-              <Skeleton width="80%" />
+              <Skeleton animation="wave" />
+              <Skeleton animation="wave" />
+              <Skeleton animation="wave" width="80%" />
             </>
           ) : (
             product?.name
@@ -77,13 +77,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </Box>
         <Box m="10px 0">
           {loading ? (
-            <Skeleton width="120px" />
+            <Skeleton animation="wave" width="120px" />
           ) : (
             <Rating className={classes.rating} value={5} readOnly />
           )}
         </Box>
         <Box fontSize="h6.fontSize" fontWeight={700}>
-          {loading ? <Skeleton width="80px" /> : `$${product?.price}`}
+          {loading ? (
+            <Skeleton animation="wave" width="80px" />
+          ) : (
+            `$${product?.price}`
+          )}
         </Box>
       </CardContent>
     </Card>

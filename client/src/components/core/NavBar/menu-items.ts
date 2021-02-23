@@ -5,15 +5,15 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   {
-    itemTitle: "HOME",
+    itemTitle: "Home",
     itemURL: "/",
   },
   {
-    itemTitle: "LOG IN",
+    itemTitle: "Log in",
     itemURL: "/login",
   },
   {
-    itemTitle: "SIGN UP",
+    itemTitle: "Sign up",
     itemURL: "/signup",
   },
 ];
