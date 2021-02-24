@@ -25,11 +25,11 @@ const useNavDropDownMenusStyles = makeStyles((theme) =>
         transition: "all .25s",
         visibility: "hidden",
       },
-      "&:hover": {
-        "&::after, & $dropDownMenu": {
-          opacity: 1,
-          visibility: "visible",
-        },
+    },
+    dropDownMenuHover: {
+      "&::after, & $dropDownMenu": {
+        opacity: 1,
+        visibility: "visible",
       },
     },
     dropDownMenu: {
