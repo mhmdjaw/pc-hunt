@@ -9,12 +9,10 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
-import ContainedButton from "../../common/ContainedButton";
+import { ContainedButton, TextButton, CustomIconButton } from "../../common";
 import { shallowEqual } from "recompose";
 import { Alert } from "@material-ui/lab";
 import { Add, Delete } from "@material-ui/icons";
-import TextButton from "../../common/TextButton";
-import CustomIconButton from "../../common/CustomIconButton";
 import useProductStyles from "./product-styles";
 import { createProduct } from "../../../api/product";
 import { Category, getCategories } from "../../../api/category";

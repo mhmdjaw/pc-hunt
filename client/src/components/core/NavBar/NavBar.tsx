@@ -25,27 +25,14 @@ import useNavBarStyles from "./nav-bar-styles";
 import clsx from "clsx";
 import { useAuth } from "../../../context";
 import { ExpandMore } from "@material-ui/icons";
-
-interface HideOnScrollProps {
-  children: React.ReactElement;
-}
+import TopBar from "./TopBar";
+import { NavLink } from "../../common";
+import NavDropDownMenus from "./NavDropDownMenus";
 
 interface ElevationScrollProps {
   children: React.ReactElement;
   isHomePage: boolean;
 }
-
-const HideOnScroll: React.FC<HideOnScrollProps> = ({
-  children,
-}: HideOnScrollProps) => {
-  const trigger = useScrollTrigger();
-
-  return (
-    <Collapse appear={false} unmountOnExit in={!trigger}>
-      {children}
-    </Collapse>
-  );
-};
 
 const ElevationScroll: React.FC<ElevationScrollProps> = ({
   children,
@@ -91,21 +78,7 @@ const NavBar: React.FC = () => {
     <>
       <ElevationScroll isHomePage={pathname === "/" ? true : false}>
         <AppBar>
-          <HideOnScroll>
-            <Box className={classes.topBar}>
-              <Typography className={classes.topBarText} variant="subtitle2">
-                hunt down the pc of your dream!
-              </Typography>
-              <Link
-                className={classes.topBarLink}
-                underline="none"
-                component={RouterLink}
-                to="#"
-              >
-                Contact Us
-              </Link>
-            </Box>
-          </HideOnScroll>
+          <TopBar />
           <Toolbar className={classes.toolbar}>
             {/* {menuItems.map((menuItem, i) => {
             const { itemTitle, itemURL } = menuItem;
@@ -124,59 +97,48 @@ const NavBar: React.FC = () => {
               </Link>
             );
           })} */}
-            <Link
+            <NavLink
               className={classes.link}
-              component={RouterLink}
               to="/"
-              underline="none"
               color={"/" === pathname ? "secondary" : "inherit"}
             >
               Home
-            </Link>
+            </NavLink>
             {!user && (
-              <Link
-                className={classes.link}
-                component={RouterLink}
+              <NavLink
                 to="/login"
-                underline="none"
                 color={"/login" === pathname ? "secondary" : "inherit"}
               >
                 Log In
-              </Link>
+              </NavLink>
             )}
             {!user && (
-              <Link
+              <NavLink
                 className={classes.link}
-                component={RouterLink}
                 to="/signup"
-                underline="none"
                 color={"/signup" === pathname ? "secondary" : "inherit"}
               >
                 Sign Up
-              </Link>
+              </NavLink>
             )}
             {user && (
-              <Link
+              <NavLink
                 className={classes.link}
-                component={RouterLink}
                 to="/account"
-                underline="none"
                 color={"/account" === pathname ? "secondary" : "inherit"}
               >
                 Account
-              </Link>
+              </NavLink>
             )}
             {user && (
-              <Link
-                component={RouterLink}
-                to="#"
+              <NavLink
                 className={classes.link}
-                underline="none"
+                to="#"
                 color="inherit"
                 onClick={() => logout()}
               >
                 Log Out
-              </Link>
+              </NavLink>
             )}
             <div className={classes.grow}></div>
           </Toolbar>
@@ -185,39 +147,7 @@ const NavBar: React.FC = () => {
             bgcolor="primary.main"
             color="primary.contrastText"
           >
-            <Box
-              className={classes.categoryMenuContainer}
-              position="relative"
-              ml="4%"
-            >
-              <Link
-                component={RouterLink}
-                to="#"
-                className={clsx(classes.link, "category-menu")}
-                underline="none"
-                color="inherit"
-              >
-                Components
-                <ExpandMore className={classes.expandMore} />
-              </Link>
-
-              <Paper className={classes.dropDownMenu}>
-                <List>
-                  <ListItem button>
-                    <ListItemText primary="Motherboards" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText primary="Memory" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText primary="Video Cards" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText primary="CPUs" />
-                  </ListItem>
-                </List>
-              </Paper>
-            </Box>
+            <NavDropDownMenus />
           </Box>
         </AppBar>
       </ElevationScroll>

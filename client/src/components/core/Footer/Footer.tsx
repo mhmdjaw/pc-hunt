@@ -1,28 +1,13 @@
-import { Box, Grid, Link, makeStyles, Typography } from "@material-ui/core";
+import { Box, Grid, Link } from "@material-ui/core";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { LogoSecondary } from "../../../assets";
-import CustomIconButton from "../../common/CustomIconButton";
+import { CustomIconButton } from "../../common";
 import { Facebook, Twitter, Instagram, GitHub } from "@material-ui/icons";
-
-const useStyles = makeStyles({
-  link: {
-    textTransform: "uppercase",
-    fontWeight: 500,
-    "&:hover": {
-      opacity: 0.7,
-    },
-    "&:focus-visible": {
-      outline: "3px solid #fff",
-    },
-  },
-  iconButton: {
-    margin: "0 1%",
-  },
-});
+import useFooterStyles from "./footer-styles";
 
 const Footer: React.FC = () => {
-  const classes = useStyles();
+  const classes = useFooterStyles();
 
   return (
     <Box
@@ -108,12 +93,7 @@ const Footer: React.FC = () => {
       <CustomIconButton className={classes.iconButton} color="inherit">
         <GitHub />
       </CustomIconButton>
-      <Box
-        mt="50px"
-        fontWeight={500}
-        // fontSize="body1.fontSize"
-        color="grey.300"
-      >
+      <Box mt="50px" fontWeight={500} color="grey.300">
         © 2021 PC hunt
       </Box>
     </Box>

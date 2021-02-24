@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { Box, MenuItem, Paper, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
-import ContainedButton from "../../common/ContainedButton";
+import { ContainedButton } from "../../common";
 import { shallowEqual } from "recompose";
 import { Category, createCategory, getCategories } from "../../../api/category";
 import { Alert } from "@material-ui/lab";

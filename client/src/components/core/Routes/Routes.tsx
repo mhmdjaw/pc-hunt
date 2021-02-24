@@ -1,17 +1,16 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
-import Home from "../Home";
-import NavBar from "../NavBar/NavBar";
-import Login from "../../user/Login";
-import Signup from "../../user/Signup";
-import { AuthSuccess } from "../../user/Auth";
-import { AuthRoute } from "../../user/Auth";
+import {
+  Home,
+  NavBar,
+  Account,
+  Product,
+  Footer,
+  CategoryForm,
+} from "../../core";
+import { Login, Signup, AuthRoute, AuthSuccess } from "../../user";
 import history from "./history";
-import Account from "../Account";
-import Product from "../Product";
 import ScrollToTop from "./ScrollToTop";
-import Footer from "../Footer";
-import CategoryForm from "../CategoryForm";
 
 const Routes: React.FC = () => {
   return (

@@ -4,20 +4,6 @@ import { hexToRgba } from "../../../helpers";
 const useNavBarStyles = makeStyles((theme) => ({
   link: {
     marginLeft: "4%",
-    fontWeight: "bold",
-    display: "inline-block",
-    fontSize: theme.typography.subtitle1.fontSize,
-    "&:hover, &:focus-visible": {
-      color: theme.palette.secondary.main,
-    },
-    "&:focus-visible": {
-      outline: "3px solid",
-      outlineColor: theme.palette.secondary.main,
-    },
-    "&.category-menu": {
-      padding: "8px 0",
-      marginLeft: 0,
-    },
   },
   expandMore: {
     position: "relative",
@@ -52,11 +38,16 @@ const useNavBarStyles = makeStyles((theme) => ({
   dropDownMenu: {
     position: "absolute",
     transition: "all .25s",
-    minWidth: "260px",
+    minWidth: "230px",
     left: "-15px",
     boxShadow: theme.shadows[10],
     visibility: "hidden",
     opacity: 0,
+  },
+  dropDownItem: {
+    "&:active": {
+      backgroundColor: "rgba(0, 0, 0, 0.3)",
+    },
   },
   iconButton: {
     margin: "0 1%",

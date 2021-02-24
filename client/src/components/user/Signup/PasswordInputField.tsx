@@ -9,7 +9,7 @@ import {
 import { Field, FieldProps } from "formik";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import CustomIconButton from "../../common/CustomIconButton";
+import { CustomIconButton } from "../../common";
 
 const PasswordInputField: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);

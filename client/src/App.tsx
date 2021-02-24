@@ -1,5 +1,5 @@
 import React from "react";
-import Routes from "./components/core/Routes/Routes";
+import { Routes } from "./components/core";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { lightTheme } from "./themes.ts";
 import { ProvideAuth } from "./context";

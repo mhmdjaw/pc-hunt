@@ -6,14 +6,13 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import ContainedButton from "../../../common/ContainedButton";
+import { ContainedButton, Carousel } from "../../../common";
 import "../../../../slick-carousel/slick.css";
 import "../../../../slick-carousel/slick-theme.css";
 import { motion } from "framer-motion";
 import useHomeCarouselStyles from "./home-carousel-styles";
 import carouselAnimationVariants from "./carousel-animation-variants";
 import { HomeCarouselFeature } from "../home-carousel-features";
-import Carousel from "../../../common/Carousel";
 
 interface HomeCarouselProps {
   features: HomeCarouselFeature[];

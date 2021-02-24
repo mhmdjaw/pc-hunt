@@ -8,7 +8,7 @@ import ReviewCarousel from "./ReviewCarousel";
 import carouselReviews from "./carousel-reviews";
 import HomeLinks from "./HomeLinks";
 import homeLinks from "./home-links";
-import ProductSlider from "../../common/ProductSlider";
+import { ProductSlider } from "../../common";
 import { getProducts, Product } from "../../../api/product";
 
 const useHomeStyles = makeStyles((theme) => createStyles({}));
