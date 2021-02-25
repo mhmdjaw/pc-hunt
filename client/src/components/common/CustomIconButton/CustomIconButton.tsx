@@ -5,8 +5,13 @@ import { hexToRgba } from "../../../helpers";
 import useTextButtonStyles from "../TextButton/text-button-styles";
 import clsx from "clsx";
 
-const CustomIconButton: React.FC<IconButtonProps> = (
-  props: IconButtonProps
+interface CustomIconButtonProps extends IconButtonProps {
+  href?: string;
+  target?: string;
+}
+
+const CustomIconButton: React.FC<CustomIconButtonProps> = (
+  props: CustomIconButtonProps
 ) => {
   const theme = useTheme();
 

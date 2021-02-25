@@ -6,7 +6,7 @@ import useTextButtonStyles from "./text-button-styles";
 import clsx from "clsx";
 
 interface TextButtonProps extends ButtonProps {
-  component: string;
+  component?: string;
 }
 
 const TextButton: React.FC<TextButtonProps> = (props: TextButtonProps) => {

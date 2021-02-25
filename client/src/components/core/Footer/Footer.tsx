@@ -3,8 +3,9 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { LogoSecondary } from "../../../assets";
 import { CustomIconButton } from "../../common";
-import { Facebook, Twitter, Instagram, GitHub } from "@material-ui/icons";
 import useFooterStyles from "./footer-styles";
+import footerLinks from "./footer-links";
+import footerSocials from "./footer-socials";
 
 const Footer: React.FC = () => {
   const classes = useFooterStyles();
@@ -19,80 +20,33 @@ const Footer: React.FC = () => {
       <LogoSecondary width="200px" fill="#fff" />
       <Box m="40px">
         <Grid container justify="center" spacing={5}>
-          <Grid item>
-            <Link
-              component={RouterLink}
-              to="#"
-              className={classes.link}
-              variant="body2"
-              color="inherit"
-              underline="none"
-            >
-              privacy policy
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link
-              component={RouterLink}
-              to="#"
-              className={classes.link}
-              variant="body2"
-              color="inherit"
-              underline="none"
-            >
-              terms and conditions
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link
-              component={RouterLink}
-              to="#"
-              className={classes.link}
-              variant="body2"
-              color="inherit"
-              underline="none"
-            >
-              blog
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link
-              component={RouterLink}
-              to="#"
-              className={classes.link}
-              variant="body2"
-              color="inherit"
-              underline="none"
-            >
-              contact us
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link
-              component={RouterLink}
-              to="#"
-              className={classes.link}
-              variant="body2"
-              color="inherit"
-              underline="none"
-            >
-              about us
-            </Link>
-          </Grid>
+          {footerLinks.map((link, i) => (
+            <Grid key={i} item>
+              <Link
+                component={RouterLink}
+                to={link.to}
+                className={classes.link}
+                variant="body2"
+                color="inherit"
+                underline="none"
+              >
+                {link.text}
+              </Link>
+            </Grid>
+          ))}
         </Grid>
       </Box>
-      <CustomIconButton className={classes.iconButton} color="inherit">
-        <Facebook />
-      </CustomIconButton>
-      <CustomIconButton className={classes.iconButton} color="inherit">
-        <Twitter />
-      </CustomIconButton>
-      <CustomIconButton className={classes.iconButton} color="inherit">
-        <Instagram />
-      </CustomIconButton>
-      <CustomIconButton className={classes.iconButton} color="inherit">
-        <GitHub />
-      </CustomIconButton>
+      {footerSocials.map((social, i) => (
+        <CustomIconButton
+          key={i}
+          href={social.href}
+          target="_blank"
+          className={classes.iconButton}
+          color="inherit"
+        >
+          <social.icon />
+        </CustomIconButton>
+      ))}
       <Box mt="50px" fontWeight={500} color="grey.300">
         © 2021 PC hunt
       </Box>

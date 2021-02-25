@@ -19,12 +19,11 @@ const carouselAnimationVariants = {
       x: "10%",
     },
     visible: {
-      opacity: 1,
-      x: "0%",
+      opacity: [0, 0, 0.7, 1],
+      x: ["10%", "10%", "3%", "0%"],
       transition: {
-        delay: 0.3,
-        duration: 1,
-        ease: "easeInOut",
+        duration: 1.5,
+        ease: "linear",
       },
     },
   },
