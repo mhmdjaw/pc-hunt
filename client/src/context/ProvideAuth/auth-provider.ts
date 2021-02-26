@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { User } from "../api/user";
-import * as Auth from "../auth";
+import { User } from "../../api/user";
+import * as Auth from "../../auth";
 import { AuthContext, AuthResultCallback } from "./auth-context-types";
 
-interface AuthState {
+interface State {
   isLoading: boolean;
   user: User | null;
 }
 
 const useProvideAuth = (): AuthContext => {
-  const [state, setState] = useState<AuthState>({
+  const [state, setState] = useState<State>({
     isLoading: true,
     user: null,
   });

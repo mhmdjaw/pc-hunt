@@ -1,5 +1,4 @@
 import React from "react";
-import { Box, CircularProgress } from "@material-ui/core";
 import {
   Redirect,
   Route,
@@ -7,6 +6,7 @@ import {
   RouteComponentProps,
 } from "react-router-dom";
 import { useAuth } from "../../../context";
+import LoadingPage from "../../common/LoadingPage";
 
 type AuthType = "unprotected" | "guest" | "protected" | "admin";
 
@@ -41,20 +41,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
     console.log(authType);
 
     return loading ? (
-      <Box position="relative" height="100vh">
-        <Box
-          position="absolute"
-          right="0"
-          left="0"
-          bottom="0"
-          top="0"
-          margin="auto"
-          width="40px"
-          height="40px"
-        >
-          <CircularProgress />
-        </Box>
-      </Box>
+      <LoadingPage />
     ) : proceed() ? (
       children
     ) : authType === "guest" ? (

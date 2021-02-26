@@ -38,8 +38,10 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    loadProductsBySell();
-    loadProductsByArrival();
+    setTimeout(() => {
+      loadProductsBySell();
+      loadProductsByArrival();
+    }, 1500);
   }, []);
 
   return (

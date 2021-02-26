@@ -1,5 +1,5 @@
-import { User } from "../api/user";
-import { LoginValues, SignupValues } from "../auth";
+import { User } from "../../api/user";
+import { LoginValues, SignupValues } from "../../auth";
 
 export type AuthResultCallback = (authStatus: boolean, message: string) => void;
 

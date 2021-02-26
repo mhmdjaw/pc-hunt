@@ -3,13 +3,23 @@ import { ExpandMore } from "@material-ui/icons";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { Category, getCategories } from "../../../../api/category";
+import { useFacets } from "../../../../context";
 import { NavLink } from "../../../common";
 import useNavDropDownMenusStyles from "./nav-drop-down-menus-styes";
 
 const NavDropDownMenus: React.FC = () => {
   const classes = useNavDropDownMenusStyles();
-  const [open, setOpen] = useState<boolean[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+
+  const { categories } = useFacets();
+
+  const numberOfMenus = categories.filter(
+    (category) => category.parent.slug === "root"
+  ).length;
+
+  const [open, setOpen] = useState<boolean[]>(
+    new Array(numberOfMenus).fill(false)
+  );
+  // const [categories, setCategories] = useState<Category[]>([]);
 
   const openMenu = (i: number) => {
     open[i] = true;
@@ -26,19 +36,19 @@ const NavDropDownMenus: React.FC = () => {
     // navigate to category results using slug
   };
 
-  useEffect(() => {
-    getCategories()
-      .then((response) => {
-        const numberOfMenus = response.data.filter(
-          (category) => category.parent.slug === "root"
-        ).length;
-        setCategories(response.data);
-        setOpen(new Array(numberOfMenus).fill(false));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getCategories()
+  //     .then((response) => {
+  //       const numberOfMenus = response.data.filter(
+  //         (category) => category.parent.slug === "root"
+  //       ).length;
+  //       setCategories(response.data);
+  //       setOpen(new Array(numberOfMenus).fill(false));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <>

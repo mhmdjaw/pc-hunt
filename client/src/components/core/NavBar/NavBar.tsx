@@ -106,6 +106,7 @@ const NavBar: React.FC = () => {
             </NavLink>
             {!user && (
               <NavLink
+                className={classes.link}
                 to="/login"
                 color={"/login" === pathname ? "secondary" : "inherit"}
               >

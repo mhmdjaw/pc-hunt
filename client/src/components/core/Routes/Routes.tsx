@@ -1,5 +1,6 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
+import { ProvideFacets } from "../../../context";
 import {
   Home,
   NavBar,
@@ -28,21 +29,23 @@ const Routes: React.FC = () => {
         </Route>
 
         <AuthRoute path="/" authType="unprotected">
-          <NavBar />
-          <AuthRoute exact path="/" authType="unprotected">
-            <Home />
-          </AuthRoute>
-          <AuthRoute exact path="/account" authType="protected">
-            <Account />
-          </AuthRoute>
-          <AuthRoute path="/account/update" authType="protected"></AuthRoute>
-          <AuthRoute path="/category" authType="admin">
-            <CategoryForm />
-          </AuthRoute>
-          <AuthRoute path="/product" authType="admin">
-            <Product />
-          </AuthRoute>
-          <Footer />
+          <ProvideFacets>
+            <NavBar />
+            <AuthRoute exact path="/" authType="unprotected">
+              <Home />
+            </AuthRoute>
+            <AuthRoute exact path="/account" authType="protected">
+              <Account />
+            </AuthRoute>
+            <AuthRoute path="/account/update" authType="protected"></AuthRoute>
+            <AuthRoute path="/category" authType="admin">
+              <CategoryForm />
+            </AuthRoute>
+            <AuthRoute path="/product" authType="admin">
+              <Product />
+            </AuthRoute>
+            <Footer />
+          </ProvideFacets>
         </AuthRoute>
       </Switch>
     </Router>
