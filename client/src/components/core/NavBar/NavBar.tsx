@@ -28,6 +28,7 @@ import { ExpandMore } from "@material-ui/icons";
 import TopBar from "./TopBar";
 import { NavLink } from "../../common";
 import NavDropDownMenus from "./NavDropDownMenus";
+import SearchAppBar from "./SearchAppBar";
 
 interface ElevationScrollProps {
   children: React.ReactElement;
@@ -142,6 +143,7 @@ const NavBar: React.FC = () => {
               </NavLink>
             )}
             <div className={classes.grow}></div>
+            <SearchAppBar />
           </Toolbar>
           <Box
             className={classes.categoryBar}
