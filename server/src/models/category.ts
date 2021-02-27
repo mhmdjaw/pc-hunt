@@ -4,7 +4,7 @@ import { slugify } from "../helpers";
 export interface ICategory extends Document {
   name: string;
   slug: string;
-  parent: mongoose.Schema.Types.ObjectId;
+  parent: mongoose.Types.ObjectId;
 }
 
 const categorySchema = new mongoose.Schema(
@@ -20,7 +20,7 @@ const categorySchema = new mongoose.Schema(
       index: true,
     },
     parent: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Category",
       default: null,
     },

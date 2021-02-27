@@ -5,6 +5,7 @@ import formidable, { File } from "formidable";
 import _ from "lodash";
 import fs from "fs";
 import Category from "../models/category";
+import mongoose from "mongoose";
 
 type Error =
   | (CallbackError & {
@@ -194,6 +195,60 @@ export const list = (req: Request, res: Response): void => {
     });
 };
 
+interface FindArgs {
+  categories?: mongoose.Types.ObjectId;
+  price?: { $gte: number; $lte: number };
+  name?: {
+    $regex: string;
+    $options: "i";
+  };
+}
+
+export const listBySearch = (req: Request, res: Response): void => {
+  const order = req.query.order ? req.query.order : "desc";
+  const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  const limit = req.query.limit ? Number(req.query.limit) : 100;
+  const skip = req.query.skip ? Number(req.query.skip) : 0;
+
+  const findArgs: Partial<FindArgs> = {};
+
+  if (req.query.category) {
+    findArgs.categories = new mongoose.Types.ObjectId(
+      req.query.category as string
+    );
+  }
+  if (req.query.price) {
+    const range = (req.query.price as string).split("to");
+    findArgs.price = {
+      $gte: Number(range[0]),
+      $lte: Number(range[1]),
+    };
+  }
+  if (req.query.keywords) {
+    findArgs.name = {
+      $regex: req.query.keywords as string,
+      $options: "i",
+    };
+  }
+
+  Product.find(findArgs)
+    .select("-image")
+    // .populate("categories")
+    .sort([[sortBy, order]])
+    .skip(skip)
+    .limit(limit)
+    .exec((err, products) => {
+      if (err) {
+        res.status(400).json({
+          error: "Products not found",
+        });
+        return;
+      }
+
+      res.json(products);
+    });
+};
+
 /**
  * find the products based on the req product categories
  * other products with the same categories will be returned
@@ -238,7 +293,7 @@ export const image = (
   next();
 };
 
-export const listBySearch = (req: Request, res: Response): void => {
+export const listByFilters = (req: Request, res: Response): void => {
   const order = req.body.order ? req.body.order : "desc";
   const sortBy = req.body.sortBy ? req.body.sortBy : "_id";
   const limit = req.body.limit ? Number(req.body.limit) : 100;
