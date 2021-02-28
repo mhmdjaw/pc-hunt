@@ -206,7 +206,7 @@ interface FindArgs {
 
 export const listBySearch = (req: Request, res: Response): void => {
   const order = req.query.order ? req.query.order : "desc";
-  const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  const sortBy = req.query.sortBy ? req.query.sortBy : "sold";
   const limit = req.query.limit ? Number(req.query.limit) : 100;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
 
