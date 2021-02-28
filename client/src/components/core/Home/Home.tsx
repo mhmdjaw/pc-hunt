@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, createStyles, makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import HomeCarousel from "./HomeCarousel";
 import homeCarouselFeatures from "./home-carousel-features";
 import homeFeatures from "./home-features";
@@ -11,14 +11,12 @@ import homeLinks from "./home-links";
 import { ProductSlider } from "../../common";
 import { getProducts, Product } from "../../../api/product";
 
-const useHomeStyles = makeStyles((theme) => createStyles({}));
-
 const Home: React.FC = () => {
   const [productsBySell, setProductsBySell] = useState<Product[]>([]);
   const [productsByArrival, setProductsByArrival] = useState<Product[]>([]);
 
   const loadProductsBySell = () => {
-    getProducts("sold")
+    getProducts({ sortBy: "sold", limit: 10 })
       .then((response) => {
         setProductsBySell(response.data);
       })
@@ -28,7 +26,7 @@ const Home: React.FC = () => {
   };
 
   const loadProductsByArrival = () => {
-    getProducts("createdAt")
+    getProducts({ sortBy: "createdAt", limit: 10 })
       .then((response) => {
         setProductsByArrival(response.data);
       })

@@ -14,3 +14,13 @@ export interface Product {
   //   contentType: string;
   // };
 }
+
+export interface SearchParams {
+  order?: string;
+  sortBy?: string;
+  limit?: number;
+  skip?: number;
+  category?: string;
+  price?: string;
+  keywords?: string;
+}

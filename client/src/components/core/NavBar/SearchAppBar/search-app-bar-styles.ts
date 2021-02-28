@@ -55,6 +55,9 @@ const useSearchAppBarStyles = makeStyles((theme) =>
         width: `calc(1em + ${theme.spacing(6)}px + 240px) !important`,
       },
     },
+    closePopper: {
+      display: "none",
+    },
   })
 );
 

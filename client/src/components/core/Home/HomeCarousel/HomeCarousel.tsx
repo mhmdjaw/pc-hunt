@@ -9,7 +9,7 @@ import {
 import { ContainedButton, Carousel } from "../../../common";
 import "../../../../slick-carousel/slick.css";
 import "../../../../slick-carousel/slick-theme.css";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import useHomeCarouselStyles from "./home-carousel-styles";
 import carouselAnimationVariants from "./carousel-animation-variants";
 import { HomeCarouselFeature } from "../home-carousel-features";
@@ -60,13 +60,6 @@ const HomeCarousel: React.FC<HomeCarouselProps> = React.memo(
                   >
                     Keep your distance
                   </MotionBox>
-                  {/* <Box
-                  className={classes.topHeadline}
-                  fontWeight={700}
-                  textAlign={isMobile ? "center" : "left"}
-                >
-                  Keep your distance
-                </Box> */}
                 </Typography>
               </Grid>
               <Grid
@@ -84,9 +77,6 @@ const HomeCarousel: React.FC<HomeCarouselProps> = React.memo(
                   >
                     Shop safely
                   </MotionBox>
-                  {/* <Box fontWeight={700} textAlign={isMobile ? "center" : "left"}>
-                  Shop safely
-                </Box> */}
                 </Typography>
               </Grid>
             </Grid>

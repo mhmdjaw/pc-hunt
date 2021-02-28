@@ -1,25 +1,24 @@
 import { Box, List, ListItem, ListItemText, Paper } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
-import { Category, getCategories } from "../../../../api/category";
+import React, { useState } from "react";
+import { Category } from "../../../../api/category";
 import { useFacets } from "../../../../context";
 import { NavLink } from "../../../common";
 import useNavDropDownMenusStyles from "./nav-drop-down-menus-styes";
+
+const getNumberOfMenus = (categories: Category[]) =>
+  categories.filter((category) => category.parent.slug === "root").length;
 
 const NavDropDownMenus: React.FC = () => {
   const classes = useNavDropDownMenusStyles();
 
   const { categories } = useFacets();
 
-  const numberOfMenus = categories.filter(
-    (category) => category.parent.slug === "root"
-  ).length;
-
+  //array of menu toggle state
   const [open, setOpen] = useState<boolean[]>(
-    new Array(numberOfMenus).fill(false)
+    new Array(getNumberOfMenus(categories)).fill(false)
   );
-  // const [categories, setCategories] = useState<Category[]>([]);
 
   const openMenu = (i: number) => {
     open[i] = true;
@@ -35,20 +34,6 @@ const NavDropDownMenus: React.FC = () => {
     closeMenu(i);
     // navigate to category results using slug
   };
-
-  // useEffect(() => {
-  //   getCategories()
-  //     .then((response) => {
-  //       const numberOfMenus = response.data.filter(
-  //         (category) => category.parent.slug === "root"
-  //       ).length;
-  //       setCategories(response.data);
-  //       setOpen(new Array(numberOfMenus).fill(false));
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
 
   return (
     <>

@@ -14,19 +14,6 @@ const useHomeCarouselStyles = makeStyles((theme) =>
         height: "100%",
       },
     },
-    topHeadline: {
-      animation: "$topHeadlineAnimation 1s ease-in-out 0s 1",
-    },
-    "@keyframes topHeadlineAnimation": {
-      from: {
-        opacity: 0,
-        transform: "translateX(-10%)",
-      },
-      to: {
-        opacity: 1,
-        transform: "translateX(0%)",
-      },
-    },
   })
 );
 
