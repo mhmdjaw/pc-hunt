@@ -16,6 +16,7 @@ import {
   MenuItem,
   Paper,
   Typography,
+  useMediaQuery,
   useScrollTrigger,
   useTheme,
 } from "@material-ui/core";
@@ -62,6 +63,7 @@ const NavBar: React.FC = () => {
   const history = useHistory();
   const { pathname } = useLocation();
   const { logout, user } = useAuth();
+  const isLaptop = useMediaQuery(theme.breakpoints.up(1102));
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -112,7 +114,11 @@ const NavBar: React.FC = () => {
               onClick={() => history.push("/")}
             />
             <Box flexGrow={1} textAlign="center" p="0 2%">
-              <Box width="364px" display="inline-block" textAlign="end">
+              <Box
+                width={isLaptop ? "364px" : "240px"}
+                display="inline-block"
+                textAlign="end"
+              >
                 <SearchAppBar />
               </Box>
             </Box>

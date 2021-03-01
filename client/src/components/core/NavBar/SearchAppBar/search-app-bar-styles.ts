@@ -14,7 +14,6 @@ const useSearchAppBarStyles = makeStyles((theme) =>
 
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        // marginLeft: theme.spacing(1),
         width: "auto",
       },
     },
@@ -44,6 +43,9 @@ const useSearchAppBarStyles = makeStyles((theme) =>
         width: "100%",
       },
       [theme.breakpoints.up("sm")]: {
+        width: "180px",
+      },
+      [theme.breakpoints.up(1102)]: {
         width: "210px",
         "&:focus": {
           width: "300px",
