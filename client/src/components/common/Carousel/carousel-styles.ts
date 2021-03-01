@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 const useCarouselStyles = makeStyles({
   slider: {
+    cursor: "grab",
     "& .slick-dots li.slick-active a": {
       backgroundColor: "#fff",
       opacity: 1,
@@ -11,8 +12,12 @@ const useCarouselStyles = makeStyles({
         visibility: "visible",
       },
     },
+    "&:active": {
+      cursor: "grabbing",
+    },
   },
   dotsContainer: {
+    cursor: "auto",
     bottom: 30,
   },
   dot: {
@@ -36,6 +41,9 @@ const useCarouselStyles = makeStyles({
     alignItems: "center",
     top: 0,
     bottom: 0,
+    height: "41px",
+    width: "41px",
+    borderRadius: "50%",
     margin: "auto",
     visibility: "hidden",
     "&.prevArrow": {

@@ -17,7 +17,7 @@ const NavDropDownMenus: React.FC = () => {
 
   //array of menu toggle state
   const [open, setOpen] = useState<boolean[]>(
-    new Array(getNumberOfMenus(categories)).fill(false)
+    new Array(getNumberOfMenus(categories) + 1).fill(false)
   );
 
   const openMenu = (i: number) => {
@@ -33,6 +33,7 @@ const NavDropDownMenus: React.FC = () => {
   const handleMenuItemClick = (slug: string, i: number) => {
     closeMenu(i);
     // navigate to category results using slug
+    console.log(slug);
   };
 
   return (
@@ -45,8 +46,6 @@ const NavDropDownMenus: React.FC = () => {
             className={clsx(classes.categoryMenuContainer, {
               [classes.dropDownMenuHover]: open[i],
             })}
-            position="relative"
-            ml="4%"
             onMouseEnter={() => openMenu(i)}
             onMouseLeave={() => closeMenu(i)}
           >
@@ -61,20 +60,69 @@ const NavDropDownMenus: React.FC = () => {
                   .filter(
                     (category) => category.parent.slug === parentCategory.slug
                   )
-                  .map((category, j) => (
-                    <ListItem
-                      key={j}
-                      className={classes.dropDownItem}
-                      button
-                      onClick={() => handleMenuItemClick(category.slug, i)}
-                    >
-                      <ListItemText primary={category.name} />
-                    </ListItem>
-                  ))}
+                  .map(
+                    (category, j) =>
+                      j < 9 && (
+                        <ListItem
+                          key={j}
+                          className={classes.dropDownItem}
+                          button
+                          onClick={() =>
+                            handleMenuItemClick(
+                              j < 8 ? category.slug : category.parent.slug,
+                              i
+                            )
+                          }
+                        >
+                          <ListItemText
+                            primary={j < 8 ? category.name : "More..."}
+                          />
+                        </ListItem>
+                      )
+                  )}
               </List>
             </Paper>
           </Box>
         ))}
+
+      <Box
+        className={clsx(classes.categoryMenuContainer, {
+          [classes.dropDownMenuHover]: open[open.length - 1],
+        })}
+        onMouseEnter={() => openMenu(open.length - 1)}
+        onMouseLeave={() => closeMenu(open.length - 1)}
+      >
+        <NavLink to="#" className="category-menu" color="inherit">
+          Brands
+          <ExpandMore className={classes.expandMore} />
+        </NavLink>
+
+        <Paper className={classes.dropDownMenu}>
+          <List>
+            <ListItem
+              className={classes.dropDownItem}
+              button
+              onClick={() => handleMenuItemClick("slug", open.length - 1)}
+            >
+              <ListItemText primary="abbas" />
+            </ListItem>
+            <ListItem
+              className={classes.dropDownItem}
+              button
+              onClick={() => handleMenuItemClick("slug", open.length - 1)}
+            >
+              <ListItemText primary="abbas" />
+            </ListItem>
+            <ListItem
+              className={classes.dropDownItem}
+              button
+              onClick={() => handleMenuItemClick("slug", open.length - 1)}
+            >
+              <ListItemText primary="abbas" />
+            </ListItem>
+          </List>
+        </Paper>
+      </Box>
     </>
   );
 };

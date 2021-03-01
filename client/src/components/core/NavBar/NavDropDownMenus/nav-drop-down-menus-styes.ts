@@ -9,6 +9,8 @@ const useNavDropDownMenusStyles = makeStyles((theme) =>
       marginLeft: "0.2rem",
     },
     categoryMenuContainer: {
+      position: "relative",
+      marginLeft: "4%",
       "&::after": {
         content: "''",
         position: "absolute",
@@ -42,6 +44,7 @@ const useNavDropDownMenusStyles = makeStyles((theme) =>
       opacity: 0,
     },
     dropDownItem: {
+      // padding: "4px 16px",
       "&:active": {
         backgroundColor: "rgba(0, 0, 0, 0.3)",
       },

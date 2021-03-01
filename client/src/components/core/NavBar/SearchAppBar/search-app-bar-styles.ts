@@ -3,6 +3,7 @@ import { createStyles, fade, makeStyles } from "@material-ui/core";
 const useSearchAppBarStyles = makeStyles((theme) =>
   createStyles({
     search: {
+      display: "inline-block",
       position: "relative",
       borderRadius: theme.shape.borderRadius,
       backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -13,7 +14,7 @@ const useSearchAppBarStyles = makeStyles((theme) =>
 
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(1),
+        // marginLeft: theme.spacing(1),
         width: "auto",
       },
     },
@@ -27,6 +28,9 @@ const useSearchAppBarStyles = makeStyles((theme) =>
       justifyContent: "center",
       zIndex: 1,
       right: 0,
+      "&:hover": {
+        color: theme.palette.secondary.main,
+      },
     },
     inputRoot: {
       color: "inherit",
@@ -40,9 +44,9 @@ const useSearchAppBarStyles = makeStyles((theme) =>
         width: "100%",
       },
       [theme.breakpoints.up("sm")]: {
-        width: "180px",
+        width: "210px",
         "&:focus": {
-          width: "240px",
+          width: "300px",
         },
       },
     },
@@ -52,11 +56,14 @@ const useSearchAppBarStyles = makeStyles((theme) =>
     popper: {
       [theme.breakpoints.up("sm")]: {
         // padding left and right from input + width of input
-        width: `calc(1em + ${theme.spacing(6)}px + 240px) !important`,
+        width: `calc(1em + ${theme.spacing(6)}px + 300px) !important`,
       },
     },
     closePopper: {
       display: "none",
+    },
+    listBox: {
+      maxHeight: "70vh",
     },
   })
 );

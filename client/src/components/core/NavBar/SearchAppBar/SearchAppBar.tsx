@@ -20,8 +20,9 @@ import { useFacets } from "../../../../context";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import { matchSorter } from "match-sorter";
+import additionalSearchOptions from "./additional-search-options";
 
-interface SearchOption {
+export interface SearchOption {
   name: string;
   slug: string;
   type: "categories" | "products";
@@ -34,7 +35,7 @@ const searchResultObs$ = searchSubject.pipe(
   debounceTime(500),
   distinctUntilChanged(),
   switchMap((val) =>
-    ajax(`${API}/products/search?keywords=${val}`).pipe(
+    ajax(`${API}/products/search?keywords=${val}&limit=10`).pipe(
       map((res) => res.response),
       catchError((err) => {
         return scheduled(err, asyncScheduler);
@@ -73,15 +74,20 @@ const SearchAppBar: React.FC = () => {
   const classes = useSearchAppBarStyles();
   const [options, setOptions] = useState<SearchOption[]>([]);
   const [closePopper, setClosePopper] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const { categories } = useFacets();
   const categoriesOptions: SearchOption[] = useMemo(
-    () =>
-      categories.map((category) => ({
-        name: category.name,
-        slug: category.slug,
-        type: "categories",
-      })),
+    () => [
+      ...categories.map(
+        (category): SearchOption => ({
+          name: category.name,
+          slug: category.slug,
+          type: "categories",
+        })
+      ),
+      ...additionalSearchOptions,
+    ],
     [categories]
   );
 
@@ -95,14 +101,34 @@ const SearchAppBar: React.FC = () => {
     return () => subscription.unsubscribe();
   }, [categoriesOptions]);
 
+  const runSearchKeywords = () => {
+    // check if the created value matches a category
+    if (inputValue.length > 0) {
+      const matchValue = matchSorter(categoriesOptions, inputValue, {
+        keys: [
+          { threshold: matchSorter.rankings.WORD_STARTS_WITH, key: "name" },
+        ],
+      })[0];
+      if (matchValue) {
+        console.log(matchValue.slug);
+      } else {
+        console.log(
+          encodeURIComponent(inputValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+        );
+      }
+    }
+  };
+
   const handleOptionChange = (
     _event: React.ChangeEvent<Record<string, unknown>>,
     value: string | SearchOption | null
   ) => {
     if (value) {
       if (typeof value === "string") {
-        console.log(value);
+        //run search based on input keywords
+        runSearchKeywords();
       } else if (typeof value === "object") {
+        // run search based on option selected
         console.log(value.slug);
       }
       setClosePopper(true);
@@ -111,7 +137,10 @@ const SearchAppBar: React.FC = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    searchSubject.next(value);
+    setInputValue(value);
+    searchSubject.next(
+      encodeURIComponent(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    );
 
     if (value.length < 2 && !closePopper) {
       setClosePopper(true);
@@ -122,7 +151,7 @@ const SearchAppBar: React.FC = () => {
 
   return (
     <Box className={classes.search}>
-      <Box className={classes.searchIcon}>
+      <Box className={classes.searchIcon} onClick={runSearchKeywords}>
         <SearchIcon />
       </Box>
       <Autocomplete
@@ -133,6 +162,7 @@ const SearchAppBar: React.FC = () => {
         PopperComponent={(props) => (
           <Popper {...props} placement="bottom-end" />
         )}
+        ListboxProps={{ style: { maxHeight: "60vh" } }}
         id="pc-hunt-search"
         freeSolo
         options={options}
@@ -154,6 +184,7 @@ const SearchAppBar: React.FC = () => {
             ref={params.InputProps.ref}
             inputProps={{ ...params.inputProps }}
             onChange={handleInputChange}
+            value={inputValue}
           />
         )}
         renderOption={(option, { inputValue }) => {

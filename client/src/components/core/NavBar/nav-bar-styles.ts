@@ -1,11 +1,30 @@
 import { makeStyles } from "@material-ui/core";
-import { hexToRgba } from "../../../helpers";
 
 const useNavBarStyles = makeStyles((theme) => ({
+  logo: {
+    marginLeft: "calc(4% - 4px)",
+    maxWidth: "224px",
+    padding: "4px",
+    "&:hover, &:focus-visible": {
+      cursor: "pointer",
+      fill: theme.palette.secondary.main,
+    },
+    "&:focus-visible": {
+      outline: "3px solid !important",
+      outlineColor: theme.palette.secondary.main + " !important",
+    },
+    "&:focus": {
+      outline: "none",
+    },
+  },
   link: {
-    marginLeft: "4%",
+    marginRight: "2%",
+    "&.cart": {
+      marginRight: "4%",
+    },
   },
   grow: {
+    textAlign: "center",
     flexGrow: 1,
   },
   toolbar: {
@@ -16,6 +35,18 @@ const useNavBarStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     padding: "0 24px",
+  },
+  navLinkIcon: {
+    position: "relative",
+    top: "0.4rem",
+    fontSize: "1.6rem",
+    marginRight: "0.4rem",
+    "&.cart": {
+      top: 0,
+    },
+    "&.account": {
+      fontSize: "1.8rem",
+    },
   },
 }));
 

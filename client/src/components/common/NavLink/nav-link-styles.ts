@@ -5,6 +5,7 @@ const useNavLinkStyles = makeStyles((theme) =>
     link: {
       fontWeight: "bold",
       display: "inline-block",
+      whiteSpace: "nowrap",
       fontSize: theme.typography.subtitle1.fontSize,
       "&:hover, &:focus-visible": {
         color: theme.palette.secondary.main,

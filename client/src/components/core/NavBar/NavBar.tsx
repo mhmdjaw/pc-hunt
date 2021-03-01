@@ -4,6 +4,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import menuItems from "./menu-items";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
+  Badge,
   Box,
   Button,
   Collapse,
@@ -24,11 +25,17 @@ import { logout } from "../../../auth";
 import useNavBarStyles from "./nav-bar-styles";
 import clsx from "clsx";
 import { useAuth } from "../../../context";
-import { ExpandMore } from "@material-ui/icons";
+import {
+  BuildOutlined,
+  ExpandMore,
+  PersonOutlineOutlined,
+  ShoppingCartOutlined,
+} from "@material-ui/icons";
 import TopBar from "./TopBar";
 import { NavLink } from "../../common";
 import NavDropDownMenus from "./NavDropDownMenus";
 import SearchAppBar from "./SearchAppBar";
+import { LogInIcon, LogoSecondary, LogOutIcon } from "../../../assets";
 
 interface ElevationScrollProps {
   children: React.ReactElement;
@@ -98,29 +105,36 @@ const NavBar: React.FC = () => {
               </Link>
             );
           })} */}
-            <NavLink
-              className={classes.link}
-              to="/"
-              color={"/" === pathname ? "secondary" : "inherit"}
-            >
-              Home
-            </NavLink>
+            <LogoSecondary
+              tabIndex={0}
+              className={classes.logo}
+              fill={"/" === pathname ? theme.palette.secondary.main : "#fff"}
+              onClick={() => history.push("/")}
+            />
+            <Box flexGrow={1} textAlign="center" p="0 2%">
+              <Box width="364px" display="inline-block" textAlign="end">
+                <SearchAppBar />
+              </Box>
+            </Box>
+            {user && (
+              <NavLink
+                className={classes.link}
+                to="#"
+                color="inherit"
+                onClick={() => logout()}
+              >
+                <LogOutIcon className={classes.navLinkIcon} />
+                Log Out
+              </NavLink>
+            )}
             {!user && (
               <NavLink
                 className={classes.link}
                 to="/login"
                 color={"/login" === pathname ? "secondary" : "inherit"}
               >
+                <LogInIcon className={classes.navLinkIcon} />
                 Log In
-              </NavLink>
-            )}
-            {!user && (
-              <NavLink
-                className={classes.link}
-                to="/signup"
-                color={"/signup" === pathname ? "secondary" : "inherit"}
-              >
-                Sign Up
               </NavLink>
             )}
             {user && (
@@ -129,21 +143,35 @@ const NavBar: React.FC = () => {
                 to="/account"
                 color={"/account" === pathname ? "secondary" : "inherit"}
               >
+                <PersonOutlineOutlined
+                  className={clsx(classes.navLinkIcon, "account")}
+                />
                 Account
               </NavLink>
             )}
-            {user && (
-              <NavLink
-                className={classes.link}
-                to="#"
-                color="inherit"
-                onClick={() => logout()}
+            <NavLink
+              className={classes.link}
+              to="#"
+              color={"/pc-builder" === pathname ? "secondary" : "inherit"}
+            >
+              <BuildOutlined className={classes.navLinkIcon} />
+              PC Builder
+            </NavLink>
+            <NavLink
+              className={clsx(classes.link, "cart")}
+              to="#"
+              color={"/cart" === pathname ? "secondary" : "inherit"}
+            >
+              <Box
+                className={clsx(classes.navLinkIcon, "cart")}
+                display="inline"
               >
-                Log Out
-              </NavLink>
-            )}
-            <div className={classes.grow}></div>
-            <SearchAppBar />
+                <Badge badgeContent={4} color="secondary">
+                  <ShoppingCartOutlined />
+                </Badge>
+              </Box>
+              Cart
+            </NavLink>
           </Toolbar>
           <Box
             className={classes.categoryBar}
