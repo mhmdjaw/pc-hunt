@@ -4,6 +4,7 @@ const useFooterStyles = makeStyles({
   link: {
     textTransform: "uppercase",
     fontWeight: 500,
+    WebkitTapHighlightColor: "transparent",
     "&:hover": {
       opacity: 0.7,
     },

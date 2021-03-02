@@ -13,7 +13,7 @@ const useSearchAppBarStyles = makeStyles((theme) =>
       marginLeft: 0,
 
       width: "100%",
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up("md")]: {
         width: "auto",
       },
     },
@@ -39,10 +39,10 @@ const useSearchAppBarStyles = makeStyles((theme) =>
       // vertical padding + font size from searchIcon
       paddingRight: `calc(1em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create("width"),
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down("md")]: {
         width: "100%",
       },
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up("md")]: {
         width: "180px",
       },
       [theme.breakpoints.up(1102)]: {
@@ -56,7 +56,7 @@ const useSearchAppBarStyles = makeStyles((theme) =>
       boxShadow: theme.shadows[10],
     },
     popper: {
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up("md")]: {
         // padding left and right from input + width of input
         width: `calc(1em + ${theme.spacing(6)}px + 300px) !important`,
       },

@@ -1,42 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import menuItems from "./menu-items";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
   Badge,
   Box,
-  Button,
-  Collapse,
-  Link,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Paper,
-  Typography,
   useMediaQuery,
   useScrollTrigger,
   useTheme,
 } from "@material-ui/core";
 import { useHistory, useLocation, Link as RouterLink } from "react-router-dom";
-import { logout } from "../../../auth";
-//import { v4 as uuidv4 } from "uuid";
 import useNavBarStyles from "./nav-bar-styles";
 import clsx from "clsx";
 import { useAuth } from "../../../context";
 import {
   BuildOutlined,
-  ExpandMore,
   PersonOutlineOutlined,
   ShoppingCartOutlined,
+  Menu,
 } from "@material-ui/icons";
 import TopBar from "./TopBar";
 import { NavLink } from "../../common";
 import NavDropDownMenus from "./NavDropDownMenus";
 import SearchAppBar from "./SearchAppBar";
 import { LogInIcon, LogoSecondary, LogOutIcon } from "../../../assets";
+import Hamburger from "hamburger-react";
 
 interface ElevationScrollProps {
   children: React.ReactElement;
@@ -64,25 +51,7 @@ const NavBar: React.FC = () => {
   const { pathname } = useLocation();
   const { logout, user } = useAuth();
   const isLaptop = useMediaQuery(theme.breakpoints.up(1102));
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuClick = (algorithmURL: string) => {
-    if (algorithmURL === pathname) {
-      handleClose();
-    } else {
-      history.push(algorithmURL);
-    }
-    handleClose();
-  };
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -90,23 +59,6 @@ const NavBar: React.FC = () => {
         <AppBar>
           <TopBar />
           <Toolbar className={classes.toolbar}>
-            {/* {menuItems.map((menuItem, i) => {
-            const { itemTitle, itemURL } = menuItem;
-            return (
-              <Link
-                key={i}
-                className={clsx(classes.menuItem, {
-                  [classes.active]: itemURL === pathname,
-                })}
-                component={RouterLink}
-                to={itemURL}
-                underline="none"
-                color="inherit"
-              >
-                {itemTitle}
-              </Link>
-            );
-          })} */}
             <LogoSecondary
               tabIndex={0}
               className={classes.logo}
@@ -114,57 +66,64 @@ const NavBar: React.FC = () => {
               onClick={() => history.push("/")}
             />
             <Box flexGrow={1} textAlign="center" p="0 2%">
-              <Box
-                width={isLaptop ? "364px" : "240px"}
-                display="inline-block"
-                textAlign="end"
-              >
-                <SearchAppBar />
-              </Box>
+              {!isMobile && (
+                <Box
+                  width={isLaptop ? "364px" : "240px"}
+                  display="inline-block"
+                  textAlign="end"
+                >
+                  <SearchAppBar />
+                </Box>
+              )}
             </Box>
-            {user && (
+            {user && !isMobile && (
               <NavLink
                 className={classes.link}
+                component={RouterLink}
                 to="#"
                 color="inherit"
                 onClick={() => logout()}
               >
                 <LogOutIcon className={classes.navLinkIcon} />
-                Log Out
+                {!isMobile && "Log Out"}
               </NavLink>
             )}
             {!user && (
               <NavLink
                 className={classes.link}
+                component={RouterLink}
                 to="/login"
-                color={"/login" === pathname ? "secondary" : "inherit"}
+                color="inherit"
               >
                 <LogInIcon className={classes.navLinkIcon} />
-                Log In
+                {!isMobile && "Log In"}
               </NavLink>
             )}
             {user && (
               <NavLink
                 className={classes.link}
+                component={RouterLink}
                 to="/account"
                 color={"/account" === pathname ? "secondary" : "inherit"}
               >
                 <PersonOutlineOutlined
                   className={clsx(classes.navLinkIcon, "account")}
                 />
-                Account
+                {!isMobile && "Account"}
               </NavLink>
             )}
             <NavLink
               className={classes.link}
+              component={RouterLink}
               to="#"
               color={"/pc-builder" === pathname ? "secondary" : "inherit"}
             >
               <BuildOutlined className={classes.navLinkIcon} />
-              PC Builder
+              {!isMobile && "PC Builder"}
             </NavLink>
             <NavLink
               className={clsx(classes.link, "cart")}
+              component={RouterLink}
               to="#"
               color={"/cart" === pathname ? "secondary" : "inherit"}
             >
@@ -176,15 +135,33 @@ const NavBar: React.FC = () => {
                   <ShoppingCartOutlined />
                 </Badge>
               </Box>
-              Cart
+              {!isMobile && "Cart"}
             </NavLink>
+            {/* {isMobile && (
+              <NavLink className={classes.link} color="inherit">
+                <Menu className={classes.navLinkIcon} />
+              </NavLink>
+            )} */}
+            {isMobile && (
+              <NavLink className={classes.link} color="inherit">
+                <Box width="35px" height="42px">
+                  <Hamburger rounded size={22} distance="sm" />
+                </Box>
+              </NavLink>
+            )}
           </Toolbar>
           <Box
             className={classes.categoryBar}
             bgcolor="primary.main"
             color="primary.contrastText"
           >
-            <NavDropDownMenus />
+            {isMobile ? (
+              <Box width="70vw">
+                <SearchAppBar />
+              </Box>
+            ) : (
+              <NavDropDownMenus />
+            )}
           </Box>
         </AppBar>
       </ElevationScroll>

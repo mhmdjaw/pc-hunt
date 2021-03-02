@@ -6,6 +6,8 @@ const useNavLinkStyles = makeStyles((theme) =>
       fontWeight: "bold",
       display: "inline-block",
       whiteSpace: "nowrap",
+      cursor: "Pointer",
+      WebkitTapHighlightColor: "transparent",
       fontSize: theme.typography.subtitle1.fontSize,
       "&:hover, &:focus-visible": {
         color: theme.palette.secondary.main,

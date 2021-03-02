@@ -4,7 +4,7 @@ import { FacetsContext } from "./facets-context-types";
 import useProvideFacets from "./facets-provider";
 
 interface ProvideFacetsProps {
-  children: React.ReactElement[];
+  children: React.ReactElement[] | React.ReactElement;
 }
 
 const authContext = createContext<FacetsContext | null>(null);
