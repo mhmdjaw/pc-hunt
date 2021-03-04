@@ -69,7 +69,7 @@ const AccountDetails: React.FC<AccountDetailsProps> = ({
           {isLaptop ? (
             <Divider orientation="vertical" flexItem variant="middle" />
           ) : (
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Divider className={classes.divider} variant="middle" />
             </Grid>
           )}

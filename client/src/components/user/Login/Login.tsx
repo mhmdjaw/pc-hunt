@@ -46,7 +46,6 @@ const validate = (values: Values) => {
 const Login: React.FC = () => {
   const history = useHistory();
   const location = useLocation<LocationState>();
-  console.log(location.state);
 
   const { login } = useAuth();
 

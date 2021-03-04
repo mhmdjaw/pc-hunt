@@ -3,17 +3,21 @@ import { ExpandMore } from "@material-ui/icons";
 import clsx from "clsx";
 import React, { useState } from "react";
 import { Category } from "../../../../api/category";
-import { useFacets } from "../../../../context";
 import { NavLink } from "../../../common";
+import { Link as RouterLink } from "react-router-dom";
 import useNavDropDownMenusStyles from "./nav-drop-down-menus-styes";
+
+interface NavDropDownMenusProps {
+  categories: Category[];
+}
 
 const getNumberOfMenus = (categories: Category[]) =>
   categories.filter((category) => category.parent.slug === "root").length;
 
-const NavDropDownMenus: React.FC = () => {
+const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
+  categories,
+}: NavDropDownMenusProps) => {
   const classes = useNavDropDownMenusStyles();
-
-  const { categories } = useFacets();
 
   //array of menu toggle state
   const [open, setOpen] = useState<boolean[]>(
@@ -49,7 +53,12 @@ const NavDropDownMenus: React.FC = () => {
             onMouseEnter={() => openMenu(i)}
             onMouseLeave={() => closeMenu(i)}
           >
-            <NavLink to="#" className="category-menu" color="inherit">
+            <NavLink
+              component={RouterLink}
+              to="#"
+              className="category-menu"
+              color="inherit"
+            >
               {parentCategory.name}
               <ExpandMore className={classes.expandMore} />
             </NavLink>
@@ -92,7 +101,12 @@ const NavDropDownMenus: React.FC = () => {
         onMouseEnter={() => openMenu(open.length - 1)}
         onMouseLeave={() => closeMenu(open.length - 1)}
       >
-        <NavLink to="#" className="category-menu" color="inherit">
+        <NavLink
+          component={RouterLink}
+          to="#"
+          className="category-menu"
+          color="inherit"
+        >
           Brands
           <ExpandMore className={classes.expandMore} />
         </NavLink>

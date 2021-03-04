@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {
@@ -11,12 +11,11 @@ import {
 import { useHistory, useLocation, Link as RouterLink } from "react-router-dom";
 import useNavBarStyles from "./nav-bar-styles";
 import clsx from "clsx";
-import { useAuth } from "../../../context";
+import { useAuth, useFacets } from "../../../context";
 import {
   BuildOutlined,
   PersonOutlineOutlined,
   ShoppingCartOutlined,
-  Menu,
 } from "@material-ui/icons";
 import TopBar from "./TopBar";
 import { NavLink } from "../../common";
@@ -24,6 +23,7 @@ import NavDropDownMenus from "./NavDropDownMenus";
 import SearchAppBar from "./SearchAppBar";
 import { LogInIcon, LogoSecondary, LogOutIcon } from "../../../assets";
 import Hamburger from "hamburger-react";
+import SideBar from "./SideBar";
 
 interface ElevationScrollProps {
   children: React.ReactElement;
@@ -50,6 +50,10 @@ const NavBar: React.FC = () => {
   const history = useHistory();
   const { pathname } = useLocation();
   const { logout, user } = useAuth();
+  const { categories } = useFacets();
+
+  const [openSideBar, setOpenSideBar] = useState(false);
+
   const isLaptop = useMediaQuery(theme.breakpoints.up(1102));
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -64,6 +68,7 @@ const NavBar: React.FC = () => {
               className={classes.logo}
               fill={"/" === pathname ? theme.palette.secondary.main : "#fff"}
               onClick={() => history.push("/")}
+              onKeyDown={(e) => e.key === "Enter" && history.push("/")}
             />
             <Box flexGrow={1} textAlign="center" p="0 2%">
               {!isMobile && (
@@ -137,17 +142,24 @@ const NavBar: React.FC = () => {
               </Box>
               {!isMobile && "Cart"}
             </NavLink>
-            {/* {isMobile && (
-              <NavLink className={classes.link} color="inherit">
-                <Menu className={classes.navLinkIcon} />
-              </NavLink>
-            )} */}
             {isMobile && (
               <NavLink className={classes.link} color="inherit">
                 <Box width="35px" height="42px">
-                  <Hamburger rounded size={22} distance="sm" />
+                  <Hamburger
+                    toggled={openSideBar}
+                    toggle={setOpenSideBar}
+                    rounded
+                    size={22}
+                    distance="sm"
+                  />
                 </Box>
               </NavLink>
+            )}
+            {isMobile && (
+              <SideBar
+                categories={categories}
+                sideBarState={{ openSideBar, setOpenSideBar }}
+              />
             )}
           </Toolbar>
           <Box
@@ -160,7 +172,7 @@ const NavBar: React.FC = () => {
                 <SearchAppBar />
               </Box>
             ) : (
-              <NavDropDownMenus />
+              <NavDropDownMenus categories={categories} />
             )}
           </Box>
         </AppBar>
@@ -168,7 +180,7 @@ const NavBar: React.FC = () => {
       <Toolbar className={classes.toolbar} />
       <Box height="48px" />
       <Box
-        height="32px"
+        height="33px"
         bgcolor={pathname === "/" ? "primary.main" : "transparent"}
       />
     </>

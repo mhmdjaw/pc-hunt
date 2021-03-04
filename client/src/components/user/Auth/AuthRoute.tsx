@@ -38,8 +38,6 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
   };
 
   const handleRender = ({ location }: RouteComponentProps) => {
-    console.log(authType);
-
     return loading ? (
       <LoadingPage />
     ) : proceed() ? (
@@ -62,6 +60,29 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
   };
 
   return <Route {...props} render={handleRender} />;
+  // return (
+  //   <Route {...props}>
+  //     {loading ? (
+  //       <LoadingPage />
+  //     ) : proceed() ? (
+  //       children
+  //     ) : authType === "guest" ? (
+  //       <Redirect
+  //         to={{
+  //           pathname: "/",
+  //           state: { from: location },
+  //         }}
+  //       />
+  //     ) : (
+  //       <Redirect
+  //         to={{
+  //           pathname: "/login",
+  //           state: { from: location },
+  //         }}
+  //       />
+  //     )}
+  //   </Route>
+  // );
 };
 
 export default AuthRoute;

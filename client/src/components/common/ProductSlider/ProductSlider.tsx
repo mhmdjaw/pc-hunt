@@ -95,7 +95,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
                 <ProductCard product={product} />
               </Box>
             ))
-          : [1, 2, 3, 4, 5, 6].map((i) => (
+          : [1, 2, 3, 4].map((i) => (
               <Box key={i} px="8px">
                 <ProductCard loading />
               </Box>

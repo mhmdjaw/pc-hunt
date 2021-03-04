@@ -7,12 +7,14 @@ const useNavLinkStyles = makeStyles((theme) =>
       display: "inline-block",
       whiteSpace: "nowrap",
       cursor: "Pointer",
-      WebkitTapHighlightColor: "transparent",
       fontSize: theme.typography.subtitle1.fontSize,
-      "&:hover, &:focus-visible": {
-        color: theme.palette.secondary.main,
+      "@media(hover: hover) and (pointer: fine)": {
+        "&:hover": {
+          color: theme.palette.secondary.main,
+        },
       },
       "&:focus-visible": {
+        color: theme.palette.secondary.main,
         outline: "3px solid",
         outlineColor: theme.palette.secondary.main,
       },
@@ -20,6 +22,9 @@ const useNavLinkStyles = makeStyles((theme) =>
         padding: "8px 0",
         marginLeft: 0,
       },
+      // "&:active": {
+      //   color: theme.palette.secondary.main,
+      // },
     },
   })
 );

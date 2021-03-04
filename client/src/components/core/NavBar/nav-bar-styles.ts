@@ -5,11 +5,14 @@ const useNavBarStyles = makeStyles((theme) => ({
     marginLeft: "calc(4% - 4px)",
     maxWidth: "224px",
     padding: "4px",
-    "&:hover, &:focus-visible": {
-      cursor: "pointer",
-      fill: theme.palette.secondary.main,
+    "@media(hover: hover) and (pointer: fine)": {
+      "&:hover": {
+        cursor: "pointer",
+        fill: theme.palette.secondary.main,
+      },
     },
     "&:focus-visible": {
+      fill: theme.palette.secondary.main,
       outline: "3px solid !important",
       outlineColor: theme.palette.secondary.main + " !important",
     },

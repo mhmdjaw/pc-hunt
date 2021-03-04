@@ -48,12 +48,18 @@ const Home: React.FC = () => {
       <HomeFeatures features={homeFeatures} />
       <ReviewCarousel reviews={carouselReviews} />
       <HomeLinks links={homeLinks} />
-      <Box mb="200px">
-        <ProductSlider title="Trending Products" products={productsBySell} />
-      </Box>
-      <Box mb="300px">
-        <ProductSlider title="Newest Products" products={productsByArrival} />
-      </Box>
+      {
+        // productsBySell.length !== 0 &&
+        <Box mb="200px">
+          <ProductSlider title="Trending Products" products={productsBySell} />
+        </Box>
+      }
+      {
+        // productsByArrival.length !== 0 &&
+        <Box mb="300px">
+          <ProductSlider title="Newest Products" products={productsByArrival} />
+        </Box>
+      }
     </>
   );
 };
