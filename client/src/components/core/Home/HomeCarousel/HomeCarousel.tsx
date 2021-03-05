@@ -23,7 +23,7 @@ const HomeCarousel: React.FC<HomeCarouselProps> = React.memo(
     const classes = useHomeCarouselStyles();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-    const MotionBox = motion.custom(Box);
+    const MotionBox = motion(Box);
     const {
       topHeadlineVariants,
       bottomHeadlineVariants,

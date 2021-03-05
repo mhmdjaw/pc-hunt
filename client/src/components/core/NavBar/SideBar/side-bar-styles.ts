@@ -2,6 +2,37 @@ import { createStyles, makeStyles } from "@material-ui/core";
 
 const useSideBarStyles = makeStyles((theme) =>
   createStyles({
+    sideBarContainer: {
+      width: "320px",
+      height: "100%",
+      position: "relative",
+      overflowX: "hidden",
+      "& div:not(:first-of-type)": {
+        animation: ".5s cubic-bezier(0.4, 0, 0.2, 1) 0s 1 $slideInFromRight",
+      },
+    },
+    page: {
+      backgroundColor: "#fff",
+      position: "absolute",
+      top: 0,
+      right: 0,
+      left: 0,
+      bottom: 0,
+      overflowY: "auto",
+    },
+    "@keyframes slideInFromRight": {
+      from: { transform: "translateX(100%)" },
+      to: { transform: "none" },
+    },
+    pageExit: {
+      transform: "none",
+    },
+    pageExitActive: {
+      transform: "translateX(100%)",
+      transitionProperty: "transform",
+      transitionDuration: ".5s",
+      transitionTimingFunction: "cubic-bezier(0.8, 0, 0.6, 1)",
+    },
     listItem: {
       "&:active": {
         backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -12,6 +43,7 @@ const useSideBarStyles = makeStyles((theme) =>
     },
     listItemText: {
       fontWeight: 700,
+      textTransform: "uppercase",
     },
     divider: {
       margin: "20px 0",

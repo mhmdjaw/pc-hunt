@@ -60,29 +60,6 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
   };
 
   return <Route {...props} render={handleRender} />;
-  // return (
-  //   <Route {...props}>
-  //     {loading ? (
-  //       <LoadingPage />
-  //     ) : proceed() ? (
-  //       children
-  //     ) : authType === "guest" ? (
-  //       <Redirect
-  //         to={{
-  //           pathname: "/",
-  //           state: { from: location },
-  //         }}
-  //       />
-  //     ) : (
-  //       <Redirect
-  //         to={{
-  //           pathname: "/login",
-  //           state: { from: location },
-  //         }}
-  //       />
-  //     )}
-  //   </Route>
-  // );
 };
 
 export default AuthRoute;

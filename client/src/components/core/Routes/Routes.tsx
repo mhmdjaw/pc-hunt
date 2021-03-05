@@ -68,16 +68,6 @@ const Routes: React.FC = () => {
         </Switch>
       </Router>
     </Suspense>
-    // <Suspense fallback={<LoadingPage />}>
-    //   <HashRouter>
-    //     <Route exact path="/">
-    //       <Home />
-    //     </Route>
-    //     <Route path="/login">
-    //       <Login />
-    //     </Route>
-    //   </HashRouter>
-    // </Suspense>
   );
 };
 
