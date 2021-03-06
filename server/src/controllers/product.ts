@@ -2,10 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { CallbackError } from "mongoose";
 import Product, { IProduct } from "../models/product";
 import formidable, { File } from "formidable";
-import _ from "lodash";
+import _, { isArray } from "lodash";
 import fs from "fs";
 import Category from "../models/category";
 import mongoose from "mongoose";
+import { slugify } from "../helpers";
 
 type Error =
   | (CallbackError & {
@@ -73,7 +74,11 @@ export const create = (req: Request, res: Response): void => {
       }
       const categories = [cat.id, cat.parent];
 
-      const product = new Product({ ...otherFields, categories });
+      const product = new Product({
+        ...otherFields,
+        categories,
+        brand: req.user?.name,
+      });
 
       if (files.image && product.image) {
         // check the image size
@@ -118,6 +123,9 @@ export const remove = (req: Request, res: Response): void => {
 };
 
 export const update = (req: Request, res: Response): void => {
+  if (slugify(req.user?.name as string) !== req.product.brand) {
+    res.status(400).json({ error: "Product doesn't belong to this brand" });
+  }
   const form = new formidable.IncomingForm();
   form.keepExtensions = true;
 
@@ -141,10 +149,11 @@ export const update = (req: Request, res: Response): void => {
       const categories = [cat.id, cat.parent];
 
       let product = req.product;
-      product = (_.extend(product, {
+      product = _.extend<IProduct>(product, {
         ...otherFields,
+        brand: req.user?.name,
         categories,
-      }) as unknown) as IProduct;
+      });
 
       if (files.image && product.image) {
         // check the image size
@@ -202,6 +211,11 @@ interface FindArgs {
     $regex: string;
     $options: "i";
   };
+  brand?:
+    | {
+        $in: string[];
+      }
+    | string;
 }
 
 export const listBySearch = (req: Request, res: Response): void => {
@@ -216,6 +230,11 @@ export const listBySearch = (req: Request, res: Response): void => {
     findArgs.categories = new mongoose.Types.ObjectId(
       req.query.category as string
     );
+  }
+  if (req.query.brand) {
+    findArgs.brand = isArray(req.query.brand)
+      ? { $in: req.query.brand as string[] }
+      : (req.query.brand as string);
   }
   if (req.query.price) {
     const range = (req.query.price as string).split("to");

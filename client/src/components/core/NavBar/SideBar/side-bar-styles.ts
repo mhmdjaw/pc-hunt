@@ -19,6 +19,9 @@ const useSideBarStyles = makeStyles((theme) =>
       left: 0,
       bottom: 0,
       overflowY: "auto",
+      transitionProperty: "transform,filter",
+      transitionDuration: ".5s",
+      transitionTimingFunction: "cubic-bezier(0.8, 0, 0.6, 1)",
     },
     "@keyframes slideInFromRight": {
       from: { transform: "translateX(100%)" },
@@ -32,6 +35,13 @@ const useSideBarStyles = makeStyles((theme) =>
       transitionProperty: "transform",
       transitionDuration: ".5s",
       transitionTimingFunction: "cubic-bezier(0.8, 0, 0.6, 1)",
+    },
+    subPageOpen: {
+      transitionProperty: "transform,filter",
+      transitionDuration: ".5s",
+      transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+      transform: "translateX(-100px)",
+      filter: "brightness(0.5)",
     },
     listItem: {
       "&:active": {

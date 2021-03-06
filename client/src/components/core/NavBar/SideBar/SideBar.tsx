@@ -14,10 +14,14 @@ import { LogOutIcon } from "../../../../assets";
 import { useAuth } from "../../../../context";
 import { v4 as uuidv4 } from "uuid";
 import clsx from "clsx";
+import { Brand } from "../../../../api/brand";
 const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 interface SideBarProps {
-  categories: Category[];
+  facets: {
+    categories: Category[];
+    brands: Brand[];
+  };
   sideBarState: {
     openSideBar: boolean;
     setOpenSideBar: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,7 +48,7 @@ interface SideBarPage {
 }
 
 const SideBar: React.FC<SideBarProps> = ({
-  categories,
+  facets: { categories, brands },
   sideBarState: { openSideBar, setOpenSideBar },
 }: SideBarProps) => {
   const classes = useSideBarStyles();
@@ -53,8 +57,8 @@ const SideBar: React.FC<SideBarProps> = ({
   const [open, setOpen] = useState<boolean[]>([]);
 
   const sideBarItems: SideBarItem[] = useMemo(
-    () =>
-      categories.map(
+    () => [
+      ...categories.map(
         (category): SideBarItem => ({
           type: "category",
           name: category.name,
@@ -63,7 +67,17 @@ const SideBar: React.FC<SideBarProps> = ({
           parent: category.parent.slug,
         })
       ),
-    [categories]
+      ...brands.map(
+        (brand): SideBarItem => ({
+          type: "brand",
+          name: brand.name,
+          slug: brand.slug,
+          hasList: false,
+          parent: "root",
+        })
+      ),
+    ],
+    [categories, brands]
   );
 
   const closeSideBar = () => {
@@ -141,7 +155,11 @@ const SideBar: React.FC<SideBarProps> = ({
       onOpen={toggleDrawer(true)}
     >
       <div className={classes.sideBarContainer}>
-        <div className={classes.page}>
+        <div
+          className={clsx(classes.page, {
+            [classes.subPageOpen]: sideBarPages.length > 0 && open[0],
+          })}
+        >
           <List component="nav">
             <ListItem
               className={classes.listItem}
@@ -215,6 +233,7 @@ const SideBar: React.FC<SideBarProps> = ({
             className={clsx(classes.page, {
               [classes.pageExit]: !open[i],
               [classes.pageExitActive]: !open[i],
+              [classes.subPageOpen]: i < sideBarPages.length - 1 && open[i + 1],
             })}
           >
             <List>

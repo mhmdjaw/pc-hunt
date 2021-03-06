@@ -50,7 +50,7 @@ const NavBar: React.FC = () => {
   const history = useHistory();
   const { pathname } = useLocation();
   const { logout, user } = useAuth();
-  const { categories } = useFacets();
+  const { categories, brands } = useFacets();
 
   const [openSideBar, setOpenSideBar] = useState(false);
 
@@ -157,7 +157,7 @@ const NavBar: React.FC = () => {
             )}
             {isMobile && (
               <SideBar
-                categories={categories}
+                facets={{ categories, brands }}
                 sideBarState={{ openSideBar, setOpenSideBar }}
               />
             )}
@@ -172,7 +172,7 @@ const NavBar: React.FC = () => {
                 <SearchAppBar />
               </Box>
             ) : (
-              <NavDropDownMenus categories={categories} />
+              <NavDropDownMenus facets={{ categories, brands }} />
             )}
           </Box>
         </AppBar>

@@ -7,12 +7,9 @@ export interface Product {
   description: string;
   price: number;
   categories: Category[] | string[];
+  brand: string;
   quantity: number;
   sold: number;
-  // image: {
-  //   data: Buffer;
-  //   contentType: string;
-  // };
 }
 
 export interface SearchParams {

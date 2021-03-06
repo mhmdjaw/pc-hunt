@@ -6,16 +6,20 @@ import { Category } from "../../../../api/category";
 import { NavLink } from "../../../common";
 import { Link as RouterLink } from "react-router-dom";
 import useNavDropDownMenusStyles from "./nav-drop-down-menus-styes";
+import { Brand } from "../../../../api/brand";
 
 interface NavDropDownMenusProps {
-  categories: Category[];
+  facets: {
+    categories: Category[];
+    brands: Brand[];
+  };
 }
 
 const getNumberOfMenus = (categories: Category[]) =>
   categories.filter((category) => category.parent.slug === "root").length;
 
 const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
-  categories,
+  facets: { categories, brands },
 }: NavDropDownMenusProps) => {
   const classes = useNavDropDownMenusStyles();
 
@@ -24,20 +28,26 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
     new Array(getNumberOfMenus(categories) + 1).fill(false)
   );
 
-  const openMenu = (i: number) => {
-    open[i] = true;
+  const toggleMenu = (isOpen: boolean, i: number) => {
+    open[i] = isOpen;
     setOpen([...open]);
   };
 
-  const closeMenu = (i: number) => {
-    open[i] = false;
-    setOpen([...open]);
-  };
-
-  const handleMenuItemClick = (slug: string, i: number) => {
-    closeMenu(i);
+  const handleCategoryClick = (slug: string, i: number) => {
+    toggleMenu(false, i);
     // navigate to category results using slug
     console.log(slug);
+  };
+
+  const handleBrandClick = (slug: string) => {
+    toggleMenu(false, open.length - 1);
+    if (slug === "brands") {
+      // show all brands
+      console.log("brands");
+    } else {
+      // navigate to brand results using slug
+      console.log(slug);
+    }
   };
 
   return (
@@ -50,14 +60,15 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
             className={clsx(classes.categoryMenuContainer, {
               [classes.dropDownMenuHover]: open[i],
             })}
-            onMouseEnter={() => openMenu(i)}
-            onMouseLeave={() => closeMenu(i)}
+            onMouseEnter={() => toggleMenu(true, i)}
+            onMouseLeave={() => toggleMenu(false, i)}
           >
             <NavLink
               component={RouterLink}
               to="#"
               className="category-menu"
               color="inherit"
+              onClick={() => handleCategoryClick(parentCategory.slug, i)}
             >
               {parentCategory.name}
               <ExpandMore className={classes.expandMore} />
@@ -77,7 +88,7 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
                           className={classes.dropDownItem}
                           button
                           onClick={() =>
-                            handleMenuItemClick(
+                            handleCategoryClick(
                               j < 8 ? category.slug : category.parent.slug,
                               i
                             )
@@ -98,14 +109,15 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
         className={clsx(classes.categoryMenuContainer, {
           [classes.dropDownMenuHover]: open[open.length - 1],
         })}
-        onMouseEnter={() => openMenu(open.length - 1)}
-        onMouseLeave={() => closeMenu(open.length - 1)}
+        onMouseEnter={() => toggleMenu(true, open.length - 1)}
+        onMouseLeave={() => toggleMenu(false, open.length - 1)}
       >
         <NavLink
           component={RouterLink}
           to="#"
           className="category-menu"
           color="inherit"
+          onClick={() => handleBrandClick("brands")}
         >
           Brands
           <ExpandMore className={classes.expandMore} />
@@ -113,27 +125,21 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
 
         <Paper className={classes.dropDownMenu}>
           <List>
-            <ListItem
-              className={classes.dropDownItem}
-              button
-              onClick={() => handleMenuItemClick("slug", open.length - 1)}
-            >
-              <ListItemText primary="abbas" />
-            </ListItem>
-            <ListItem
-              className={classes.dropDownItem}
-              button
-              onClick={() => handleMenuItemClick("slug", open.length - 1)}
-            >
-              <ListItemText primary="abbas" />
-            </ListItem>
-            <ListItem
-              className={classes.dropDownItem}
-              button
-              onClick={() => handleMenuItemClick("slug", open.length - 1)}
-            >
-              <ListItemText primary="abbas" />
-            </ListItem>
+            {brands.map(
+              (brand, i) =>
+                i < 9 && (
+                  <ListItem
+                    key={i}
+                    className={classes.dropDownItem}
+                    button
+                    onClick={() =>
+                      handleBrandClick(i < 8 ? brand.slug : "brands")
+                    }
+                  >
+                    <ListItemText primary={i < 8 ? brand.name : "More..."} />
+                  </ListItem>
+                )
+            )}
           </List>
         </Paper>
       </Box>
