@@ -1,4 +1,4 @@
-const slugify = (string: string): string => {
+export const slugify = (string: string): string => {
   const a =
     "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
   const b =
@@ -14,5 +14,3 @@ const slugify = (string: string): string => {
     .replace(/[^\w-]+/g, "") // Remove all non-word characters
     .replace(/--+/g, "-"); // Replace multiple - with single -
 };
-
-export default slugify;

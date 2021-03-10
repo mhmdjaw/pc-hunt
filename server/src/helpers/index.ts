@@ -1,3 +1,4 @@
-export { default as slugify } from "./helper-functions";
-export { default as mongooseConfig } from "./mongoose-config";
-export { default as options } from "./passport-local-mongoose-options";
+export { slugify } from "./helper-functions";
+export { mongooseConfig } from "./mongoose-config";
+export { options } from "./passport-local-mongoose-options";
+export { priceRanges } from "./price-ranges";

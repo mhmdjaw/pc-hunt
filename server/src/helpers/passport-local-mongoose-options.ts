@@ -16,7 +16,7 @@ const someValidationErrorExists = (password: string): boolean => {
   return passwordRegex.test(password);
 };
 
-const options = {
+export const options = {
   usernameField: "email",
   errorMessages: {},
   limitAttempts: true,
@@ -30,5 +30,3 @@ options.errorMessages = {
   IncorrectUsernameError: "Password or email are incorrect",
   UserExistsError: "A user with the given email is already registered",
 };
-
-export default options;

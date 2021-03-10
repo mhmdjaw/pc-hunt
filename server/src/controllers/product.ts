@@ -6,7 +6,7 @@ import _, { isArray } from "lodash";
 import fs from "fs";
 import Category from "../models/category";
 import mongoose from "mongoose";
-import { slugify } from "../helpers";
+import { priceRanges, slugify } from "../helpers";
 
 type Error =
   | (CallbackError & {
@@ -219,8 +219,8 @@ interface FindArgs {
 }
 
 export const listBySearch = (req: Request, res: Response): void => {
-  const order = req.query.order ? req.query.order : "desc";
-  const sortBy = req.query.sortBy ? req.query.sortBy : "sold";
+  const order = req.query.order ? Number(req.query.order) : -1;
+  const sortBy = req.query.sortBy ? req.query.sortBy : 1;
   const limit = req.query.limit ? Number(req.query.limit) : 100;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
 
@@ -250,21 +250,37 @@ export const listBySearch = (req: Request, res: Response): void => {
     };
   }
 
-  Product.find(findArgs)
-    .select("-image")
-    // .populate("categories")
-    .sort([[sortBy, order]])
-    .skip(skip)
-    .limit(limit)
-    .exec((err, products) => {
+  Product.aggregate()
+    .facet({
+      priceRanges: [
+        { $match: findArgs },
+        {
+          $bucket: {
+            groupBy: "$price",
+            boundaries: priceRanges,
+            default: 3000,
+            output: { count: { $sum: 1 } },
+          },
+        },
+      ],
+      brands: [
+        { $match: findArgs },
+        { $group: { _id: "$brand", count: { $sum: 1 } } },
+      ],
+      products: [
+        { $match: findArgs },
+        { $project: { image: 0 } },
+        { $sort: { [sortBy as string]: order } },
+        { $skip: skip },
+        { $limit: limit },
+      ],
+    })
+    .exec((err, data) => {
       if (err) {
-        res.status(400).json({
-          error: "Products not found",
-        });
+        res.status(400).json(err);
         return;
       }
-
-      res.json(products);
+      res.json(data[0]);
     });
 };
 
