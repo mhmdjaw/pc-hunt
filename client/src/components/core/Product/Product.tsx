@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import {
   Box,
@@ -15,7 +15,7 @@ import { Alert } from "@material-ui/lab";
 import { Add, Delete } from "@material-ui/icons";
 import useProductStyles from "./product-styles";
 import { createProduct } from "../../../api/product";
-import { Category, getCategories } from "../../../api/category";
+import { useFacets } from "../../../context";
 
 interface Values {
   name: string;
@@ -28,7 +28,6 @@ interface Values {
 interface State {
   error: string | undefined;
   success: string | undefined;
-  categories: Category[];
   lastSubmission: {
     values: Values;
     image: File | null;
@@ -75,34 +74,15 @@ const Product: React.FC = () => {
   const classes = useProductStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const { categories } = useFacets();
 
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
-    categories: [],
     lastSubmission: { values: { ...initialValues }, image: null },
     imageURL: "",
     image: null,
   });
-
-  useEffect(() => {
-    getCategories()
-      .then((response) => {
-        const categories = response.data.filter(
-          (category) => category.parent.slug !== "root"
-        );
-        setState((s) => ({
-          ...s,
-          categories: categories,
-        }));
-      })
-      .catch((err) => {
-        setState((s) => ({
-          ...s,
-          error: err.response.data.error,
-        }));
-      });
-  }, []);
 
   const onSubmit = (
     formikValues: Values,
@@ -221,11 +201,14 @@ const Product: React.FC = () => {
                     select
                     fullWidth
                   >
-                    {state.categories.map((category, i) => (
-                      <MenuItem key={i} value={category._id}>
-                        {category.name}
-                      </MenuItem>
-                    ))}
+                    {categories.map(
+                      (category, i) =>
+                        category.parent.slug !== "root" && (
+                          <MenuItem key={i} value={category._id}>
+                            {category.name}
+                          </MenuItem>
+                        )
+                    )}
                   </Field>
                 </Box>
                 <Box

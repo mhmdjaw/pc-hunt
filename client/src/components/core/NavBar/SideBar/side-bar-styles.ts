@@ -11,6 +11,10 @@ const useSideBarStyles = makeStyles((theme) =>
         animation: ".5s cubic-bezier(0.4, 0, 0.2, 1) 0s 1 $slideInFromRight",
       },
     },
+    "@keyframes slideInFromRight": {
+      from: { transform: "translateX(100%)" },
+      to: { transform: "none" },
+    },
     page: {
       backgroundColor: "#fff",
       position: "absolute",
@@ -23,22 +27,10 @@ const useSideBarStyles = makeStyles((theme) =>
       transitionDuration: ".5s",
       transitionTimingFunction: "cubic-bezier(0.8, 0, 0.6, 1)",
     },
-    "@keyframes slideInFromRight": {
-      from: { transform: "translateX(100%)" },
-      to: { transform: "none" },
-    },
-    pageExit: {
-      transform: "none",
-    },
     pageExitActive: {
       transform: "translateX(100%)",
-      transitionProperty: "transform",
-      transitionDuration: ".5s",
-      transitionTimingFunction: "cubic-bezier(0.8, 0, 0.6, 1)",
     },
     subPageOpen: {
-      transitionProperty: "transform,filter",
-      transitionDuration: ".5s",
       transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
       transform: "translateX(-100px)",
       filter: "brightness(0.5)",

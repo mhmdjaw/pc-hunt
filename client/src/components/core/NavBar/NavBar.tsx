@@ -66,7 +66,7 @@ const NavBar: React.FC = () => {
             <LogoSecondary
               tabIndex={0}
               className={classes.logo}
-              fill={"/" === pathname ? theme.palette.secondary.main : "#fff"}
+              fill={pathname === "/" ? theme.palette.secondary.main : "#fff"}
               onClick={() => history.push("/")}
               onKeyDown={(e) => e.key === "Enter" && history.push("/")}
             />
@@ -109,7 +109,7 @@ const NavBar: React.FC = () => {
                 className={classes.link}
                 component={RouterLink}
                 to="/account"
-                color={"/account" === pathname ? "secondary" : "inherit"}
+                color={pathname === "/account" ? "secondary" : "inherit"}
               >
                 <PersonOutlineOutlined
                   className={clsx(classes.navLinkIcon, "account")}
@@ -121,7 +121,7 @@ const NavBar: React.FC = () => {
               className={classes.link}
               component={RouterLink}
               to="#"
-              color={"/pc-builder" === pathname ? "secondary" : "inherit"}
+              color={pathname === "/pc-builder" ? "secondary" : "inherit"}
             >
               <BuildOutlined className={classes.navLinkIcon} />
               {!isMobile && "PC Builder"}
@@ -130,7 +130,7 @@ const NavBar: React.FC = () => {
               className={clsx(classes.link, "cart")}
               component={RouterLink}
               to="#"
-              color={"/cart" === pathname ? "secondary" : "inherit"}
+              color={pathname === "/cart" ? "secondary" : "inherit"}
             >
               <Box
                 className={clsx(classes.navLinkIcon, "cart")}

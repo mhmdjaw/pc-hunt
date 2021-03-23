@@ -60,7 +60,7 @@ const accountFeaturesItems: AccountFeaturesItems[] = [
     Svg: CategoryIcon,
     title: "Create Category",
     subtitle: "Create a new category",
-    url: "/category",
+    url: "/category/create",
     role: 1,
   },
   {

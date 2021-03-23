@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { Box, MenuItem, Paper, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import { ContainedButton } from "../../common";
 import { shallowEqual } from "recompose";
-import { Category, createCategory, getCategories } from "../../../api/category";
+import { createCategory } from "../../../api/category";
 import { Alert } from "@material-ui/lab";
 import useCategoryStyles from "./category-styles";
+import { useFacets } from "../../../context";
 
 interface Values {
   parent: string;
@@ -16,7 +17,6 @@ interface Values {
 interface State {
   error: string | undefined;
   success: string | undefined;
-  categories: Category[];
   lastSubmission: Values;
 }
 
@@ -40,32 +40,13 @@ const validate = (values: Values) => {
 
 const CategoryForm: React.FC = () => {
   const classes = useCategoryStyles();
+  const { categories } = useFacets();
 
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
-    categories: [],
     lastSubmission: { ...initialValues },
   });
-
-  useEffect(() => {
-    getCategories()
-      .then((response) => {
-        const categories = response.data.filter(
-          (category) => category.parent.slug === "root"
-        );
-        setState((s) => ({
-          ...s,
-          categories: categories,
-        }));
-      })
-      .catch((err) => {
-        setState((s) => ({
-          ...s,
-          error: err.response.data.error,
-        }));
-      });
-  }, []);
 
   const onSubmit = (
     values: Values,
@@ -126,11 +107,14 @@ const CategoryForm: React.FC = () => {
                     select
                     fullWidth
                   >
-                    {state.categories.map((category, i) => (
-                      <MenuItem key={i} value={category._id}>
-                        {category.name}
-                      </MenuItem>
-                    ))}
+                    {categories.map(
+                      (category, i) =>
+                        category.parent.slug === "root" && (
+                          <MenuItem key={i} value={category._id}>
+                            {category.name}
+                          </MenuItem>
+                        )
+                    )}
                   </Field>
                 </Box>
                 <Box mb="5vh" maxWidth="500px">

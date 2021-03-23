@@ -12,12 +12,28 @@ export interface Product {
   sold: number;
 }
 
+export interface SearchResults {
+  priceRanges: {
+    _id: number;
+    count: number;
+  }[];
+  brands: {
+    _id: string;
+    count: number;
+  }[];
+  products: Product[];
+  count: {
+    numberOfResults: number;
+  }[];
+}
+
 export interface SearchParams {
-  order?: string;
+  order?: 1 | -1;
   sortBy?: string;
   limit?: number;
   skip?: number;
   category?: string;
+  brand?: string[];
   price?: string;
   keywords?: string;
 }

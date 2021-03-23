@@ -1,7 +1,7 @@
 import { Box, List, ListItem, ListItemText, Paper } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Category } from "../../../../api/category";
 import { NavLink } from "../../../common";
 import { Link as RouterLink } from "react-router-dom";
@@ -15,17 +15,20 @@ interface NavDropDownMenusProps {
   };
 }
 
-const getNumberOfMenus = (categories: Category[]) =>
-  categories.filter((category) => category.parent.slug === "root").length;
-
 const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
   facets: { categories, brands },
 }: NavDropDownMenusProps) => {
   const classes = useNavDropDownMenusStyles();
 
+  const numberOfMenus = useMemo(
+    () =>
+      categories.filter((category) => category.parent.slug === "root").length,
+    [categories]
+  );
+
   //array of menu toggle state
   const [open, setOpen] = useState<boolean[]>(
-    new Array(getNumberOfMenus(categories) + 1).fill(false)
+    new Array(numberOfMenus + 1).fill(false)
   );
 
   const toggleMenu = (isOpen: boolean, i: number) => {

@@ -21,7 +21,7 @@ const useProvideAuth = (): AuthContext => {
         return response;
       },
       (error) => {
-        if (error.response.status === 403) {
+        if (error.response && error.response.status === 403) {
           setState({
             isLoading: false,
             user: null,

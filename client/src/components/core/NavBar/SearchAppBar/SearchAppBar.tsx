@@ -3,7 +3,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import { Box, InputBase, Popper } from "@material-ui/core";
 import { Autocomplete, FilterOptionsState } from "@material-ui/lab";
 import useSearchAppBarStyles from "./search-app-bar-styles";
-import { Product } from "../../../../api/product";
+import { getSearchResults, Product } from "../../../../api/product";
 import { asyncScheduler, BehaviorSubject, scheduled } from "rxjs";
 import {
   catchError,
@@ -13,8 +13,6 @@ import {
   map,
   switchMap,
 } from "rxjs/operators";
-import { ajax } from "rxjs/ajax";
-import { API } from "../../../../config";
 import clsx from "clsx";
 import { useFacets } from "../../../../context";
 import parse from "autosuggest-highlight/parse";
@@ -35,8 +33,8 @@ const searchResultObs$ = searchSubject.pipe(
   debounceTime(500),
   distinctUntilChanged(),
   switchMap((val) =>
-    ajax(`${API}/products/search?keywords=${val}&limit=10`).pipe(
-      map((res) => res.response),
+    getSearchResults({ keywords: val, limit: 10 }, { encode: false }).pipe(
+      map((res) => res.response.products),
       catchError((err) => {
         return scheduled(err, asyncScheduler);
       })
@@ -70,14 +68,10 @@ const filterOptions = (
   return [...sortedCategories, ...sortedProducts];
 };
 
-const SearchAppBar: React.FC = () => {
-  const classes = useSearchAppBarStyles();
-  const [options, setOptions] = useState<SearchOption[]>([]);
-  const [closePopper, setClosePopper] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-
+const useCategoriesOptions = (): SearchOption[] => {
   const { categories } = useFacets();
-  const categoriesOptions: SearchOption[] = useMemo(
+
+  return useMemo(
     () => [
       ...categories.map(
         (category): SearchOption => ({
@@ -90,6 +84,15 @@ const SearchAppBar: React.FC = () => {
     ],
     [categories]
   );
+};
+
+const SearchAppBar: React.FC = () => {
+  const classes = useSearchAppBarStyles();
+  const [options, setOptions] = useState<SearchOption[]>([]);
+  const [closePopper, setClosePopper] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const categoriesOptions = useCategoriesOptions();
 
   useEffect(() => {
     const subscription = searchResultObs$.subscribe({

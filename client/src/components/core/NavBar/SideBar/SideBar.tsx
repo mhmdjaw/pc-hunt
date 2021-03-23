@@ -231,7 +231,6 @@ const SideBar: React.FC<SideBarProps> = ({
           <div
             key={page.id}
             className={clsx(classes.page, {
-              [classes.pageExit]: !open[i],
               [classes.pageExitActive]: !open[i],
               [classes.subPageOpen]: i < sideBarPages.length - 1 && open[i + 1],
             })}

@@ -10,37 +10,48 @@ import HomeLinks from "./HomeLinks";
 import homeLinks from "./home-links";
 import { ProductSlider } from "../../common";
 import { getProducts, Product } from "../../../api/product";
+import axios from "axios";
+import { useCancelToken } from "../../../helpers";
 
 const Home: React.FC = () => {
+  const cancelSource = useCancelToken();
   const [productsBySell, setProductsBySell] = useState<Product[]>([]);
   const [productsByArrival, setProductsByArrival] = useState<Product[]>([]);
 
   const loadProductsBySell = () => {
-    getProducts({ sortBy: "sold", limit: 10 })
+    getProducts({ sortBy: "sold", limit: 10 }, cancelSource.current?.token)
       .then((response) => {
-        setProductsBySell(response.data);
+        setProductsBySell([...response.data.products]);
       })
       .catch((err) => {
-        console.log(err.response.data.error);
+        if (!axios.isCancel(err)) {
+          console.log(err.response.data.error);
+        }
       });
   };
 
   const loadProductsByArrival = () => {
-    getProducts({ sortBy: "createdAt", limit: 10 })
+    getProducts({ sortBy: "createdAt", limit: 10 }, cancelSource.current?.token)
       .then((response) => {
-        setProductsByArrival(response.data);
+        setProductsByArrival([...response.data.products]);
       })
       .catch((err) => {
-        console.log(err.response.data.error);
+        if (!axios.isCancel(err)) {
+          console.log(err.response.data.error);
+        }
       });
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      loadProductsBySell();
-      loadProductsByArrival();
-    }, 1500);
-  }, []);
+  useEffect(
+    () => {
+      setTimeout(() => {
+        loadProductsBySell();
+        loadProductsByArrival();
+      }, 1500);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <>

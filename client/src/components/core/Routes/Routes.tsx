@@ -26,6 +26,7 @@ const Footer = lazy(() => import("../Footer"));
 const CategoryForm = lazy(() => import("../CategoryForm"));
 const Login = lazy(() => import("../../user/Login"));
 const Signup = lazy(() => import("../../user/Signup"));
+const Shop = lazy(() => import("../Shop"));
 
 const Routes: React.FC = () => {
   return (
@@ -56,11 +57,22 @@ const Routes: React.FC = () => {
                 path="/account/update"
                 authType="protected"
               ></AuthRoute>
-              <AuthRoute path="/category" authType="admin">
+              <AuthRoute path="/category/create" authType="admin">
                 <CategoryForm />
               </AuthRoute>
               <AuthRoute path="/product" authType="admin">
                 <Product />
+              </AuthRoute>
+              <AuthRoute
+                path={[
+                  "/category/:categorySlug",
+                  "/brand/:brandSlug",
+                  "/search/:keywords",
+                  "/shop",
+                ]}
+                authType="unprotected"
+              >
+                <Shop />
               </AuthRoute>
               <Footer />
             </ProvideFacets>
