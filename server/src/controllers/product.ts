@@ -175,35 +175,6 @@ export const update = (req: Request, res: Response): void => {
   });
 };
 
-/**
- * sell / arrival
- * by sell = /products?sortBy=sold&order=desc&limit=4
- * by arrival = /products?sortBy=createdAt&order=desc&limit=4
- * if no params are used, then all products are returned
- */
-
-export const list = (req: Request, res: Response): void => {
-  const order = req.query.order ? req.query.order : "asc";
-  const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-  const limit = req.query.limit ? Number(req.query.limit) : 6;
-
-  Product.find()
-    .select("-image")
-    // .populate("categories")
-    .sort([[sortBy, order]])
-    .limit(limit)
-    .exec((err, products) => {
-      if (err) {
-        res.status(400).json({
-          error: "Products not found",
-        });
-        return;
-      }
-
-      res.json(products);
-    });
-};
-
 interface FindArgs {
   categories?: mongoose.Types.ObjectId;
   price?: { $gte: number; $lte: number };
@@ -220,7 +191,7 @@ interface FindArgs {
 
 export const listBySearch = (req: Request, res: Response): void => {
   const order = req.query.order ? Number(req.query.order) : -1;
-  const sortBy = req.query.sortBy ? req.query.sortBy : 1;
+  const sortBy = req.query.sortBy ? req.query.sortBy : "sold";
   const limit = req.query.limit ? Number(req.query.limit) : 100;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
 
@@ -250,10 +221,15 @@ export const listBySearch = (req: Request, res: Response): void => {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { price, ...priceRangesArgs } = findArgs;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { brand, ...brandsArgs } = findArgs;
+
   Product.aggregate()
     .facet({
       priceRanges: [
-        { $match: findArgs },
+        { $match: priceRangesArgs },
         {
           $bucket: {
             groupBy: "$price",
@@ -264,7 +240,7 @@ export const listBySearch = (req: Request, res: Response): void => {
         },
       ],
       brands: [
-        { $match: findArgs },
+        { $match: brandsArgs },
         { $group: { _id: "$brand", count: { $sum: 1 } } },
       ],
       products: [
@@ -274,10 +250,11 @@ export const listBySearch = (req: Request, res: Response): void => {
         { $skip: skip },
         { $limit: limit },
       ],
+      count: [{ $match: findArgs }, { $count: "numberOfResults" }],
     })
     .exec((err, data) => {
       if (err) {
-        res.status(400).json(err);
+        res.status(400).json({ error: "Products not found" });
         return;
       }
       res.json(data[0]);
@@ -288,10 +265,6 @@ export const listBySearch = (req: Request, res: Response): void => {
  * find the products based on the req product categories
  * other products with the same categories will be returned
  */
-
-interface SearchArgs {
-  [key: string]: { $gte: number; $lte: number } | string;
-}
 
 export const listRelated = (req: Request, res: Response): void => {
   const limit = req.query.limit ? Number(req.query.limit) : 6;
@@ -326,51 +299,6 @@ export const image = (
   }
 
   next();
-};
-
-export const listByFilters = (req: Request, res: Response): void => {
-  const order = req.body.order ? req.body.order : "desc";
-  const sortBy = req.body.sortBy ? req.body.sortBy : "_id";
-  const limit = req.body.limit ? Number(req.body.limit) : 100;
-  const skip = Number(req.body.skip);
-  const searchArgs: SearchArgs = {};
-
-  // console.log(order, sortBy, limit, skip, req.body.filters);
-  // console.log("findArgs", findArgs);
-
-  for (const key in req.body.filters) {
-    if (req.body.filters[key].length > 0) {
-      if (key === "price") {
-        // gte -  greater than price [0-10]
-        // lte - less than
-        searchArgs[key] = {
-          $gte: req.body.filters[key][0],
-          $lte: req.body.filters[key][1],
-        };
-      } else {
-        searchArgs[key] = req.body.filters[key];
-      }
-    }
-  }
-
-  Product.find(searchArgs)
-    .select("-image")
-    .populate("categories")
-    .sort([[sortBy, order]])
-    .skip(skip)
-    .limit(limit)
-    .exec((err, data) => {
-      if (err) {
-        res.status(400).json({
-          error: "Products not found",
-        });
-        return;
-      }
-      res.json({
-        size: data.length,
-        data,
-      });
-    });
 };
 
 const saveProduct = (res: Response, product: IProduct): void => {
