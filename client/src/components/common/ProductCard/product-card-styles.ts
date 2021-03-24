@@ -22,7 +22,6 @@ const useProductCardStyles = makeStyles((theme) =>
         left: 0,
         right: 0,
         bottom: 16,
-        overflow: "hidden",
       },
     },
     img: {
@@ -39,21 +38,24 @@ const useProductCardStyles = makeStyles((theme) =>
       cursor: "pointer",
       "&:hover": {
         "& $cardAction": {
-          transform: "translateY(0)",
+          maxHeight: "48px",
+          padding: 10,
           opacity: 1,
         },
       },
     },
     cardAction: {
       position: "absolute",
-      width: "100%",
+      width: "calc(100% + 32px)",
       bottom: 0,
+      left: -16,
       textAlign: "center",
       fontWeight: 500,
-      padding: "10px",
+      padding: 0,
       zIndex: 2,
-      transition: "background-color .15s, transform .5s, opacity 0.7s",
-      transform: "translateY(100%)",
+      transition:
+        "background-color .15s, max-height .5s, opacity 0.7s, padding .5s",
+      maxHeight: 0,
       opacity: 0,
       "&:hover": {
         backgroundColor: theme.palette.primary.dark,

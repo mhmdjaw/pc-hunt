@@ -21,7 +21,7 @@ const HideOnScroll: React.FC<HideOnScrollProps> = ({
   });
 
   return (
-    <Collapse appear={false} unmountOnExit in={!trigger}>
+    <Collapse appear={false} in={!trigger}>
       {children}
     </Collapse>
   );

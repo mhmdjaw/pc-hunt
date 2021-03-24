@@ -34,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <Card className={classes.card}>
-      <Box className={classes.actionArea} tabIndex={0}></Box>
+      <Box className={classes.actionArea} tabIndex={0} />
       <CardContent>
         <Box className={classes.imgContainer}>
           <Box>

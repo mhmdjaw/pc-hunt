@@ -5,80 +5,32 @@ import {
   Box,
   Checkbox,
   Collapse,
-  createStyles,
   FormControl,
   FormControlLabel,
   FormGroup,
+  Grid,
   List,
   ListItem,
   ListItemText,
-  makeStyles,
   Radio,
   RadioGroup,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
-import { CheckBox, ExpandMore } from "@material-ui/icons";
+import { ExpandMore } from "@material-ui/icons";
 import axios from "axios";
 import clsx from "clsx";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { getProducts, Product, SearchParams } from "../../../api/product";
 import { useFacets } from "../../../context";
 import { newToken, useCancelToken } from "../../../helpers";
 import priceRanges from "./price-ranges";
 import sort from "./sort";
 import { v4 as uuidv4 } from "uuid";
-
-const useShopStyles = makeStyles((theme) =>
-  createStyles({
-    productsContainer: {
-      display: "flex",
-      padding: "60px 3vw 90px",
-      [theme.breakpoints.down("sm")]: {
-        flexDirection: "column",
-      },
-    },
-    facetContainer: {
-      paddingBottom: "30px",
-      [theme.breakpoints.up("md")]: {
-        flex: "1 1 25%",
-      },
-    },
-    productListContainer: {
-      [theme.breakpoints.up("md")]: {
-        flex: "1 1 75%",
-        paddingLeft: "24px",
-      },
-    },
-    accordionHeading: {
-      fontWeight: 700,
-    },
-    accordionExpandIcon: {
-      color: "#000",
-    },
-    categoryList: {
-      padding: "8px 0 16px",
-    },
-    listItem: {
-      "&:active": {
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
-      },
-    },
-    parentCategoryText: {
-      fontWeight: 500,
-    },
-    categoryExpandIcon: {
-      transition: theme.transitions.create("transform"),
-      transform: "rotate(0deg)",
-    },
-    categoryExpanded: {
-      transform: "rotate(180deg)",
-    },
-    nested: {
-      paddingLeft: "32px",
-    },
-  })
-);
+import { ContainedButton, ProductCard } from "../../common";
+import useShopStyles from "./shop-styles";
 
 interface UrlParams {
   brandSlug?: string;
@@ -111,13 +63,45 @@ interface FilterOptions {
   brands: Brand[];
 }
 
+interface ProductItem {
+  id: string;
+  product: Product;
+}
+
+interface ProductListProps {
+  productList: ProductItem[];
+  loading: boolean;
+}
+
+const ProductList: React.FC<ProductListProps> = ({
+  productList,
+  loading,
+}: ProductListProps) => {
+  return (
+    <Grid container justify="flex-start" spacing={3}>
+      {loading
+        ? [1, 2, 3, 4].map((i) => (
+            <Grid key={i} item xs={6} sm={4} lg={3}>
+              <ProductCard loading />
+            </Grid>
+          ))
+        : productList.map((product) => (
+            <Grid key={product.id} item xs={6} sm={4} lg={3}>
+              <ProductCard product={product.product} />
+            </Grid>
+          ))}
+    </Grid>
+  );
+};
+
 const Shop: React.FC = () => {
   const classes = useShopStyles();
   const { categories, brands } = useFacets();
-  const { pathname } = useLocation();
   const history = useHistory();
   const { categorySlug, brandSlug, keywords } = useParams<UrlParams>();
   const cancelSource = useCancelToken();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // build initial query based on url params
   const initialQuery: SearchParams = useMemo(() => {
@@ -147,10 +131,9 @@ const Shop: React.FC = () => {
     priceRanges: [],
     brands: [],
   });
-  console.log(filterOptions);
 
   const [disableFilters, setDisableFilters] = useState(true);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
   const [numberOfProducts, setNumberOfProducts] = useState(0);
 
   const numberOfMenus = useMemo(
@@ -174,11 +157,18 @@ const Shop: React.FC = () => {
     cancelSource.current?.cancel();
     cancelSource.current = newToken();
     setDisableFilters(true);
+    newQuery.skip =
+      trigger === "loadMore"
+        ? (newQuery.skip as number) + (newQuery.limit as number)
+        : 0;
     getProducts(newQuery, cancelSource.current.token)
       .then((response) => {
         const results = response.data;
         if (trigger === "loadMore") {
-          setProducts([...products, ...results.products]);
+          setProducts([
+            ...products,
+            ...results.products.map((product) => ({ id: uuidv4(), product })),
+          ]);
         } else {
           if (trigger !== "sort") {
             setFilterOptions({
@@ -212,7 +202,9 @@ const Shop: React.FC = () => {
               setNumberOfProducts(0);
             }
           }
-          setProducts([...results.products]);
+          setProducts([
+            ...results.products.map((product) => ({ id: uuidv4(), product })),
+          ]);
         }
         setQuery(newQuery);
         setDisableFilters(false);
@@ -294,7 +286,6 @@ const Shop: React.FC = () => {
                     onClick={() => toggleCategoryExpand(i)}
                   >
                     <ListItemText
-                      // className={classes.parentCategoryText}
                       primary={parentCategory.name}
                       classes={{ primary: classes.parentCategoryText }}
                     />
@@ -304,7 +295,7 @@ const Shop: React.FC = () => {
                       })}
                     />
                   </ListItem>
-                  <Collapse in={openCategory[i]} timeout="auto" unmountOnExit>
+                  <Collapse in={openCategory[i]} timeout="auto">
                     <List component="div" disablePadding>
                       {categories
                         .filter(
@@ -413,7 +404,29 @@ const Shop: React.FC = () => {
           </AccordionDetails>
         </Accordion>
       </div>
-      <div className={classes.productListContainer}></div>
+      <div className={classes.productListContainer}>
+        {/* <Box mb="30px" fontSize="h5.fontSize" fontWeight={500}>
+          {`${numberOfProducts} Results`}
+        </Box> */}
+        <ProductList
+          productList={products}
+          loading={disableFilters && products.length === 0}
+        />
+        {products.length < numberOfProducts && (
+          <Box mt={6} ml={isMobile ? 0 : "25%"}>
+            <ContainedButton
+              color="primary"
+              size="large"
+              fullWidth={isMobile ? true : undefined}
+              disabled={disableFilters}
+              isSubmitting={disableFilters}
+              onClick={() => getResults(query, "loadMore")}
+            >
+              show more
+            </ContainedButton>
+          </Box>
+        )}
+      </div>
     </div>
   );
 };
