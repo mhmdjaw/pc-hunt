@@ -246,7 +246,7 @@ export const listBySearch = (req: Request, res: Response): void => {
       products: [
         { $match: findArgs },
         { $project: { image: 0 } },
-        { $sort: { [sortBy as string]: order } },
+        { $sort: { [sortBy as string]: order, _id: 1 } },
         { $skip: skip },
         { $limit: limit },
       ],
