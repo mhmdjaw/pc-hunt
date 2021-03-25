@@ -1,16 +1,13 @@
 import axios, { AxiosResponse, CancelToken } from "axios";
 import { API } from "../../config";
 import { Product, SearchParams, SearchResults } from "./product-types";
-import queryString, { StringifyOptions } from "query-string";
+import queryString from "query-string";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import { Observable } from "rxjs";
 export type { Product, SearchParams } from "./product-types";
 
-const searchParamsToUrl = (
-  params: SearchParams,
-  options?: StringifyOptions
-) => {
-  const query = queryString.stringify(params, options);
+const searchParamsToUrl = (params: SearchParams) => {
+  const query = queryString.stringify(params);
   return `${API}/products/search?${query}`;
 };
 
@@ -35,6 +32,5 @@ export const getProducts = (
   axios.get<SearchResults>(searchParamsToUrl(params), { cancelToken });
 
 export const getSearchResults = (
-  params: SearchParams,
-  options?: StringifyOptions
-): Observable<AjaxResponse> => ajax(searchParamsToUrl(params, options));
+  params: SearchParams
+): Observable<AjaxResponse> => ajax(searchParamsToUrl(params));

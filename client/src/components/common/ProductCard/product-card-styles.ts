@@ -49,6 +49,7 @@ const useProductCardStyles = makeStyles((theme) =>
       width: "calc(100% + 32px)",
       bottom: 0,
       left: -16,
+      borderRadius: "30px 30px 0 0",
       textAlign: "center",
       fontWeight: 500,
       padding: 0,

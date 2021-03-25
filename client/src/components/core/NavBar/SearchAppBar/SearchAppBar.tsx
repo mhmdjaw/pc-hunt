@@ -33,7 +33,7 @@ const searchResultObs$ = searchSubject.pipe(
   debounceTime(500),
   distinctUntilChanged(),
   switchMap((val) =>
-    getSearchResults({ keywords: val, limit: 10 }, { encode: false }).pipe(
+    getSearchResults({ keywords: val, limit: 10 }).pipe(
       map((res) => res.response.products),
       catchError((err) => {
         return scheduled(err, asyncScheduler);
@@ -141,9 +141,7 @@ const SearchAppBar: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
-    searchSubject.next(
-      encodeURIComponent(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-    );
+    searchSubject.next(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
 
     if (value.length < 2 && !closePopper) {
       setClosePopper(true);

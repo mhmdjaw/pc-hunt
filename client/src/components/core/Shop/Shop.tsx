@@ -115,7 +115,7 @@ const Shop: React.FC = () => {
       query.brand = [brandSlug];
     }
     if (keywords) {
-      query.keywords = keywords;
+      query.keywords = decodeURIComponent(keywords);
     }
 
     return query;
@@ -265,169 +265,190 @@ const Shop: React.FC = () => {
   };
 
   return (
-    <div className={classes.productsContainer}>
-      <div className={classes.facetContainer}>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMore className={classes.accordionExpandIcon} />}
-          >
-            <Typography className={classes.accordionHeading}>
-              Categories
-            </Typography>
-          </AccordionSummary>
-          <List className={classes.categoryList}>
-            {categories
-              .filter((category) => category.parent.slug === "root")
-              .map((parentCategory, i) => (
-                <Fragment key={i}>
-                  <ListItem
-                    className={classes.listItem}
-                    button
-                    onClick={() => toggleCategoryExpand(i)}
-                  >
-                    <ListItemText
-                      primary={parentCategory.name}
-                      classes={{ primary: classes.parentCategoryText }}
-                    />
-                    <ExpandMore
-                      className={clsx(classes.categoryExpandIcon, {
-                        [classes.categoryExpanded]: openCategory[i],
-                      })}
-                    />
-                  </ListItem>
-                  <Collapse in={openCategory[i]} timeout="auto">
-                    <List component="div" disablePadding>
-                      {categories
-                        .filter(
-                          (category) =>
-                            category.parent.slug === parentCategory.slug
-                        )
-                        .map((category, j) => (
-                          <ListItem
-                            key={j}
-                            className={clsx(classes.listItem, classes.nested)}
-                            button
-                            onClick={() =>
-                              history.push(`/category/${category.slug}`)
-                            }
-                          >
-                            <ListItemText primary={category.name} />
-                          </ListItem>
-                        ))}
-                    </List>
-                  </Collapse>
-                </Fragment>
-              ))}
-          </List>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMore className={classes.accordionExpandIcon} />}
-          >
-            <Typography className={classes.accordionHeading}>Brands</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <FormControl component="fieldset" disabled={disableFilters}>
-              <FormGroup>
-                {filterOptions.brands.map((brand) => (
-                  <FormControlLabel
-                    key={brand.id}
-                    control={
-                      <Checkbox
-                        color="primary"
-                        checked={filterValues.brand.includes(brand.slug)}
-                        onChange={() => handleBrandToggle(brand.slug)}
+    <Box p="60px 3vw 90px">
+      <Box m="0 0 30px 16px" fontWeight={700} fontSize="h4.fontSize">
+        {categorySlug &&
+          categories.find((category) => category.slug === categorySlug)?.name}
+        {brandSlug && brands.find((brand) => brand.slug === brandSlug)?.name}
+        {keywords && `Results for "${decodeURIComponent(keywords)}"`}
+        {!categorySlug && !brandSlug && !keywords && "Shop"}
+      </Box>
+      <div className={classes.productsContainer}>
+        <div className={classes.facetContainer}>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={
+                <ExpandMore className={classes.accordionExpandIcon} />
+              }
+            >
+              <Typography className={classes.accordionHeading}>
+                Categories
+              </Typography>
+            </AccordionSummary>
+            <List className={classes.categoryList}>
+              {categories
+                .filter((category) => category.parent.slug === "root")
+                .map((parentCategory, i) => (
+                  <Fragment key={i}>
+                    <ListItem
+                      className={classes.listItem}
+                      button
+                      onClick={() => toggleCategoryExpand(i)}
+                    >
+                      <ListItemText
+                        primary={parentCategory.name}
+                        classes={{ primary: classes.parentCategoryText }}
                       />
-                    }
-                    label={`${brand.name} (${brand.count})`}
-                  />
+                      <ExpandMore
+                        className={clsx(classes.categoryExpandIcon, {
+                          [classes.categoryExpanded]: openCategory[i],
+                        })}
+                      />
+                    </ListItem>
+                    <Collapse in={openCategory[i]} timeout="auto">
+                      <List component="div" disablePadding>
+                        {categories
+                          .filter(
+                            (category) =>
+                              category.parent.slug === parentCategory.slug
+                          )
+                          .map((category, j) => (
+                            <ListItem
+                              key={j}
+                              className={clsx(classes.listItem, classes.nested)}
+                              button
+                              onClick={() =>
+                                history.push(`/category/${category.slug}`)
+                              }
+                            >
+                              <ListItemText primary={category.name} />
+                            </ListItem>
+                          ))}
+                      </List>
+                    </Collapse>
+                  </Fragment>
                 ))}
-              </FormGroup>
-            </FormControl>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMore className={classes.accordionExpandIcon} />}
-          >
-            <Typography className={classes.accordionHeading}>Prices</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <FormControl component="fieldset" disabled={disableFilters}>
-              <RadioGroup
-                value={filterValues.priceRange}
-                onChange={handlePriceRangeClick}
-              >
-                <FormControlLabel
-                  value="0to1000000"
-                  control={<Radio color="primary" />}
-                  label="All"
-                />
-                {filterOptions.priceRanges.map((priceRange) => (
+            </List>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={
+                <ExpandMore className={classes.accordionExpandIcon} />
+              }
+            >
+              <Typography className={classes.accordionHeading}>
+                Brands
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormControl component="fieldset" disabled={disableFilters}>
+                <FormGroup>
+                  {filterOptions.brands.map((brand) => (
+                    <FormControlLabel
+                      key={brand.id}
+                      control={
+                        <Checkbox
+                          color="primary"
+                          checked={filterValues.brand.includes(brand.slug)}
+                          onChange={() => handleBrandToggle(brand.slug)}
+                        />
+                      }
+                      label={`${brand.name} (${brand.count})`}
+                    />
+                  ))}
+                </FormGroup>
+              </FormControl>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={
+                <ExpandMore className={classes.accordionExpandIcon} />
+              }
+            >
+              <Typography className={classes.accordionHeading}>
+                Prices
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormControl component="fieldset" disabled={disableFilters}>
+                <RadioGroup
+                  value={filterValues.priceRange}
+                  onChange={handlePriceRangeClick}
+                >
                   <FormControlLabel
-                    key={priceRange.id}
-                    value={`${priceRange.from}to${priceRange.to}`}
+                    value="0to1000000"
                     control={<Radio color="primary" />}
-                    label={
-                      priceRange.from < 3000
-                        ? `$${priceRange.from} - $${priceRange.to} (${priceRange.count})`
-                        : `${priceRange.from} and up (${priceRange.count})`
-                    }
+                    label="All"
                   />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMore className={classes.accordionExpandIcon} />}
-          >
-            <Typography className={classes.accordionHeading}>Sort</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <FormControl component="fieldset" disabled={disableFilters}>
-              <RadioGroup
-                value={filterValues.sortBy}
-                onChange={handleSortClick}
-              >
-                {sort.map((sort, i) => (
-                  <FormControlLabel
-                    key={i}
-                    value={sort.value}
-                    control={<Radio color="primary" />}
-                    label={sort.name}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          </AccordionDetails>
-        </Accordion>
-      </div>
-      <div className={classes.productListContainer}>
-        {/* <Box mb="30px" fontSize="h5.fontSize" fontWeight={500}>
+                  {filterOptions.priceRanges.map((priceRange) => (
+                    <FormControlLabel
+                      key={priceRange.id}
+                      value={`${priceRange.from}to${priceRange.to}`}
+                      control={<Radio color="primary" />}
+                      label={
+                        priceRange.from < 3000
+                          ? `$${priceRange.from} - $${priceRange.to} (${priceRange.count})`
+                          : `${priceRange.from} and up (${priceRange.count})`
+                      }
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={
+                <ExpandMore className={classes.accordionExpandIcon} />
+              }
+            >
+              <Typography className={classes.accordionHeading}>Sort</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormControl component="fieldset" disabled={disableFilters}>
+                <RadioGroup
+                  value={filterValues.sortBy}
+                  onChange={handleSortClick}
+                >
+                  {sort.map((sort, i) => (
+                    <FormControlLabel
+                      key={i}
+                      value={sort.value}
+                      control={<Radio color="primary" />}
+                      label={sort.name}
+                    />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+        <div className={classes.productListContainer}>
+          {/* <Box mb="30px" fontSize="h5.fontSize" fontWeight={500}>
           {`${numberOfProducts} Results`}
         </Box> */}
-        <ProductList
-          productList={products}
-          loading={disableFilters && products.length === 0}
-        />
-        {products.length < numberOfProducts && (
-          <Box mt={6} ml={isMobile ? 0 : "25%"}>
-            <ContainedButton
-              color="primary"
-              size="large"
-              fullWidth={isMobile ? true : undefined}
-              disabled={disableFilters}
-              isSubmitting={disableFilters}
-              onClick={() => getResults(query, "loadMore")}
-            >
-              show more
-            </ContainedButton>
-          </Box>
-        )}
+          <ProductList
+            productList={products}
+            loading={disableFilters && products.length === 0}
+          />
+          {products.length < numberOfProducts && (
+            <Box mt={6} ml={isMobile ? 0 : "25%"}>
+              <ContainedButton
+                color="primary"
+                size="large"
+                fullWidth={isMobile ? true : undefined}
+                disabled={disableFilters}
+                isSubmitting={disableFilters}
+                onClick={() => getResults(query, "loadMore")}
+              >
+                show more
+              </ContainedButton>
+            </Box>
+          )}
+        </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

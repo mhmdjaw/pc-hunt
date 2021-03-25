@@ -4,7 +4,6 @@ const useShopStyles = makeStyles((theme) =>
   createStyles({
     productsContainer: {
       display: "flex",
-      padding: "60px 3vw 90px",
       [theme.breakpoints.down("sm")]: {
         flexDirection: "column",
       },
