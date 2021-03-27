@@ -3,8 +3,10 @@ import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import clsx from "clsx";
 import Slider, { Settings } from "react-slick";
-import CustomIconButton from "../CustomIconButton";
+import CustomIconButton from "../Button/CustomIconButton";
 import ProductCard from "../ProductCard";
+import "../../../slick-carousel/slick.css";
+import "../../../slick-carousel/slick-theme.css";
 import useProductSliderStyles from "./product-slider-styles";
 import { Product } from "../../../api/product";
 

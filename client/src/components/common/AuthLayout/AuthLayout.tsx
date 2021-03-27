@@ -11,7 +11,7 @@ import {
 import { Alert } from "@material-ui/lab";
 import { LogoPrimary } from "../../../assets";
 import OrSplitter from "../OrSplitter";
-import ContainedButton from "../ContainedButton";
+import ContainedButton from "../Button/ContainedButton";
 import { GoogleIcon } from "../../../assets";
 import { Link as RouterLink } from "react-router-dom";
 import { AUTH } from "../../../config";

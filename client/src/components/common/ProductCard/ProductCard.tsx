@@ -46,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 className={clsx(classes.img, {
                   [classes.imgLoaded]: imageLoaded,
                 })}
-                src={getProductImage(product._id)}
+                src={getProductImage(product.slug)}
                 onLoad={() => setImageLoaded(true)}
               />
             )}

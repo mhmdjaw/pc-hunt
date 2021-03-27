@@ -6,7 +6,7 @@ import "../../../slick-carousel/slick-theme.css";
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import useCarouselStyles from "./carousel-styles";
-import CustomIconButton from "../CustomIconButton";
+import CustomIconButton from "../Button/CustomIconButton";
 
 interface ArrowProps {
   direction: "prevArrow" | "nextArrow";

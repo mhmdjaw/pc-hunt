@@ -1,9 +1,9 @@
 import React from "react";
 import { IconButton, IconButtonProps, useTheme } from "@material-ui/core";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
-import { hexToRgba } from "../../../helpers";
-import useTextButtonStyles from "../TextButton/text-button-styles";
+import { hexToRgba } from "../../../../helpers";
 import clsx from "clsx";
+import useButtonStyles from "../button-styles";
 
 interface CustomIconButtonProps extends IconButtonProps {
   href?: string;
@@ -26,7 +26,7 @@ const CustomIconButton: React.FC<CustomIconButtonProps> = (
     );
   }
 
-  const classes = useTextButtonStyles(stylesProps);
+  const classes = useButtonStyles(stylesProps);
 
   return (
     <IconButton

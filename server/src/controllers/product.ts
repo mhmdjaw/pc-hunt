@@ -48,6 +48,24 @@ export const productById = (
   });
 };
 
+export const productBySlug = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  slug: string
+): void => {
+  Product.findOne({ slug }).exec((err, product) => {
+    if (err || !product) {
+      res.status(400).json({
+        error: "Product not found",
+      });
+      return;
+    }
+    req.product = product;
+    next();
+  });
+};
+
 export const read = (req: Request, res: Response): void => {
   req.product.image = undefined;
   res.json(req.product);

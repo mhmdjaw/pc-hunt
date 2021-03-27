@@ -6,9 +6,9 @@ import {
   CircularProgress,
   useTheme,
 } from "@material-ui/core";
-import useContainedIconStyles from "./contained-button-styles";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 import clsx from "clsx";
+import useButtonStyles from "../button-styles";
 
 interface ContainedButtonProps extends ButtonProps {
   isSubmitting?: boolean;
@@ -34,7 +34,7 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
     ] as PaletteColor).light;
   }
 
-  const classes = useContainedIconStyles(stylesProps);
+  const classes = useButtonStyles(stylesProps);
 
   return (
     <Box
@@ -53,7 +53,7 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
           variant="contained"
           color={props.color}
           focusVisibleClassName={classes.focusVisible}
-          className={clsx(classes.buttonActive, props.className)}
+          className={clsx(classes.containedButtonActive, props.className)}
         />
       </Box>
     </Box>

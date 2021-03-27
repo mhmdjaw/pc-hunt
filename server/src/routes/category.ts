@@ -17,6 +17,6 @@ router.put("/category/:categorySlug", isAuth, isAdmin, update);
 router.delete("/category/:categorySlug", isAuth, isAdmin, remove);
 router.get("/categories", list);
 
-router.param("categoryId", categoryBySlug);
+router.param("categorySlug", categoryBySlug);
 
 export default router;

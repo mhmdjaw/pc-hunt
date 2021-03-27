@@ -9,9 +9,14 @@ const useShopStyles = makeStyles((theme) =>
       },
     },
     facetContainer: {
-      paddingBottom: "30px",
+      "& > div": {
+        paddingBottom: "30px",
+      },
       [theme.breakpoints.up("md")]: {
         flex: "1 1 25%",
+        height: "auto !important",
+        visibility: "visible",
+        overflow: "visible",
       },
     },
     productListContainer: {

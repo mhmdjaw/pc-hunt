@@ -5,7 +5,7 @@ interface StylesProps {
   activeBackgroundColor: string;
 }
 
-const useContainedIconStyles = makeStyles({
+const useContainedButtonStyles = makeStyles({
   focusVisible: {
     backgroundColor: (props: StylesProps) => props.focusBackgroundColor,
   },
@@ -27,4 +27,4 @@ const useContainedIconStyles = makeStyles({
   },
 });
 
-export default useContainedIconStyles;
+export default useContainedButtonStyles;
