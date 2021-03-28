@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React, { useMemo, useState } from "react";
 import { Category } from "../../../../api/category";
 import { NavLink } from "../../../common";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import useNavDropDownMenusStyles from "./nav-drop-down-menus-styes";
 import { Brand } from "../../../../api/brand";
 
@@ -19,6 +19,7 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
   facets: { categories, brands },
 }: NavDropDownMenusProps) => {
   const classes = useNavDropDownMenusStyles();
+  const history = useHistory();
 
   const numberOfMenus = useMemo(
     () =>
@@ -39,7 +40,7 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
   const handleCategoryClick = (slug: string, i: number) => {
     toggleMenu(false, i);
     // navigate to category results using slug
-    console.log(slug);
+    history.push(`/category/${slug}`);
   };
 
   const handleBrandClick = (slug: string) => {
@@ -49,7 +50,7 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
       console.log("brands");
     } else {
       // navigate to brand results using slug
-      console.log(slug);
+      history.push(`/brand/${slug}`);
     }
   };
 

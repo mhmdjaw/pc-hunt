@@ -11,10 +11,10 @@ const LoadingPage: React.FC = () => {
         bottom="0"
         top="0"
         margin="auto"
-        width="40px"
-        height="40px"
+        width="70px"
+        height="70px"
       >
-        <CircularProgress disableShrink />
+        <CircularProgress disableShrink size={70} />
       </Box>
     </Box>
   );

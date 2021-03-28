@@ -4,17 +4,17 @@ const additionalSearchOptions: SearchOption[] = [
   {
     name: "Gaming PC",
     slug: "gaming-desktops",
-    type: "categories",
+    type: "category",
   },
   {
     name: "PC",
     slug: "desktops",
-    type: "categories",
+    type: "category",
   },
   {
     name: "Computers",
     slug: "laptops",
-    type: "categories",
+    type: "category",
   },
 ];
 

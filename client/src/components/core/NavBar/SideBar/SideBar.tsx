@@ -15,6 +15,7 @@ import { useAuth } from "../../../../context";
 import { v4 as uuidv4 } from "uuid";
 import clsx from "clsx";
 import { Brand } from "../../../../api/brand";
+import { useHistory } from "react-router";
 const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 interface SideBarProps {
@@ -52,6 +53,7 @@ const SideBar: React.FC<SideBarProps> = ({
   sideBarState: { openSideBar, setOpenSideBar },
 }: SideBarProps) => {
   const classes = useSideBarStyles();
+  const history = useHistory();
   const { logout, user } = useAuth();
   const [sideBarPages, setSideBarPages] = useState<SideBarPage[]>([]);
   const [open, setOpen] = useState<boolean[]>([]);
@@ -126,7 +128,7 @@ const SideBar: React.FC<SideBarProps> = ({
     if (hasList) {
       openPage(type, name, slug);
     } else {
-      console.log("slug: " + slug + ", type: " + type);
+      history.push(`${type}/${slug}`);
       closeSideBar();
     }
   };

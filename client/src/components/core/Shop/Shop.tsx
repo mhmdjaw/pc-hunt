@@ -108,9 +108,9 @@ const Shop: React.FC = () => {
   const initialQuery: SearchParams = useMemo(() => {
     const query: SearchParams = { skip: 0, limit: 12 };
     if (categorySlug) {
-      query.category = categories.find(
-        (category) => category.slug === categorySlug
-      )?._id;
+      query.category =
+        categories.find((category) => category.slug === categorySlug)?._id ||
+        "id not found";
     }
     if (brandSlug) {
       query.brand = [brandSlug];
@@ -267,11 +267,15 @@ const Shop: React.FC = () => {
   };
 
   return (
-    <Box p="60px 3vw 90px">
+    <Box m="60px 3vw 90px">
       <Box m="0 0 30px 16px" fontWeight={700} fontSize="h4.fontSize">
         {categorySlug &&
-          categories.find((category) => category.slug === categorySlug)?.name}
-        {brandSlug && brands.find((brand) => brand.slug === brandSlug)?.name}
+          (categories.find((category) => category.slug === categorySlug)
+            ?.name ||
+            `Oops! This category doesn't exist`)}
+        {brandSlug &&
+          (brands.find((brand) => brand.slug === brandSlug)?.name ||
+            `Oops! This brand doesn't exist`)}
         {keywords &&
           (disableFilters || products.length > 0) &&
           `Results for "${decodeURIComponent(keywords)}"`}
@@ -298,7 +302,7 @@ const Shop: React.FC = () => {
           <Collapse
             className={classes.facetContainer}
             in={openFilters}
-            timeout={"auto"}
+            timeout="auto"
           >
             <div>
               <Accordion>

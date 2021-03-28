@@ -21,12 +21,13 @@ import ScrollToTop from "./ScrollToTop";
 const NavBar = lazy(() => import("../NavBar"));
 const Home = lazy(() => import("../Home"));
 const Account = lazy(() => import("../Account"));
-const Product = lazy(() => import("../Product"));
+const ProductForm = lazy(() => import("../ProductForm"));
 const Footer = lazy(() => import("../Footer"));
 const CategoryForm = lazy(() => import("../CategoryForm"));
 const Login = lazy(() => import("../../user/Login"));
 const Signup = lazy(() => import("../../user/Signup"));
 const Shop = lazy(() => import("../Shop"));
+const Product = lazy(() => import("../Product"));
 
 const Routes: React.FC = () => {
   return (
@@ -60,8 +61,8 @@ const Routes: React.FC = () => {
               <AuthRoute path="/category/create" authType="admin">
                 <CategoryForm />
               </AuthRoute>
-              <AuthRoute path="/product" authType="admin">
-                <Product />
+              <AuthRoute path="/product/create" authType="admin">
+                <ProductForm />
               </AuthRoute>
               <AuthRoute
                 path={[
@@ -73,6 +74,9 @@ const Routes: React.FC = () => {
                 authType="unprotected"
               >
                 <Shop />
+              </AuthRoute>
+              <AuthRoute path="/product/:slug" authType="unprotected">
+                <Product />
               </AuthRoute>
               <Footer />
             </ProvideFacets>

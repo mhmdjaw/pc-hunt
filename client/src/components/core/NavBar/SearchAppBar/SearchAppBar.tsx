@@ -19,11 +19,12 @@ import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import { matchSorter } from "match-sorter";
 import additionalSearchOptions from "./additional-search-options";
+import { useHistory } from "react-router";
 
 export interface SearchOption {
   name: string;
   slug: string;
-  type: "categories" | "products";
+  type: "category" | "product";
 }
 
 const searchSubject = new BehaviorSubject("");
@@ -44,7 +45,7 @@ const searchResultObs$ = searchSubject.pipe(
     products.map((product) => ({
       name: product.name,
       slug: product.slug,
-      type: "products",
+      type: "product",
     }))
   )
 );
@@ -54,13 +55,13 @@ const filterOptions = (
   { inputValue }: FilterOptionsState<SearchOption>
 ) => {
   const sortedCategories = matchSorter(
-    options.filter((option) => option.type === "categories"),
+    options.filter((option) => option.type === "category"),
     inputValue,
     { keys: ["name"] }
   );
 
   const sortedProducts = matchSorter(
-    options.filter((option) => option.type === "products"),
+    options.filter((option) => option.type === "product"),
     inputValue,
     { keys: ["name"] }
   );
@@ -77,7 +78,7 @@ const useCategoriesOptions = (): SearchOption[] => {
         (category): SearchOption => ({
           name: category.name,
           slug: category.slug,
-          type: "categories",
+          type: "category",
         })
       ),
       ...additionalSearchOptions,
@@ -88,6 +89,7 @@ const useCategoriesOptions = (): SearchOption[] => {
 
 const SearchAppBar: React.FC = () => {
   const classes = useSearchAppBarStyles();
+  const history = useHistory();
   const [options, setOptions] = useState<SearchOption[]>([]);
   const [closePopper, setClosePopper] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -113,10 +115,12 @@ const SearchAppBar: React.FC = () => {
         ],
       })[0];
       if (matchValue) {
-        console.log(matchValue.slug);
+        history.push(`/category/${matchValue.slug}`);
       } else {
-        console.log(
-          encodeURIComponent(inputValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+        history.push(
+          `/search/${encodeURIComponent(
+            inputValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+          )}`
         );
       }
     }
@@ -132,7 +136,7 @@ const SearchAppBar: React.FC = () => {
         runSearchKeywords();
       } else if (typeof value === "object") {
         // run search based on option selected
-        console.log(value.slug);
+        history.push(`/${value.type}/${value.slug}`);
       }
       setClosePopper(true);
     }
