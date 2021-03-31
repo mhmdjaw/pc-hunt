@@ -49,32 +49,45 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const responsiveSettings = (number: number) => {
+    if (products.length > 0) {
+      if (products.length >= number) {
+        return number;
+      } else {
+        return products.length;
+      }
+    } else {
+      return number;
+    }
+  };
+
   const settings: Settings = {
-    slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToShow: responsiveSettings(5),
+    slidesToScroll: responsiveSettings(5),
     swipe: isTablet ? true : false,
     prevArrow: <Arrow direction="prevArrow" />,
     nextArrow: <Arrow direction="nextArrow" />,
+    // className: classes.innerDiv,
     responsive: [
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: responsiveSettings(4),
+          slidesToScroll: responsiveSettings(4),
         },
       },
       {
         breakpoint: theme.breakpoints.values.md,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: responsiveSettings(3),
+          slidesToScroll: responsiveSettings(3),
         },
       },
       {
         breakpoint: 760,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToShow: responsiveSettings(2),
+          slidesToScroll: responsiveSettings(2),
         },
       },
     ],
@@ -93,7 +106,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
       <Slider className={classes.slider} {...settings}>
         {products.length > 0
           ? products.map((product, i) => (
-              <Box key={i} px="8px">
+              <Box key={i} className={classes.slide}>
                 <ProductCard product={product} />
               </Box>
             ))

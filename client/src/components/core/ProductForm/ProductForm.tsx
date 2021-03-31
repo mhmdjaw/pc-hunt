@@ -13,7 +13,7 @@ import { ContainedButton, TextButton, CustomIconButton } from "../../common";
 import { shallowEqual } from "recompose";
 import { Alert } from "@material-ui/lab";
 import { Add, Delete } from "@material-ui/icons";
-import useProductStyles from "./product-styles";
+import useProductFormStyles from "./product-form-styles";
 import { createProduct } from "../../../api/product";
 import { useFacets } from "../../../context";
 
@@ -71,7 +71,7 @@ const validate = (values: Values) => {
 };
 
 const ProductForm: React.FC = () => {
-  const classes = useProductStyles();
+  const classes = useProductFormStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const { categories } = useFacets();

@@ -23,6 +23,12 @@ const useProductSliderStyles = makeStyles({
       opacity: 1,
     },
   },
+  slide: {
+    maxWidth: "320px",
+    padding: "0 8px 4px",
+    display: "block !important",
+    margin: "auto !important",
+  },
 });
 
 export default useProductSliderStyles;

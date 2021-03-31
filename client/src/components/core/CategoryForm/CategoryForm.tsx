@@ -6,7 +6,7 @@ import { ContainedButton } from "../../common";
 import { shallowEqual } from "recompose";
 import { createCategory } from "../../../api/category";
 import { Alert } from "@material-ui/lab";
-import useCategoryStyles from "./category-styles";
+import useCategoryFormStyles from "./category-form-styles";
 import { useFacets } from "../../../context";
 
 interface Values {
@@ -39,7 +39,7 @@ const validate = (values: Values) => {
 };
 
 const CategoryForm: React.FC = () => {
-  const classes = useCategoryStyles();
+  const classes = useCategoryFormStyles();
   const { categories } = useFacets();
 
   const [state, setState] = useState<State>({

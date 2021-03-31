@@ -11,6 +11,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  skip,
   switchMap,
 } from "rxjs/operators";
 import clsx from "clsx";
@@ -30,6 +31,7 @@ export interface SearchOption {
 const searchSubject = new BehaviorSubject("");
 
 const searchResultObs$ = searchSubject.pipe(
+  skip(1),
   filter((val) => val.length > 1),
   debounceTime(500),
   distinctUntilChanged(),

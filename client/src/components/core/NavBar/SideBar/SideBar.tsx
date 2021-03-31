@@ -128,7 +128,7 @@ const SideBar: React.FC<SideBarProps> = ({
     if (hasList) {
       openPage(type, name, slug);
     } else {
-      history.push(`${type}/${slug}`);
+      history.push(`/${type}/${slug}`);
       closeSideBar();
     }
   };

@@ -34,3 +34,15 @@ export const getProducts = (
 export const getSearchResults = (
   params: SearchParams
 ): Observable<AjaxResponse> => ajax(searchParamsToUrl(params));
+
+export const getProduct = (
+  slug: string,
+  cancelToken?: CancelToken
+): Promise<AxiosResponse<Product>> =>
+  axios.get<Product>(`${API}/product/${slug}`, { cancelToken });
+
+export const getRelatedProducts = (
+  slug: string,
+  cancelToken?: CancelToken
+): Promise<AxiosResponse<Product[]>> =>
+  axios.get(`${API}/products/related/${slug}`, { cancelToken });

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const useProductStyles = makeStyles({
+const useProductFormStyles = makeStyles({
   paper: {
     padding: "60px 5vw",
     marginBottom: "10vh",
@@ -12,4 +12,4 @@ const useProductStyles = makeStyles({
   },
 });
 
-export default useProductStyles;
+export default useProductFormStyles;
