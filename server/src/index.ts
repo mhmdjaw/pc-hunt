@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth";
 import userRoutes from "./routes/user";
 import categoryRoutes from "./routes/category";
 import productRoutes from "./routes/product";
+import cartRoutes from "./routes/cart";
 import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { mongooseConfig } from "./helpers";
@@ -89,6 +90,7 @@ app.use("/auth", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", cartRoutes);
 
 const port = process.env.PORT || 4000;
 
