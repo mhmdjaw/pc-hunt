@@ -58,26 +58,28 @@ const Routes: React.FC = () => {
                 path="/account/update"
                 authType="protected"
               ></AuthRoute>
-              <AuthRoute path="/category/create" authType="admin">
-                <CategoryForm />
-              </AuthRoute>
-              <AuthRoute path="/product/create" authType="admin">
-                <ProductForm />
-              </AuthRoute>
-              <AuthRoute
-                path={[
-                  "/category/:categorySlug",
-                  "/brand/:brandSlug",
-                  "/search/:keywords",
-                  "/shop",
-                ]}
-                authType="unprotected"
-              >
-                <Shop />
-              </AuthRoute>
-              <AuthRoute path="/product/:slug" authType="unprotected">
-                <Product />
-              </AuthRoute>
+              <Switch>
+                <AuthRoute path="/category/create" authType="admin">
+                  <CategoryForm />
+                </AuthRoute>
+                <AuthRoute path="/product/create" authType="admin">
+                  <ProductForm />
+                </AuthRoute>
+                <AuthRoute
+                  path={[
+                    "/category/:categorySlug",
+                    "/brand/:brandSlug",
+                    "/search/:keywords",
+                    "/shop",
+                  ]}
+                  authType="unprotected"
+                >
+                  <Shop />
+                </AuthRoute>
+                <AuthRoute path="/product/:slug" authType="unprotected">
+                  <Product />
+                </AuthRoute>
+              </Switch>
               <Footer />
             </ProvideFacets>
           </AuthRoute>

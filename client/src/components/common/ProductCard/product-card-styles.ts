@@ -4,6 +4,8 @@ const useProductCardStyles = makeStyles((theme) =>
   createStyles({
     rating: {
       color: theme.palette.secondary.main,
+      marginRight: "8px",
+      marginBottom: "2px",
     },
     productTitle: {
       overflow: "hidden",

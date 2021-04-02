@@ -67,7 +67,6 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
     swipe: isTablet ? true : false,
     prevArrow: <Arrow direction="prevArrow" />,
     nextArrow: <Arrow direction="nextArrow" />,
-    // className: classes.innerDiv,
     responsive: [
       {
         breakpoint: 1400,
@@ -105,8 +104,8 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
       </Box>
       <Slider className={classes.slider} {...settings}>
         {products.length > 0
-          ? products.map((product, i) => (
-              <Box key={i} className={classes.slide}>
+          ? products.map((product) => (
+              <Box key={product._id} className={classes.slide}>
                 <ProductCard product={product} />
               </Box>
             ))

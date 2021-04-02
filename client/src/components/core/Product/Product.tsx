@@ -175,8 +175,12 @@ const Product: React.FC = () => {
             textColor="primary"
             onChange={(_e, value) => setTabValue(value)}
           >
-            <Tab label="overview" value="overview" />
-            <Tab label="customer reviews" value="reviews" />
+            <Tab className={classes.tab} label="overview" value="overview" />
+            <Tab
+              className={classes.tab}
+              label="customer reviews"
+              value="reviews"
+            />
           </TabList>
           <TabPanel value="overview">
             <Typography className={classes.overview} variant="body1">

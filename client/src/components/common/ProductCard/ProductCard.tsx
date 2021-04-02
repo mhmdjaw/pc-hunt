@@ -3,6 +3,7 @@ import {
   Box,
   Card,
   CardContent,
+  Grid,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
@@ -51,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <CardContent>
         <Box className={classes.imgContainer}>
           <Box>
-            {!imageLoaded && (
+            {(!imageLoaded || loading) && (
               <Skeleton animation="wave" variant="rect" height="100%" />
             )}
             {product && (
@@ -92,12 +93,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {loading ? (
             <Skeleton animation="wave" width={120} />
           ) : (
-            <Rating
-              className={classes.rating}
-              value={5}
-              precision={0.5}
-              readOnly
-            />
+            <Grid container justify="flex-start" alignItems="center">
+              <Grid component={Box} item display="flex">
+                <Rating
+                  className={classes.rating}
+                  value={5}
+                  precision={0.5}
+                  readOnly
+                />
+              </Grid>
+              <Grid item>{"(99,999)"}</Grid>
+            </Grid>
           )}
         </Box>
         <Box fontSize="h6.fontSize" fontWeight={700}>
