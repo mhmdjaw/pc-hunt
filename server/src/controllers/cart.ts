@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import Cart from "../models/cart";
+import Cart, { ICart } from "../models/cart";
+import mongoose from "mongoose";
 
 export const read = (req: Request, res: Response): void => {
   Cart.findOne({ user: req.user?.id })
@@ -61,11 +62,7 @@ export const addItemToCart = (req: Request, res: Response): void => {
         badget = quantity ? badget - item.quantity + quantity : badget + 1;
       } else {
         condition = { user: req.user?.id };
-        update = {
-          $push: {
-            cartItems: req.body,
-          },
-        };
+        update = { $push: { cartItems: req.body } };
         badget++;
       }
 
@@ -88,6 +85,73 @@ export const addItemToCart = (req: Request, res: Response): void => {
           return;
         }
         res.json({ badget: 1 });
+      });
+    }
+  });
+};
+
+export const removeItemFromCart = (req: Request, res: Response): void => {
+  Cart.findOneAndUpdate(
+    { user: req.user?.id },
+    { $pull: { cartItems: req.body } }
+  ).exec((err, cart) => {
+    if (err || !cart) {
+      res.status(400).json({ error: "Failed to remove product from cart" });
+      return;
+    }
+    const badget = cart.cartItems.reduce(
+      (accumulator, item) =>
+        item.product != req.body.product
+          ? accumulator + item.quantity
+          : accumulator,
+      0
+    );
+    res.json({ badget });
+  });
+};
+
+export const addItemsToCart = (req: Request, res: Response): void => {
+  let products: { product: mongoose.Types.ObjectId; quantity: number }[] =
+    req.body.products;
+
+  Cart.findOne({ user: req.user?.id }).exec((err, cart) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    if (cart) {
+      let badget = cart.cartItems.reduce(
+        (accumulator, item) =>
+          item.product != req.body.product
+            ? accumulator + (item.quantity as number)
+            : accumulator,
+        0
+      );
+      products = products.filter(
+        (product) =>
+          !cart.cartItems.some((item) => item.product == product.product)
+      );
+      badget += products.length;
+      cart
+        .updateOne({ $push: { cartItems: { $each: products } } })
+        .exec((err, cart: ICart) => {
+          if (err || !cart) {
+            res.status(400).json({ error: "Failed to add items to cart" });
+            return;
+          }
+          res.json({ badget });
+        });
+    } else {
+      const newCart = new Cart({
+        user: req.user?.id,
+        cartItems: products,
+      });
+      newCart.save((err, cart) => {
+        if (err || !cart) {
+          res.status(400).json({ error: "Failed to add items to cart" });
+          return;
+        }
+        res.json({ badget: products.length });
       });
     }
   });
