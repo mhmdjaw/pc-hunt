@@ -19,19 +19,23 @@ import {
 import { ContainedButton, ProductSlider } from "../../common";
 import clsx from "clsx";
 import useProductStyles from "./product-styles";
+import { useFacets } from "../../../context";
+import { addOneToCart } from "../../../api/cart";
 
 const Product: React.FC = () => {
   const classes = useProductStyles();
+  const { updateBadget, showSnackbar } = useFacets();
   const { slug } = useParams<{ slug: string }>();
   const cancelSource = useCancelToken();
   const [tabValue, setTabValue] = useState("overview");
   const [product, setProduct] = useState<IProduct | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [relateProducts, setRelateProducts] = useState<IProduct[]>([]);
+  const [relatedProducts, setRelatedProducts] = useState<IProduct[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setProduct(null);
-    setRelateProducts([]);
+    setRelatedProducts([]);
     cancelSource.current = newToken();
     getProduct(slug, cancelSource.current.token)
       .then((response) => {
@@ -44,7 +48,7 @@ const Product: React.FC = () => {
       });
     getRelatedProducts(slug, cancelSource.current.token)
       .then((response) => {
-        setRelateProducts([...response.data]);
+        setRelatedProducts([...response.data]);
       })
       .catch((err) => {
         if (!axios.isCancel(err)) {
@@ -55,6 +59,20 @@ const Product: React.FC = () => {
       cancelSource.current?.cancel();
     };
   }, [slug, cancelSource]);
+
+  const addToCart = () => {
+    setIsSubmitting(true);
+    addOneToCart({ product: product?._id as string })
+      .then((response) => {
+        updateBadget(response.data.badget);
+        showSnackbar("Item successfully added to your cart.", true);
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        showSnackbar(err.response.data.error, false);
+        setIsSubmitting(false);
+      });
+  };
 
   return (
     <>
@@ -153,7 +171,9 @@ const Product: React.FC = () => {
                 color="secondary"
                 size="large"
                 fullWidth
-                disabled={!product || product.quantity === 0}
+                disabled={!product || product.quantity === 0 || isSubmitting}
+                isSubmitting={isSubmitting}
+                onClick={addToCart}
               >
                 add to cart
               </ContainedButton>
@@ -162,6 +182,8 @@ const Product: React.FC = () => {
                 color="primary"
                 size="large"
                 fullWidth
+                disabled={!product || isSubmitting}
+                isSubmitting={isSubmitting}
               >
                 add to wishlist
               </ContainedButton>
@@ -199,7 +221,7 @@ const Product: React.FC = () => {
         </TabContext>
       </Box>
       <Box p="24px 0 90px">
-        <ProductSlider title="You Might Also Like" products={relateProducts} />
+        <ProductSlider title="You Might Also Like" products={relatedProducts} />
       </Box>
     </>
   );

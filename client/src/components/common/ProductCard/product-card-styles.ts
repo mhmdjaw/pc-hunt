@@ -57,7 +57,7 @@ const useProductCardStyles = makeStyles((theme) =>
       padding: 0,
       zIndex: 2,
       transition:
-        "background-color .15s, max-height .5s, opacity 0.7s, padding .5s",
+        "background-color .15s, max-height .5s, opacity .7s, padding .5s, filter .3s",
       maxHeight: 0,
       opacity: 0,
       "&:hover": {
@@ -66,6 +66,10 @@ const useProductCardStyles = makeStyles((theme) =>
       "&:active": {
         backgroundColor: theme.palette.primary.light,
       },
+    },
+    carActionDisabled: {
+      cursor: "default",
+      filter: "opacity(0.4)",
     },
     actionArea: {
       position: "absolute",

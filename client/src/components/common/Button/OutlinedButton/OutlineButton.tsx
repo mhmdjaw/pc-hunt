@@ -7,7 +7,6 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
-import clsx from "clsx";
 import useButtonStyles from "../button-styles";
 import { hexToRgba } from "../../../../helpers";
 
@@ -39,6 +38,7 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
       position="relative"
       display="inline-flex"
       width={props.fullWidth && "100%"}
+      className={props.className}
     >
       {isSubmitting && (
         <Box className={classes.circularProgress}>
@@ -51,7 +51,7 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
           variant="outlined"
           color={props.color}
           focusVisibleClassName={classes.focusVisible}
-          className={clsx(classes.buttonActive, props.className)}
+          className={classes.buttonActive}
         />
       </Box>
     </Box>

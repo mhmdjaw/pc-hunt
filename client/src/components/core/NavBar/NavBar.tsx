@@ -50,7 +50,7 @@ const NavBar: React.FC = () => {
   const history = useHistory();
   const { pathname } = useLocation();
   const { logout, user } = useAuth();
-  const { categories, brands } = useFacets();
+  const { categories, brands, badget } = useFacets();
 
   const [openSideBar, setOpenSideBar] = useState(false);
 
@@ -136,7 +136,7 @@ const NavBar: React.FC = () => {
                 className={clsx(classes.navLinkIcon, "cart")}
                 display="inline"
               >
-                <Badge badgeContent={4} color="secondary">
+                <Badge badgeContent={badget} color="secondary">
                   <ShoppingCartOutlined />
                 </Badge>
               </Box>

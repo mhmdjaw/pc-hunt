@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { User } from "../../api/user";
 import * as Auth from "../../auth";
+import history from "../../components/core/Routes/history";
 import { AuthContext, AuthResultCallback } from "./auth-context-types";
 
 interface State {
@@ -26,6 +27,7 @@ const useProvideAuth = (): AuthContext => {
             isLoading: false,
             user: null,
           });
+          history.push("/login");
         }
         return Promise.reject(error);
       }
