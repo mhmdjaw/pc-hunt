@@ -220,7 +220,7 @@ const Product: React.FC = () => {
           <TabPanel value="reviews">these are the reviews</TabPanel>
         </TabContext>
       </Box>
-      <Box p="24px 0 90px">
+      <Box p="40px 0 90px">
         <ProductSlider title="You Might Also Like" products={relatedProducts} />
       </Box>
     </>

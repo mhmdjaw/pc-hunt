@@ -21,13 +21,13 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
   const theme = useTheme();
 
   const stylesProps = {
-    focusBackgroundColor: theme.palette.action.hover,
+    focusBackgroundColor: "rgba(0,0,0,0.3)",
   };
 
   if (props.color && props.color !== "inherit") {
     stylesProps.focusBackgroundColor = hexToRgba(
       (theme.palette[props.color as keyof Palette] as PaletteColor).main,
-      theme.palette.action.hoverOpacity
+      0.3
     );
   }
 

@@ -28,6 +28,8 @@ const Login = lazy(() => import("../../user/Login"));
 const Signup = lazy(() => import("../../user/Signup"));
 const Shop = lazy(() => import("../Shop"));
 const Product = lazy(() => import("../Product"));
+const PCBuilder = lazy(() => import("../PCBuilder"));
+const Cart = lazy(() => import("../Cart"));
 
 const Routes: React.FC = () => {
   return (
@@ -50,6 +52,12 @@ const Routes: React.FC = () => {
               <NavBar />
               <AuthRoute exact path="/" authType="unprotected">
                 <Home />
+              </AuthRoute>
+              <AuthRoute path="/pc-builder" authType="unprotected">
+                <PCBuilder />
+              </AuthRoute>
+              <AuthRoute path="/cart" authType="protected">
+                <Cart />
               </AuthRoute>
               <AuthRoute exact path="/account" authType="protected">
                 <Account />

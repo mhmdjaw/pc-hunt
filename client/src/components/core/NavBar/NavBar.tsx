@@ -120,7 +120,7 @@ const NavBar: React.FC = () => {
             <NavLink
               className={classes.link}
               component={RouterLink}
-              to="#"
+              to="/pc-builder"
               color={pathname === "/pc-builder" ? "secondary" : "inherit"}
             >
               <BuildOutlined className={classes.navLinkIcon} />
@@ -129,7 +129,7 @@ const NavBar: React.FC = () => {
             <NavLink
               className={clsx(classes.link, "cart")}
               component={RouterLink}
-              to="#"
+              to="/cart"
               color={pathname === "/cart" ? "secondary" : "inherit"}
             >
               <Box
