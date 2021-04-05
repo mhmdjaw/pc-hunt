@@ -210,7 +210,7 @@ interface FindArgs {
 export const listBySearch = (req: Request, res: Response): void => {
   const order = req.query.order ? Number(req.query.order) : -1;
   const sortBy = req.query.sortBy ? req.query.sortBy : "sold";
-  const limit = req.query.limit ? Number(req.query.limit) : 100;
+  const limit = req.query.limit ? Number(req.query.limit) : 500;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
 
   const findArgs: Partial<FindArgs> = {};
