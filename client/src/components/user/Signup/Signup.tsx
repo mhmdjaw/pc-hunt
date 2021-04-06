@@ -3,7 +3,7 @@ import { Box, Grid } from "@material-ui/core";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { ContainedButton, AuthLayout } from "../../common";
+import { AuthLayout, CustomButton } from "../../common";
 import useSignupStyles from "./signup-styles";
 import PasswordInputField from "./PasswordInputField";
 import { shallowEqual } from "recompose";
@@ -212,7 +212,8 @@ const Signup: React.FC = () => {
             </Box>
 
             <Box mb="5vh" display="flex" justifyContent="flex-end">
-              <ContainedButton
+              <CustomButton
+                variant="contained"
                 color="primary"
                 disabled={
                   isSubmitting ||
@@ -223,7 +224,7 @@ const Signup: React.FC = () => {
                 onClick={submitForm}
               >
                 create account
-              </ContainedButton>
+              </CustomButton>
             </Box>
           </Form>
         )}

@@ -18,6 +18,17 @@ export const rgbToRgba = (color: string, alpha: number): string => {
   return color.replace(")", `, ${alpha})`).replace("rgb", "rgba");
 };
 
+export const round = (num: number, fractionDigits: number): number =>
+  Math.round((num + Number.EPSILON) * Math.pow(10, fractionDigits)) /
+  Math.pow(10, fractionDigits);
+
+export const displayCost = (num: number, fractionDigits: number) =>
+  num.toLocaleString("EG", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  });
+
 const CancelToken = axios.CancelToken;
 
 export const newToken = (): CancelTokenSource => CancelToken.source();

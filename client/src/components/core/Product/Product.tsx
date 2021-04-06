@@ -16,7 +16,7 @@ import {
   TabList,
   TabPanel,
 } from "@material-ui/lab";
-import { ContainedButton, ProductSlider } from "../../common";
+import { CustomButton, ProductSlider } from "../../common";
 import clsx from "clsx";
 import useProductStyles from "./product-styles";
 import { useFacets } from "../../../context";
@@ -166,7 +166,8 @@ const Product: React.FC = () => {
                   <Skeleton animation="wave" width={100} />
                 )}
               </Box>
-              <ContainedButton
+              <CustomButton
+                variant="contained"
                 className={classes.cartButton}
                 color="secondary"
                 size="large"
@@ -176,8 +177,9 @@ const Product: React.FC = () => {
                 onClick={addToCart}
               >
                 add to cart
-              </ContainedButton>
-              <ContainedButton
+              </CustomButton>
+              <CustomButton
+                variant="contained"
                 className={classes.wishlistButton}
                 color="primary"
                 size="large"
@@ -186,7 +188,7 @@ const Product: React.FC = () => {
                 isSubmitting={isSubmitting}
               >
                 add to wishlist
-              </ContainedButton>
+              </CustomButton>
             </Box>
           </Grid>
         </Grid>

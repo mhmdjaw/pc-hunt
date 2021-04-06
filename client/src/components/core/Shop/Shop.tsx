@@ -29,9 +29,8 @@ import { newToken, useCancelToken } from "../../../helpers";
 import priceRanges from "./price-ranges";
 import sort from "./sort";
 import { v4 as uuidv4 } from "uuid";
-import { ContainedButton, ProductCard } from "../../common";
+import { ProductCard, CustomButton } from "../../common";
 import useShopStyles from "./shop-styles";
-import OutlinedButton from "../../common/Button/OutlinedButton";
 
 interface UrlParams {
   brandSlug?: string;
@@ -289,14 +288,15 @@ const Shop: React.FC = () => {
         <div className={classes.productsContainer}>
           {isMobile && (
             <Box pb="30px">
-              <OutlinedButton
+              <CustomButton
+                variant="outlined"
                 color="primary"
                 fullWidth
                 startIcon={<Tune />}
                 onClick={() => setOpenFilters(!openFilters)}
               >
                 Filters
-              </OutlinedButton>
+              </CustomButton>
             </Box>
           )}
           <Collapse
@@ -470,7 +470,8 @@ const Shop: React.FC = () => {
             />
             {products.length < numberOfProducts && (
               <Box mt={6} ml={isMobile ? 0 : "25%"}>
-                <ContainedButton
+                <CustomButton
+                  variant="contained"
                   color="primary"
                   size="large"
                   fullWidth={isMobile ? true : undefined}
@@ -479,7 +480,7 @@ const Shop: React.FC = () => {
                   onClick={() => getResults(query, "loadMore")}
                 >
                   show more
-                </ContainedButton>
+                </CustomButton>
               </Box>
             )}
           </div>

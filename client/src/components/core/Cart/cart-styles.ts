@@ -22,12 +22,6 @@ const useCartStyles = makeStyles((theme) =>
         paddingRight: "24px",
       },
     },
-    orderSummary: {
-      paddingBottom: "30px",
-      [theme.breakpoints.up("md")]: {
-        flex: "1 1 30%",
-      },
-    },
     cartItem: {
       position: "relative",
       padding: "24px 32px",
@@ -82,6 +76,7 @@ const useCartStyles = makeStyles((theme) =>
     productTitle: {
       maxWidth: "300px",
       color: "#000",
+      paddingRight: "16px",
       "&:hover": {
         color: theme.palette.primary.main,
       },
@@ -119,6 +114,44 @@ const useCartStyles = makeStyles((theme) =>
       "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
         WebkitAppearance: "none",
       },
+    },
+    orderSummaryContainer: {
+      paddingBottom: "30px",
+      [theme.breakpoints.up("md")]: {
+        flex: "1 1 30%",
+      },
+    },
+    orderSummaryCard: {
+      padding: "24px 32px 40px",
+    },
+    orderSummaryTable: {
+      width: "100%",
+      borderCollapse: "collapse",
+      marginBottom: "16px",
+      "& th": {
+        paddingBottom: "16px",
+        textAlign: "left",
+        fontWeight: 400,
+      },
+      "& td": {
+        paddingBottom: "16px",
+        textAlign: "right",
+      },
+      "& tfoot tr": {
+        borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+      },
+      "& tfoot th, tfoot td": {
+        padding: "16px 0",
+        fontWeight: 700,
+      },
+    },
+    costSkeleton: {
+      display: "inline-block",
+    },
+    checkoutButton: {
+      fontSize: "0.89rem",
+      fontWeight: 700,
+      padding: "9px 16px",
     },
   })
 );

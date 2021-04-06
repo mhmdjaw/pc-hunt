@@ -14,7 +14,7 @@ import { addManyToCart } from "../../../api/cart";
 import { getProducts, Product } from "../../../api/product";
 import { useFacets } from "../../../context";
 import { useCancelToken } from "../../../helpers";
-import { ContainedButton } from "../../common";
+import { CustomButton } from "../../common";
 import autocompleteCategories from "./autocomplete-categories";
 
 const usePCBuilderStyles = makeStyles((theme) =>
@@ -124,7 +124,8 @@ const PCBuilder: React.FC = () => {
               />
             </Box>
           ))}
-          <ContainedButton
+          <CustomButton
+            variant="contained"
             color="primary"
             disabled={
               isSubmitting ||
@@ -136,7 +137,7 @@ const PCBuilder: React.FC = () => {
             onClick={addItemsToCart}
           >
             add items to cart
-          </ContainedButton>
+          </CustomButton>
         </Paper>
       </Box>
     </Box>

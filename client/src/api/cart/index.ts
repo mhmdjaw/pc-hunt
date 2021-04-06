@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, CancelToken } from "axios";
 import { API } from "../../config";
 import { Badget, CartItem, CartItemValues } from "./cart-types";
-export type { CartItem } from "./cart-types";
+export type { CartItem, CartItemValues } from "./cart-types";
 
 export const getBadget = (): Promise<AxiosResponse<Badget>> =>
   axios.get<Badget>(`${API}/cart/badget`, { withCredentials: true });

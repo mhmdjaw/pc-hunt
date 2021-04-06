@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { Box, MenuItem, Paper, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
-import { ContainedButton } from "../../common";
+import { CustomButton } from "../../common";
 import { shallowEqual } from "recompose";
 import { createCategory } from "../../../api/category";
 import { Alert } from "@material-ui/lab";
@@ -126,7 +126,8 @@ const CategoryForm: React.FC = () => {
                     fullWidth
                   />
                 </Box>
-                <ContainedButton
+                <CustomButton
+                  variant="contained"
                   color="primary"
                   disabled={
                     isSubmitting ||
@@ -137,7 +138,7 @@ const CategoryForm: React.FC = () => {
                   onClick={submitForm}
                 >
                   create category
-                </ContainedButton>
+                </CustomButton>
               </Form>
             )}
           </Formik>

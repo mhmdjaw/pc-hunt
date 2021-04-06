@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { ContainedButton, Carousel } from "../../../common";
+import { Carousel, CustomButton } from "../../../common";
 import { motion } from "framer-motion";
 import useHomeCarouselStyles from "./home-carousel-styles";
 import carouselAnimationVariants from "./carousel-animation-variants";
@@ -106,12 +106,13 @@ const HomeCarousel: React.FC<HomeCarouselProps> = React.memo(
                   >
                     {feature.headline}
                   </Box>
-                  <ContainedButton
+                  <CustomButton
+                    variant="contained"
                     color="secondary"
                     onClick={() => history.push(feature.link)}
                   >
                     {feature.buttonText}
-                  </ContainedButton>
+                  </CustomButton>
                 </Grid>
                 <Grid
                   component={Box}

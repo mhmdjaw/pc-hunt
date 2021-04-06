@@ -11,10 +11,10 @@ import {
 import { Alert } from "@material-ui/lab";
 import { LogoPrimary } from "../../../assets";
 import OrSplitter from "../OrSplitter";
-import ContainedButton from "../Button/ContainedButton";
 import { GoogleIcon } from "../../../assets";
 import { Link as RouterLink } from "react-router-dom";
 import { AUTH } from "../../../config";
+import { CustomButton } from "..";
 
 interface AuthLayoutProps {
   headline: string;
@@ -80,7 +80,8 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
           {children}
           <OrSplitter />
           <Box display="flex" justifyContent="center">
-            <ContainedButton
+            <CustomButton
+              variant="contained"
               startIcon={<GoogleIcon />}
               color="primary"
               onClick={googleAuth}
@@ -90,7 +91,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
               fullWidth
             >
               log in with google
-            </ContainedButton>
+            </CustomButton>
           </Box>
         </Paper>
         <Box display="flex" justifyContent="center">

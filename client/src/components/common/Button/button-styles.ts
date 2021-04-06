@@ -30,11 +30,6 @@ const useButtonStyles = makeStyles({
       },
     },
   },
-  containedButtonActive: {
-    "&:active": {
-      backgroundColor: (props: StylesProps) => props.activeBackgroundColor,
-    },
-  },
   circularProgress: {
     position: "absolute",
     zIndex: 1,

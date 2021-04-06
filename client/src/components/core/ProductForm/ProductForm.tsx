@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
-import { ContainedButton, TextButton, CustomIconButton } from "../../common";
+import { CustomIconButton, CustomButton } from "../../common";
 import { shallowEqual } from "recompose";
 import { Alert } from "@material-ui/lab";
 import { Add, Delete } from "@material-ui/icons";
@@ -241,7 +241,7 @@ const ProductForm: React.FC = () => {
                   </Box>
                 </Box>
                 <Box mb="5vh">
-                  <TextButton
+                  <CustomButton
                     component="label"
                     color="primary"
                     startIcon={<Add />}
@@ -253,7 +253,7 @@ const ProductForm: React.FC = () => {
                       onChange={(event) => setImage(event)}
                       hidden
                     />
-                  </TextButton>
+                  </CustomButton>
                 </Box>
                 <Box mb="5vh">
                   {state.image && (
@@ -274,7 +274,8 @@ const ProductForm: React.FC = () => {
                     </Box>
                   )}
                 </Box>
-                <ContainedButton
+                <CustomButton
+                  variant="contained"
                   color="primary"
                   disabled={
                     isSubmitting ||
@@ -287,7 +288,7 @@ const ProductForm: React.FC = () => {
                   onClick={submitForm}
                 >
                   create product
-                </ContainedButton>
+                </CustomButton>
               </Form>
             )}
           </Formik>

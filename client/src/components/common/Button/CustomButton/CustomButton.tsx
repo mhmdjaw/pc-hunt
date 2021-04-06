@@ -8,29 +8,36 @@ import {
 } from "@material-ui/core";
 import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 import useButtonStyles from "../button-styles";
+import { hexToRgba } from "../../../../helpers";
+import clsx from "clsx";
 
-interface ContainedButtonProps extends ButtonProps {
+interface CustomButtonProps extends ButtonProps {
   isSubmitting?: boolean;
+  buttonClassName?: string;
+  component?: string;
 }
 
-const ContainedButton: React.FC<ContainedButtonProps> = ({
+const CustomButton: React.FC<CustomButtonProps> = ({
   isSubmitting,
   ...props
-}: ContainedButtonProps) => {
+}: CustomButtonProps) => {
   const theme = useTheme();
 
   const stylesProps = {
-    focusBackgroundColor: theme.palette.grey[400],
-    activeBackgroundColor: theme.palette.grey[200],
+    focusBackgroundColor:
+      props.variant === "contained"
+        ? theme.palette.grey[400]
+        : "rgba(0,0,0,0.3)",
   };
 
   if (props.color && props.color !== "inherit") {
-    stylesProps.focusBackgroundColor = (theme.palette[
-      props.color as keyof Palette
-    ] as PaletteColor).dark;
-    stylesProps.activeBackgroundColor = (theme.palette[
-      props.color as keyof Palette
-    ] as PaletteColor).light;
+    stylesProps.focusBackgroundColor =
+      props.variant === "contained"
+        ? (theme.palette[props.color as keyof Palette] as PaletteColor).dark
+        : hexToRgba(
+            (theme.palette[props.color as keyof Palette] as PaletteColor).main,
+            0.3
+          );
   }
 
   const classes = useButtonStyles(stylesProps);
@@ -53,14 +60,13 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
       <Box position="inherit" display="inherit" width="inherit">
         <Button
           {...props}
-          variant="contained"
           color={props.color}
           focusVisibleClassName={classes.focusVisible}
-          className={classes.containedButtonActive}
+          className={clsx(classes.buttonActive, props.buttonClassName)}
         />
       </Box>
     </Box>
   );
 };
 
-export default ContainedButton;
+export default CustomButton;

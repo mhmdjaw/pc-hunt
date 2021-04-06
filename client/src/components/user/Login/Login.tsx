@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
-import { ContainedButton, AuthLayout } from "../../common";
+import { AuthLayout, CustomButton } from "../../common";
 import { shallowEqual } from "recompose";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context";
@@ -124,7 +124,8 @@ const Login: React.FC = () => {
               />
             </Box>
             <Box mb="5vh" display="flex" justifyContent="flex-end">
-              <ContainedButton
+              <CustomButton
+                variant="contained"
                 color="primary"
                 disabled={
                   isSubmitting ||
@@ -135,7 +136,7 @@ const Login: React.FC = () => {
                 onClick={submitForm}
               >
                 log in
-              </ContainedButton>
+              </CustomButton>
             </Box>
           </Form>
         )}

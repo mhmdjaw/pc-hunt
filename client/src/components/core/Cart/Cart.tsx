@@ -8,15 +8,17 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Link as RouterLink, useHistory } from "react-router-dom";
-import { getCartItems, removeCartItem } from "../../../api/cart";
+import { addOneToCart, getCartItems, removeCartItem } from "../../../api/cart";
 import { getProductImage, Product } from "../../../api/product";
 import { useFacets } from "../../../context";
-import { newToken, useCancelToken } from "../../../helpers";
-import { CustomIconButton } from "../../common";
+import { displayCost, newToken, round, useCancelToken } from "../../../helpers";
+import { CustomButton, CustomIconButton } from "../../common";
 import { Add, Delete, Remove } from "@material-ui/icons";
 import axios from "axios";
 import clsx from "clsx";
 import useCartStyles from "./cart-styles";
+import { CartItem, CartItemValues } from "../../../api/cart";
+import { Skeleton } from "@material-ui/lab";
 
 interface CartItemsState {
   items: {
@@ -28,6 +30,19 @@ interface CartItemsState {
   loaded: boolean;
 }
 
+const calculateOrderSummary = (items: CartItem[]) => {
+  const subtotal = items.reduce(
+    (accumulator, item) => accumulator + item.product.price * item.quantity,
+    0
+  );
+  const taxes = 0.13 * subtotal;
+  return {
+    subtotal: round(subtotal, 2),
+    taxes: round(taxes, 2),
+    loading: false,
+  };
+};
+
 const Cart: React.FC = () => {
   const classes = useCartStyles();
   const history = useHistory();
@@ -38,14 +53,20 @@ const Cart: React.FC = () => {
     items: [],
     loaded: false,
   });
+  const [orderSummary, setOrderSummary] = useState({
+    subtotal: 0,
+    taxes: 0,
+    loading: true,
+  });
 
   useEffect(
     () => {
       getCartItems(cancelSource.current?.token)
         .then((response) => {
           inputRef.current = new Array(response.data.length);
+          const items = response.data;
           setCartItems({
-            items: response.data.map((item) => ({
+            items: items.map((item) => ({
               product: item.product,
               quantity: item.quantity,
               quantityValue: item.quantity.toString(),
@@ -53,6 +74,7 @@ const Cart: React.FC = () => {
             })),
             loaded: true,
           });
+          setOrderSummary(calculateOrderSummary(items));
         })
         .catch((err) => {
           if (!axios.isCancel(err)) {
@@ -81,20 +103,56 @@ const Cart: React.FC = () => {
     if (Number(value) > 99) {
       value = "99";
     }
+    if (Number(value) > 0 && Number(value) < 100) {
+      changeProductQuantity(
+        { product: cartItems.items[i].product._id, quantity: Number(value) },
+        i
+      );
+    }
     cartItems.items[i].quantityValue = value;
     setCartItems({ ...cartItems });
   };
 
   const quantityStepperClick = (i: number, direction: "add" | "remove") => {
-    cartItems.items[i].quantityValue = (
-      Number(cartItems.items[i].quantityValue) + (direction === "add" ? 1 : -1)
-    ).toString();
+    const newQuantity =
+      Number(cartItems.items[i].quantityValue) + (direction === "add" ? 1 : -1);
+    changeProductQuantity(
+      { product: cartItems.items[i].product._id, quantity: newQuantity },
+      i
+    );
+    cartItems.items[i].quantityValue = newQuantity.toString();
     setCartItems({ ...cartItems });
+  };
+
+  const changeProductQuantity = (item: CartItemValues, i: number) => {
+    cancelSource.current?.cancel();
+    cancelSource.current = newToken();
+    setOrderSummary({ ...orderSummary, loading: true });
+
+    addOneToCart(item, cancelSource.current.token)
+      .then((response) => {
+        cartItems.items[i].quantity = item.quantity as number;
+        updateBadget(response.data.badget);
+        setCartItems({ ...cartItems });
+        setOrderSummary(calculateOrderSummary(cartItems.items));
+        showSnackbar("Product quantity upated.", true);
+      })
+      .catch((err) => {
+        if (!axios.isCancel(err)) {
+          cartItems.items[i].quantityValue = cartItems.items[
+            i
+          ].quantity.toString();
+          setCartItems({ ...cartItems });
+          setOrderSummary({ ...orderSummary, loading: false });
+          showSnackbar("Failed to update the quantity of the product.", false);
+        }
+      });
   };
 
   const removeItem = (i: number) => {
     cancelSource.current?.cancel();
     cancelSource.current = newToken();
+    setOrderSummary({ ...orderSummary, loading: true });
     cartItems.items[i].removing = true;
     setCartItems({ ...cartItems });
     removeCartItem(
@@ -106,12 +164,14 @@ const Cart: React.FC = () => {
         cartItems.items.splice(i, 1);
         updateBadget(response.data.badget);
         setCartItems({ ...cartItems });
+        setOrderSummary(calculateOrderSummary(cartItems.items));
         showSnackbar("Product has been removed from cart.", true);
       })
       .catch((err) => {
         cartItems.items[i].removing = false;
         setCartItems({ ...cartItems });
         if (!axios.isCancel(err)) {
+          setOrderSummary({ ...orderSummary, loading: false });
           showSnackbar(err.response.data.error, false);
         }
       });
@@ -209,12 +269,91 @@ const Cart: React.FC = () => {
                 ))}
               </Card>
             </div>
-            <div className={classes.orderSummary}></div>
+            <div className={classes.orderSummaryContainer}>
+              <Card className={classes.orderSummaryCard} elevation={3}>
+                <Box mb="32px" fontWeight={700} fontSize="h4.fontSize">
+                  Order Summary
+                </Box>
+                <table className={classes.orderSummaryTable}>
+                  <tbody>
+                    <tr>
+                      <th>subtotal</th>
+                      <td>
+                        {orderSummary.loading ? (
+                          <Skeleton
+                            className={classes.costSkeleton}
+                            animation="wave"
+                            width={70}
+                          />
+                        ) : (
+                          displayCost(orderSummary.subtotal, 2)
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>shipping</th>
+                      <td>
+                        {orderSummary.loading ? (
+                          <Skeleton
+                            className={classes.costSkeleton}
+                            animation="wave"
+                            width={70}
+                          />
+                        ) : (
+                          "Free"
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Estimated Taxes</th>
+                      <td>
+                        {orderSummary.loading ? (
+                          <Skeleton
+                            className={classes.costSkeleton}
+                            animation="wave"
+                            width={70}
+                          />
+                        ) : (
+                          displayCost(orderSummary.taxes, 2)
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>Estimated Total</th>
+                      <td>
+                        {orderSummary.loading ? (
+                          <Skeleton
+                            className={classes.costSkeleton}
+                            animation="wave"
+                            width={70}
+                          />
+                        ) : (
+                          displayCost(
+                            orderSummary.subtotal + orderSummary.taxes,
+                            2
+                          )
+                        )}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <CustomButton
+                  variant="contained"
+                  buttonClassName={classes.checkoutButton}
+                  color="secondary"
+                  size="large"
+                  fullWidth
+                >
+                  Proceed to Checkout
+                </CustomButton>
+              </Card>
+            </div>
           </div>
         ) : (
           <Box pb="30px" ml="16px" fontSize="h4.fontSize">
-            Looks like there&apos;s nothing here! Why don&apos;t you add
-            something?
+            Looks like it&aops;s empty! Why don&apos;t you add something?
           </Box>
         )
       ) : (
