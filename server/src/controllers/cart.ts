@@ -36,7 +36,7 @@ export const badget = (req: Request, res: Response): void => {
   });
 };
 
-export const addItemToCart = (req: Request, res: Response): void => {
+export const addOneItem = (req: Request, res: Response): void => {
   const product = req.body.product;
   const quantity = req.body.quantity ? req.body.quantity : null;
 
@@ -89,7 +89,7 @@ export const addItemToCart = (req: Request, res: Response): void => {
   });
 };
 
-export const removeItemFromCart = (req: Request, res: Response): void => {
+export const removeItem = (req: Request, res: Response): void => {
   Cart.findOneAndUpdate(
     { user: req.user?.id },
     { $pull: { cartItems: req.body } },
@@ -107,7 +107,7 @@ export const removeItemFromCart = (req: Request, res: Response): void => {
   });
 };
 
-export const addItemsToCart = (req: Request, res: Response): void => {
+export const addManyItems = (req: Request, res: Response): void => {
   let products: { product: mongoose.Types.ObjectId; quantity: number }[] =
     req.body.products;
 

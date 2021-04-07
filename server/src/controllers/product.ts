@@ -143,6 +143,7 @@ export const remove = (req: Request, res: Response): void => {
 export const update = (req: Request, res: Response): void => {
   if (slugify(req.user?.name as string) !== req.product.brand) {
     res.status(400).json({ error: "Product doesn't belong to this brand" });
+    return;
   }
   const form = new formidable.IncomingForm();
   form.keepExtensions = true;
@@ -320,7 +321,7 @@ export const image = (
 };
 
 const saveProduct = (res: Response, product: IProduct): void => {
-  product.save((err: Error, result) => {
+  product.save((err: Error, product) => {
     if (err) {
       if (err.errors && err.errors.name) {
         res.status(400).json({
@@ -353,7 +354,7 @@ const saveProduct = (res: Response, product: IProduct): void => {
         return;
       }
     } else {
-      res.json({ result });
+      res.json(product);
     }
   });
 };

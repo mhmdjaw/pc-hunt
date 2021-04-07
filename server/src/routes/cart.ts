@@ -1,19 +1,19 @@
 import express from "express";
 import { isAuth } from "../controllers/auth";
 import {
-  addItemToCart,
+  addOneItem,
   read,
   badget,
-  removeItemFromCart,
-  addItemsToCart,
+  removeItem,
+  addManyItems,
 } from "../controllers/cart";
 
 const router = express.Router();
 
 router.get("/cart", isAuth, read);
 router.get("/cart/badget", isAuth, badget);
-router.post("/cart/add-one", isAuth, addItemToCart);
-router.post("/cart/add-many", isAuth, addItemsToCart);
-router.delete("/cart/remove-item", isAuth, removeItemFromCart);
+router.post("/cart/add-one", isAuth, addOneItem);
+router.post("/cart/add-many", isAuth, addManyItems);
+router.delete("/cart/remove-item", isAuth, removeItem);
 
 export default router;
