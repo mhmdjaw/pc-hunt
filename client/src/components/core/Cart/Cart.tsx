@@ -11,14 +11,14 @@ import { Link as RouterLink, useHistory } from "react-router-dom";
 import { addOneToCart, getCartItems, removeCartItem } from "../../../api/cart";
 import { getProductImage, Product } from "../../../api/product";
 import { useFacets } from "../../../context";
-import { displayCost, newToken, round, useCancelToken } from "../../../helpers";
-import { CustomButton, CustomIconButton } from "../../common";
+import { newToken, round, useCancelToken } from "../../../helpers";
+import { CustomIconButton } from "../../common";
 import { Add, Delete, Remove } from "@material-ui/icons";
 import axios from "axios";
 import clsx from "clsx";
 import useCartStyles from "./cart-styles";
 import { CartItem, CartItemValues } from "../../../api/cart";
-import { Skeleton } from "@material-ui/lab";
+import OrderSummary from "../../common/OrderSummary";
 
 interface CartItemsState {
   items: {
@@ -269,91 +269,16 @@ const Cart: React.FC = () => {
                 ))}
               </Card>
             </div>
-            <div className={classes.orderSummaryContainer}>
-              <Card className={classes.orderSummaryCard} elevation={3}>
-                <Box mb="32px" fontWeight={700} fontSize="h4.fontSize">
-                  Order Summary
-                </Box>
-                <table className={classes.orderSummaryTable}>
-                  <tbody>
-                    <tr>
-                      <th>subtotal</th>
-                      <td>
-                        {orderSummary.loading ? (
-                          <Skeleton
-                            className={classes.costSkeleton}
-                            animation="wave"
-                            width={70}
-                          />
-                        ) : (
-                          displayCost(orderSummary.subtotal, 2)
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>shipping</th>
-                      <td>
-                        {orderSummary.loading ? (
-                          <Skeleton
-                            className={classes.costSkeleton}
-                            animation="wave"
-                            width={70}
-                          />
-                        ) : (
-                          "Free"
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>Estimated Taxes</th>
-                      <td>
-                        {orderSummary.loading ? (
-                          <Skeleton
-                            className={classes.costSkeleton}
-                            animation="wave"
-                            width={70}
-                          />
-                        ) : (
-                          displayCost(orderSummary.taxes, 2)
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th>Estimated Total</th>
-                      <td>
-                        {orderSummary.loading ? (
-                          <Skeleton
-                            className={classes.costSkeleton}
-                            animation="wave"
-                            width={70}
-                          />
-                        ) : (
-                          displayCost(
-                            orderSummary.subtotal + orderSummary.taxes,
-                            2
-                          )
-                        )}
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
-                <CustomButton
-                  variant="contained"
-                  buttonClassName={classes.checkoutButton}
-                  color="secondary"
-                  size="large"
-                  fullWidth
-                >
-                  Proceed to Checkout
-                </CustomButton>
-              </Card>
-            </div>
+            <OrderSummary
+              loading={orderSummary.loading}
+              subtotal={orderSummary.subtotal}
+              taxes={orderSummary.taxes}
+              cart
+            />
           </div>
         ) : (
           <Box pb="30px" ml="16px" fontSize="h4.fontSize">
-            Looks like it&aops;s empty! Why don&apos;t you add something?
+            Looks like it&apos;s empty! Why don&apos;t you add something?
           </Box>
         )
       ) : (

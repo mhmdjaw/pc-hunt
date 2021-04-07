@@ -58,8 +58,8 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
 
   return (
     <Container maxWidth="sm">
-      <Box my="15vh">
-        <Box flexDirection="column" alignItems="center" display="flex" mb="5vh">
+      <Box my="90px">
+        <Box flexDirection="column" alignItems="center" display="flex">
           <LogoPrimary
             width="20%"
             height="20%"
@@ -72,7 +72,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
 
         <Paper className={classes.paper} elevation={7}>
           {(error || success) && (
-            <Box mb="5vh">
+            <Box mb="24px">
               {error && <Alert severity="error">{error}</Alert>}
               {success && <Alert severity="success">{success}</Alert>}
             </Box>

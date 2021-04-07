@@ -18,7 +18,7 @@ const homeCarouselFeatures: HomeCarouselFeature[] = [
   {
     headline: "Build your PC in no time with our PC builder.",
     buttonText: "build now",
-    link: "#",
+    link: "/pc-builder",
     image: pc2,
   },
 ];

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefAttributes } from "react";
 import {
   Box,
   Button,
@@ -10,11 +10,18 @@ import { Palette, PaletteColor } from "@material-ui/core/styles/createPalette";
 import useButtonStyles from "../button-styles";
 import { hexToRgba } from "../../../../helpers";
 import clsx from "clsx";
+import { LinkProps } from "react-router-dom";
 
 interface CustomButtonProps extends ButtonProps {
   isSubmitting?: boolean;
   buttonClassName?: string;
-  component?: string;
+  component?:
+    | string
+    | React.ComponentType
+    | (<S = unknown>(
+        props: LinkProps<S> & RefAttributes<HTMLAnchorElement>
+      ) => React.ReactElement | null);
+  to?: string;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({

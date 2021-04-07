@@ -79,71 +79,69 @@ const CategoryForm: React.FC = () => {
   };
 
   return (
-    <Box m="60px 10vw 90px">
-      <Typography variant="h4">Create Category</Typography>
-      <Box mt="30px">
-        <Paper className={classes.paper} elevation={3}>
-          {(state.error || state.success) && (
-            <Box mb="5vh" maxWidth="500px">
-              {state.error && <Alert severity="error">{state.error}</Alert>}
-              {state.success && (
-                <Alert severity="success">{state.success}</Alert>
-              )}
-            </Box>
-          )}
-          <Formik
-            initialValues={initialValues}
-            validate={validate}
-            onSubmit={onSubmit}
-          >
-            {({ submitForm, isSubmitting, isValid, dirty, values }) => (
-              <Form>
-                <Box mb="5vh" maxWidth="350px">
-                  <Field
-                    component={TextField}
-                    variant="outlined"
-                    name="parent"
-                    label="Parent category"
-                    select
-                    fullWidth
-                  >
-                    {categories.map(
-                      (category, i) =>
-                        category.parent.slug === "root" && (
-                          <MenuItem key={i} value={category._id}>
-                            {category.name}
-                          </MenuItem>
-                        )
-                    )}
-                  </Field>
-                </Box>
-                <Box mb="5vh" maxWidth="500px">
-                  <Field
-                    component={TextField}
-                    variant="outlined"
-                    name="name"
-                    label="Category name"
-                    fullWidth
-                  />
-                </Box>
-                <CustomButton
-                  variant="contained"
-                  color="primary"
-                  disabled={
-                    isSubmitting ||
-                    !(dirty && isValid) ||
-                    shallowEqual(state.lastSubmission, values)
-                  }
-                  isSubmitting={isSubmitting}
-                  onClick={submitForm}
+    <Box m="60px auto 90px" p="0 16px" maxWidth="700px">
+      <Typography className={classes.title} variant="h4">
+        Create Category
+      </Typography>
+      <Paper className={classes.paper} elevation={3}>
+        {(state.error || state.success) && (
+          <Box mb="24px" maxWidth="500px">
+            {state.error && <Alert severity="error">{state.error}</Alert>}
+            {state.success && <Alert severity="success">{state.success}</Alert>}
+          </Box>
+        )}
+        <Formik
+          initialValues={initialValues}
+          validate={validate}
+          onSubmit={onSubmit}
+        >
+          {({ submitForm, isSubmitting, isValid, dirty, values }) => (
+            <Form>
+              <Box mb="24px" maxWidth="350px">
+                <Field
+                  component={TextField}
+                  variant="outlined"
+                  name="parent"
+                  label="Parent category"
+                  select
+                  fullWidth
                 >
-                  create category
-                </CustomButton>
-              </Form>
-            )}
-          </Formik>
-        </Paper>
-      </Box>
+                  {categories.map(
+                    (category, i) =>
+                      category.parent.slug === "root" && (
+                        <MenuItem key={i} value={category._id}>
+                          {category.name}
+                        </MenuItem>
+                      )
+                  )}
+                </Field>
+              </Box>
+              <Box mb="24px" maxWidth="500px">
+                <Field
+                  component={TextField}
+                  variant="outlined"
+                  name="name"
+                  label="Category name"
+                  fullWidth
+                />
+              </Box>
+              <CustomButton
+                variant="contained"
+                color="primary"
+                disabled={
+                  isSubmitting ||
+                  !(dirty && isValid) ||
+                  shallowEqual(state.lastSubmission, values)
+                }
+                isSubmitting={isSubmitting}
+                onClick={submitForm}
+              >
+                create category
+              </CustomButton>
+            </Form>
+          )}
+        </Formik>
+      </Paper>
     </Box>
   );
 };

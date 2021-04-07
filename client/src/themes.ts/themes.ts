@@ -21,6 +21,20 @@ export const lightTheme = responsiveFontSizes(
     overrides: {
       MuiCssBaseline: {
         "@global": {
+          html: {
+            height: "100%",
+          },
+          body: {
+            height: "100%",
+            "& > #root": {
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+            },
+          },
+          footer: {
+            flexShrink: 0,
+          },
           a: {
             WebkitTapHighlightColor: "transparent",
           },

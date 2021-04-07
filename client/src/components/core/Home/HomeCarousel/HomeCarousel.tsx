@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import useHomeCarouselStyles from "./home-carousel-styles";
 import carouselAnimationVariants from "./carousel-animation-variants";
 import { HomeCarouselFeature } from "../home-carousel-features";
-import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 interface HomeCarouselProps {
   features: HomeCarouselFeature[];
@@ -20,7 +20,6 @@ interface HomeCarouselProps {
 const HomeCarousel: React.FC<HomeCarouselProps> = React.memo(
   ({ features }: HomeCarouselProps) => {
     const classes = useHomeCarouselStyles();
-    const history = useHistory();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const MotionBox = motion(Box);
@@ -107,9 +106,10 @@ const HomeCarousel: React.FC<HomeCarouselProps> = React.memo(
                     {feature.headline}
                   </Box>
                   <CustomButton
+                    component={Link}
+                    to={feature.link}
                     variant="contained"
                     color="secondary"
-                    onClick={() => history.push(feature.link)}
                   >
                     {feature.buttonText}
                   </CustomButton>

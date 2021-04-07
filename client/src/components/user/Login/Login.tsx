@@ -103,7 +103,7 @@ const Login: React.FC = () => {
       >
         {({ submitForm, isSubmitting, isValid, dirty, values }) => (
           <Form>
-            <Box mb="5vh">
+            <Box mb="24px">
               <Field
                 component={TextField}
                 variant="outlined"
@@ -113,7 +113,7 @@ const Login: React.FC = () => {
                 fullWidth
               />
             </Box>
-            <Box mb="5vh">
+            <Box mb="24px">
               <Field
                 component={TextField}
                 variant="outlined"
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
                 fullWidth
               />
             </Box>
-            <Box mb="5vh" display="flex" justifyContent="flex-end">
+            <Box mb="24px" display="flex" justifyContent="flex-end">
               <CustomButton
                 variant="contained"
                 color="primary"

@@ -153,12 +153,14 @@ const ProductForm: React.FC = () => {
   };
 
   return (
-    <Box m="60px 10vw 90px">
-      <Typography variant="h4">Create Product</Typography>
+    <Box m="60px auto 90px" p="0 16px" maxWidth="700px">
+      <Typography className={classes.title} variant="h4">
+        Create Product
+      </Typography>
       <Box mt="30px">
         <Paper className={classes.paper} elevation={3}>
           {(state.error || state.success) && (
-            <Box mb="5vh" maxWidth="500px">
+            <Box mb="24px" maxWidth="500px">
               {state.error && <Alert severity="error">{state.error}</Alert>}
               {state.success && (
                 <Alert severity="success">{state.success}</Alert>
@@ -172,7 +174,7 @@ const ProductForm: React.FC = () => {
           >
             {({ submitForm, isSubmitting, isValid, dirty, values }) => (
               <Form>
-                <Box mb="5vh" maxWidth="500px">
+                <Box mb="24px" maxWidth="500px">
                   <Field
                     component={TextField}
                     variant="outlined"
@@ -181,7 +183,7 @@ const ProductForm: React.FC = () => {
                     fullWidth
                   />
                 </Box>
-                <Box mb="5vh" maxWidth="500px">
+                <Box mb="24px" maxWidth="500px">
                   <Field
                     component={TextField}
                     variant="outlined"
@@ -192,7 +194,7 @@ const ProductForm: React.FC = () => {
                     fullWidth
                   />
                 </Box>
-                <Box mb="5vh" maxWidth="350px">
+                <Box mb="24px" maxWidth="350px">
                   <Field
                     component={TextField}
                     variant="outlined"
@@ -217,7 +219,7 @@ const ProductForm: React.FC = () => {
                   flexDirection={isMobile ? "column" : "row"}
                   justifyContent="space-between"
                 >
-                  <Box mb="5vh" maxWidth="200px">
+                  <Box mb="24px" maxWidth="200px">
                     <Field
                       component={TextField}
                       variant="outlined"
@@ -228,7 +230,7 @@ const ProductForm: React.FC = () => {
                       fullWidth
                     />
                   </Box>
-                  <Box mb="5vh" maxWidth="120px">
+                  <Box mb="24px" maxWidth="126px">
                     <Field
                       component={TextField}
                       variant="outlined"
@@ -240,7 +242,7 @@ const ProductForm: React.FC = () => {
                     />
                   </Box>
                 </Box>
-                <Box mb="5vh">
+                <Box mb="24px">
                   <CustomButton
                     component="label"
                     color="primary"
@@ -255,7 +257,7 @@ const ProductForm: React.FC = () => {
                     />
                   </CustomButton>
                 </Box>
-                <Box mb="5vh">
+                <Box mb="24px">
                   {state.image && (
                     <Box
                       display="flex"

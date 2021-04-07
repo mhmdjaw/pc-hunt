@@ -22,11 +22,11 @@ export const round = (num: number, fractionDigits: number): number =>
   Math.round((num + Number.EPSILON) * Math.pow(10, fractionDigits)) /
   Math.pow(10, fractionDigits);
 
-export const displayCost = (num: number, fractionDigits: number) =>
+export const displayCost = (num: number, fractionDigits: number): string =>
   num.toLocaleString("EG", {
     style: "currency",
     currency: "USD",
-    minimumFractionDigits: 2,
+    minimumFractionDigits: fractionDigits,
   });
 
 const CancelToken = axios.CancelToken;

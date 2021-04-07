@@ -1,3 +1,4 @@
+import { Box } from "@material-ui/core";
 import React, { lazy, Suspense } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { ProvideFacets } from "../../../context";
@@ -49,45 +50,47 @@ const Routes: React.FC = () => {
 
           <AuthRoute path="/" authType="unprotected">
             <ProvideFacets>
-              <NavBar />
-              <AuthRoute exact path="/" authType="unprotected">
-                <Home />
-              </AuthRoute>
-              <AuthRoute path="/pc-builder" authType="unprotected">
-                <PCBuilder />
-              </AuthRoute>
-              <AuthRoute path="/cart" authType="protected">
-                <Cart />
-              </AuthRoute>
-              <AuthRoute exact path="/account" authType="protected">
-                <Account />
-              </AuthRoute>
-              <AuthRoute
-                path="/account/update"
-                authType="protected"
-              ></AuthRoute>
-              <Switch>
-                <AuthRoute path="/category/create" authType="admin">
-                  <CategoryForm />
+              <Box flex="1 0 auto">
+                <NavBar />
+                <AuthRoute exact path="/" authType="unprotected">
+                  <Home />
                 </AuthRoute>
-                <AuthRoute path="/product/create" authType="admin">
-                  <ProductForm />
+                <AuthRoute path="/pc-builder" authType="unprotected">
+                  <PCBuilder />
+                </AuthRoute>
+                <AuthRoute path="/cart" authType="protected">
+                  <Cart />
+                </AuthRoute>
+                <AuthRoute exact path="/account" authType="protected">
+                  <Account />
                 </AuthRoute>
                 <AuthRoute
-                  path={[
-                    "/category/:categorySlug",
-                    "/brand/:brandSlug",
-                    "/search/:keywords",
-                    "/shop",
-                  ]}
-                  authType="unprotected"
-                >
-                  <Shop />
-                </AuthRoute>
-                <AuthRoute path="/product/:slug" authType="unprotected">
-                  <Product />
-                </AuthRoute>
-              </Switch>
+                  path="/account/update"
+                  authType="protected"
+                ></AuthRoute>
+                <Switch>
+                  <AuthRoute path="/category/create" authType="admin">
+                    <CategoryForm />
+                  </AuthRoute>
+                  <AuthRoute path="/product/create" authType="admin">
+                    <ProductForm />
+                  </AuthRoute>
+                  <AuthRoute
+                    path={[
+                      "/category/:categorySlug",
+                      "/brand/:brandSlug",
+                      "/search/:keywords",
+                      "/shop",
+                    ]}
+                    authType="unprotected"
+                  >
+                    <Shop />
+                  </AuthRoute>
+                  <AuthRoute path="/product/:slug" authType="unprotected">
+                    <Product />
+                  </AuthRoute>
+                </Switch>
+              </Box>
               <Footer />
             </ProvideFacets>
           </AuthRoute>

@@ -1,9 +1,13 @@
 import { makeStyles } from "@material-ui/core";
 
 const useCategoryFormStyles = makeStyles({
+  title: {
+    marginLeft: "9%",
+    marginBottom: "32px",
+    fontWeight: 500,
+  },
   paper: {
-    padding: "60px 5vw",
-    marginBottom: "10vh",
+    padding: "9% 9% 10%",
   },
 });
 
