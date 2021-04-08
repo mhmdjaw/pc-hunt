@@ -16,10 +16,10 @@ export const createOrUpdate = (req: Request, res: Response): void => {
           return;
         }
 
-        res.status(400).json(address);
+        res.json(address);
       });
     } else {
-      const newAddress = new Address(req.body);
+      const newAddress = new Address({ ...req.body, user: req.user?.id });
 
       newAddress.save((err, address) => {
         if (err) {
@@ -27,7 +27,7 @@ export const createOrUpdate = (req: Request, res: Response): void => {
           return;
         }
 
-        res.status(400).json(address);
+        res.json(address);
       });
     }
   });
