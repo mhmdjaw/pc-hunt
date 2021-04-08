@@ -24,7 +24,7 @@ interface CartItemsState {
   items: {
     product: Product;
     quantity: number;
-    quantityValue: string;
+    quantityValue: number;
     removing: boolean;
   }[];
   loaded: boolean;
@@ -69,7 +69,7 @@ const Cart: React.FC = () => {
             items: items.map((item) => ({
               product: item.product,
               quantity: item.quantity,
-              quantityValue: item.quantity.toString(),
+              quantityValue: item.quantity,
               removing: false,
             })),
             loaded: true,
@@ -96,16 +96,17 @@ const Cart: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     i: number
   ) => {
-    let value = e.target.value;
-    if (value.length > 0 && Number(value) < 1) {
-      value = "1";
+    let value = (e.target.value as unknown) as number;
+
+    if (value && value < 1) {
+      value = 1;
     }
-    if (Number(value) > 99) {
-      value = "99";
+    if (value && value > 99) {
+      value = 99;
     }
-    if (Number(value) > 0 && Number(value) < 100) {
+    if (value > 0 && value < 100) {
       changeProductQuantity(
-        { product: cartItems.items[i].product._id, quantity: Number(value) },
+        { product: cartItems.items[i].product._id, quantity: value },
         i
       );
     }
@@ -114,13 +115,19 @@ const Cart: React.FC = () => {
   };
 
   const quantityStepperClick = (i: number, direction: "add" | "remove") => {
-    const newQuantity =
-      Number(cartItems.items[i].quantityValue) + (direction === "add" ? 1 : -1);
+    let newQuantity: number;
+    if (!cartItems.items[i].quantityValue) {
+      newQuantity = 1;
+    } else {
+      newQuantity =
+        Number(cartItems.items[i].quantityValue) +
+        (direction === "add" ? 1 : -1);
+    }
     changeProductQuantity(
       { product: cartItems.items[i].product._id, quantity: newQuantity },
       i
     );
-    cartItems.items[i].quantityValue = newQuantity.toString();
+    cartItems.items[i].quantityValue = newQuantity;
     setCartItems({ ...cartItems });
   };
 
@@ -139,9 +146,7 @@ const Cart: React.FC = () => {
       })
       .catch((err) => {
         if (!axios.isCancel(err)) {
-          cartItems.items[i].quantityValue = cartItems.items[
-            i
-          ].quantity.toString();
+          cartItems.items[i].quantityValue = cartItems.items[i].quantity;
           setCartItems({ ...cartItems });
           setOrderSummary({ ...orderSummary, loading: false });
           showSnackbar("Failed to update the quantity of the product.", false);
@@ -228,7 +233,10 @@ const Cart: React.FC = () => {
                               className={classes.iconButton}
                               color="primary"
                               size="small"
-                              disabled={Number(item.quantityValue) <= 1}
+                              disabled={
+                                Boolean(item.quantityValue) &&
+                                item.quantityValue <= 1
+                              }
                               onClick={() => quantityStepperClick(i, "remove")}
                             >
                               <Remove fontSize="inherit" />
@@ -249,7 +257,7 @@ const Cart: React.FC = () => {
                               className={classes.iconButton}
                               color="primary"
                               size="small"
-                              disabled={Number(item.quantityValue) >= 99}
+                              disabled={item.quantityValue >= 99}
                               onClick={() => quantityStepperClick(i, "add")}
                             >
                               <Add fontSize="inherit" />

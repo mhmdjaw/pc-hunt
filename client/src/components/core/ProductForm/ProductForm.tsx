@@ -1,17 +1,9 @@
 import React, { ChangeEvent, useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import {
-  Box,
-  MenuItem,
-  Paper,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import { Box, MenuItem, useMediaQuery, useTheme } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
-import { CustomIconButton, CustomButton } from "../../common";
+import { CustomIconButton, CustomButton, FormLayout } from "../../common";
 import { shallowEqual } from "recompose";
-import { Alert } from "@material-ui/lab";
 import { Add, Delete } from "@material-ui/icons";
 import useProductFormStyles from "./product-form-styles";
 import { createProduct } from "../../../api/product";
@@ -21,13 +13,21 @@ interface Values {
   name: string;
   description: string;
   category: string;
-  price: string;
-  quantity: string;
+  price?: number;
+  quantity?: number;
+}
+
+interface Errors {
+  name: string;
+  description: string;
+  category: string;
+  price?: string;
+  quantity?: string;
 }
 
 interface State {
-  error: string | undefined;
-  success: string | undefined;
+  error?: string;
+  success?: string;
   lastSubmission: {
     values: Values;
     image: File | null;
@@ -36,16 +36,14 @@ interface State {
   image: File | null;
 }
 
-const initialValues = {
+const initialValues: Values = {
   name: "",
   description: "",
   category: "",
-  price: "",
-  quantity: "",
 };
 
 const validate = (values: Values) => {
-  const errors: Partial<Values> = {};
+  const errors: Partial<Errors> = {};
 
   if (!values.name) {
     errors.name = "Required";
@@ -56,14 +54,14 @@ const validate = (values: Values) => {
   if (!values.category) {
     errors.category = "Required";
   }
-  if (values.price.length === 0) {
+  if (values.price !== 0 && !values.price) {
     errors.price = "Required";
-  } else if (Number(values.price) < 0) {
+  } else if (values.price < 0) {
     errors.price = "Price can't be negative";
   }
-  if (values.quantity.length === 0) {
+  if (values.quantity !== 0 && !values.quantity) {
     errors.quantity = "Required";
-  } else if (Number(values.quantity) < 0) {
+  } else if (values.quantity < 0) {
     errors.quantity = "Quantity can't be negative";
   }
 
@@ -95,8 +93,8 @@ const ProductForm: React.FC = () => {
     values.append("name", name);
     values.append("description", description);
     values.append("category", category);
-    values.append("price", price);
-    values.append("quantity", quantity);
+    values.append("price", price?.toString() as string);
+    values.append("quantity", quantity?.toString() as string);
     if (state.image) {
       values.append("image", state.image);
     }
@@ -104,7 +102,6 @@ const ProductForm: React.FC = () => {
     createProduct(values)
       .then(() => {
         setState({
-          ...state,
           success: "Product successfully created",
           error: undefined,
           imageURL: "",
@@ -153,150 +150,140 @@ const ProductForm: React.FC = () => {
   };
 
   return (
-    <Box m="60px auto 90px" p="0 16px" maxWidth="700px">
-      <Typography className={classes.title} variant="h4">
-        Create Product
-      </Typography>
-      <Box mt="30px">
-        <Paper className={classes.paper} elevation={3}>
-          {(state.error || state.success) && (
+    <FormLayout
+      title="Create Product"
+      maxWidth={700}
+      error={state.error}
+      success={state.success}
+    >
+      <Formik
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={onSubmit}
+      >
+        {({ submitForm, isSubmitting, isValid, dirty, values }) => (
+          <Form>
             <Box mb="24px" maxWidth="500px">
-              {state.error && <Alert severity="error">{state.error}</Alert>}
-              {state.success && (
-                <Alert severity="success">{state.success}</Alert>
-              )}
+              <Field
+                component={TextField}
+                variant="outlined"
+                name="name"
+                label="Product name"
+                fullWidth
+              />
             </Box>
-          )}
-          <Formik
-            initialValues={initialValues}
-            validate={validate}
-            onSubmit={onSubmit}
-          >
-            {({ submitForm, isSubmitting, isValid, dirty, values }) => (
-              <Form>
-                <Box mb="24px" maxWidth="500px">
-                  <Field
-                    component={TextField}
-                    variant="outlined"
-                    name="name"
-                    label="Product name"
-                    fullWidth
-                  />
-                </Box>
-                <Box mb="24px" maxWidth="500px">
-                  <Field
-                    component={TextField}
-                    variant="outlined"
-                    name="description"
-                    label="Description"
-                    multiline
-                    rows={5}
-                    fullWidth
-                  />
-                </Box>
-                <Box mb="24px" maxWidth="350px">
-                  <Field
-                    component={TextField}
-                    variant="outlined"
-                    name="category"
-                    label="Category"
-                    select
-                    fullWidth
-                  >
-                    {categories.map(
-                      (category, i) =>
-                        category.parent.slug !== "root" && (
-                          <MenuItem key={i} value={category._id}>
-                            {category.name}
-                          </MenuItem>
-                        )
-                    )}
-                  </Field>
-                </Box>
+            <Box mb="24px" maxWidth="500px">
+              <Field
+                component={TextField}
+                variant="outlined"
+                name="description"
+                label="Description"
+                multiline
+                rows={5}
+                fullWidth
+              />
+            </Box>
+            <Box mb="24px" maxWidth="350px">
+              <Field
+                component={TextField}
+                variant="outlined"
+                name="category"
+                label="Category"
+                select
+                fullWidth
+              >
+                {categories.map(
+                  (category, i) =>
+                    category.parent.slug !== "root" && (
+                      <MenuItem key={i} value={category._id}>
+                        {category.name}
+                      </MenuItem>
+                    )
+                )}
+              </Field>
+            </Box>
+            <Box
+              display="flex"
+              maxWidth="350px"
+              flexDirection={isMobile ? "column" : "row"}
+              justifyContent="space-between"
+            >
+              <Box mb="24px" maxWidth="200px">
+                <Field
+                  component={TextField}
+                  variant="outlined"
+                  name="price"
+                  type="number"
+                  label="Price $"
+                  inputProps={{ min: 0 }}
+                  fullWidth
+                />
+              </Box>
+              <Box mb="24px" maxWidth="126px">
+                <Field
+                  component={TextField}
+                  variant="outlined"
+                  name="quantity"
+                  type="number"
+                  label="Quantity"
+                  inputProps={{ min: 0 }}
+                  fullWidth
+                />
+              </Box>
+            </Box>
+            <Box mb="24px">
+              <CustomButton
+                component="label"
+                color="primary"
+                startIcon={<Add />}
+              >
+                add image
+                <input
+                  type="file"
+                  accept="image/jpg, image/png, image/jpeg, image/bmp"
+                  onChange={(event) => setImage(event)}
+                  hidden
+                />
+              </CustomButton>
+            </Box>
+            <Box mb="24px">
+              {state.image && (
                 <Box
                   display="flex"
-                  maxWidth="350px"
-                  flexDirection={isMobile ? "column" : "row"}
+                  maxWidth="200px"
                   justifyContent="space-between"
+                  alignItems="center"
                 >
-                  <Box mb="24px" maxWidth="200px">
-                    <Field
-                      component={TextField}
-                      variant="outlined"
-                      name="price"
-                      type="number"
-                      label="Price $"
-                      inputProps={{ min: 0 }}
-                      fullWidth
-                    />
-                  </Box>
-                  <Box mb="24px" maxWidth="126px">
-                    <Field
-                      component={TextField}
-                      variant="outlined"
-                      name="quantity"
-                      type="number"
-                      label="Quantity"
-                      inputProps={{ min: 0 }}
-                      fullWidth
-                    />
-                  </Box>
-                </Box>
-                <Box mb="24px">
-                  <CustomButton
-                    component="label"
+                  <img className={classes.image} src={state.imageURL} />
+                  <CustomIconButton
+                    aria-label="remove image"
+                    onClick={removeImage}
                     color="primary"
-                    startIcon={<Add />}
                   >
-                    add image
-                    <input
-                      type="file"
-                      accept="image/jpg, image/png, image/jpeg, image/bmp"
-                      onChange={(event) => setImage(event)}
-                      hidden
-                    />
-                  </CustomButton>
+                    <Delete />
+                  </CustomIconButton>
                 </Box>
-                <Box mb="24px">
-                  {state.image && (
-                    <Box
-                      display="flex"
-                      maxWidth="200px"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <img className={classes.image} src={state.imageURL} />
-                      <CustomIconButton
-                        aria-label="remove image"
-                        onClick={removeImage}
-                        color="primary"
-                      >
-                        <Delete />
-                      </CustomIconButton>
-                    </Box>
-                  )}
-                </Box>
-                <CustomButton
-                  variant="contained"
-                  color="primary"
-                  disabled={
-                    isSubmitting ||
-                    !(dirty && isValid) ||
-                    (shallowEqual(state.lastSubmission.values, values) &&
-                      state.lastSubmission.image?.size === state.image?.size) ||
-                    !state.image
-                  }
-                  isSubmitting={isSubmitting}
-                  onClick={submitForm}
-                >
-                  create product
-                </CustomButton>
-              </Form>
-            )}
-          </Formik>
-        </Paper>
-      </Box>
-    </Box>
+              )}
+            </Box>
+            <CustomButton
+              variant="contained"
+              color="primary"
+              disabled={
+                isSubmitting ||
+                !(dirty && isValid) ||
+                (shallowEqual(state.lastSubmission.values, values) &&
+                  state.lastSubmission.image?.size === state.image?.size) ||
+                !state.image
+              }
+              isSubmitting={isSubmitting}
+              onClick={submitForm}
+            >
+              create product
+            </CustomButton>
+          </Form>
+        )}
+      </Formik>
+    </FormLayout>
   );
 };
 

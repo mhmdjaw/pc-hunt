@@ -14,8 +14,8 @@ interface Values {
 }
 
 interface State {
-  error: string | undefined;
-  success: string | undefined;
+  error?: string;
+  success?: string;
   lastSubmission: Values;
 }
 

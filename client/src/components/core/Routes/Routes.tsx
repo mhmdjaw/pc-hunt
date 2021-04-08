@@ -31,6 +31,7 @@ const Shop = lazy(() => import("../Shop"));
 const Product = lazy(() => import("../Product"));
 const PCBuilder = lazy(() => import("../PCBuilder"));
 const Cart = lazy(() => import("../Cart"));
+const Address = lazy(() => import("../Address"));
 
 const Routes: React.FC = () => {
   return (
@@ -68,6 +69,9 @@ const Routes: React.FC = () => {
                   path="/account/update"
                   authType="protected"
                 ></AuthRoute>
+                <AuthRoute path="/address" authType="protected">
+                  <Address />
+                </AuthRoute>
                 <Switch>
                   <AuthRoute path="/category/create" authType="admin">
                     <CategoryForm />

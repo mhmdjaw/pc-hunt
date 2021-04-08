@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { Box, Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import { AuthLayout, CustomButton } from "../../common";
-import useSignupStyles from "./signup-styles";
 import PasswordInputField from "./PasswordInputField";
 import { shallowEqual } from "recompose";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context";
 import { LocationState } from "../../core/Routes";
+import { calculatePasswordStrength } from "../../../helpers/helpers";
 
 interface Values {
   name: string;
@@ -18,12 +17,14 @@ interface Values {
 }
 
 interface State {
-  error: string | undefined;
-  success: string | undefined;
+  error?: string;
+  success?: string;
   lastSubmission: Values;
-  barBgColor: string;
-  barColor: string;
-  barValue: number;
+  bar: {
+    color: string;
+    backgroundColor: string;
+    value: number;
+  };
 }
 
 const initialValues: Values = {
@@ -34,7 +35,11 @@ const initialValues: Values = {
 
 const validate = (values: Values) => {
   const errors: Partial<Values> = {};
-  let conditionsFulfilled = 0;
+  let bar = {
+    color: "barColorPrimary",
+    backgroundColor: "colorPrimary",
+    value: 0,
+  };
   if (!values.name) {
     errors.name = "Required";
   }
@@ -50,25 +55,16 @@ const validate = (values: Values) => {
   if (!values.password) {
     errors.password = "Required";
   } else {
-    conditionsFulfilled += values.password.length > 7 ? 1 : 0;
-    conditionsFulfilled += /[a-z]/g.test(values.password) ? 1 : 0;
-    conditionsFulfilled += /[A-Z]/g.test(values.password) ? 1 : 0;
-    conditionsFulfilled += /[0-9]/g.test(values.password) ? 1 : 0;
-    conditionsFulfilled += /[ !"#$%&'()*+,-./:\\;<=>?@[\]^_`{|}~]/g.test(
-      values.password
-    )
-      ? 1
-      : 0;
-    if (conditionsFulfilled < 5) {
-      errors.password =
-        "Your password should have at least 8 characters, one uppercase, one lowercase, one number and one special character";
+    const { error, bar: barState } = calculatePasswordStrength(values.password);
+    if (error) {
+      errors.password = error;
     }
+    bar = barState;
   }
-  return { errors, conditionsFulfilled };
+  return { errors, bar };
 };
 
 const Signup: React.FC = () => {
-  const classes = useSignupStyles();
   const history = useHistory();
   const location = useLocation<LocationState>();
   const { signup } = useAuth();
@@ -76,41 +72,13 @@ const Signup: React.FC = () => {
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
-    barBgColor: "colorPrimary",
-    barColor: "barColorPrimary",
-    barValue: 0,
+    bar: {
+      backgroundColor: "colorPrimary",
+      color: "barColorPrimary",
+      value: 0,
+    },
     lastSubmission: { ...initialValues },
   });
-
-  const handleProgressBar = (conditionsFulfilled: number) => {
-    let [barColor, barBgColor, barValue] = [
-      "barColorPrimary",
-      "colorPrimary",
-      0,
-    ];
-    if (conditionsFulfilled > 0) {
-      if (conditionsFulfilled > 2) {
-        if (conditionsFulfilled > 4) {
-          [barColor, barBgColor, barValue] = [
-            "barColorStrong",
-            "colorStrong",
-            100,
-          ];
-        } else {
-          [barColor, barBgColor, barValue] = ["barColorMed", "colorMed", 66];
-        }
-      } else {
-        [barColor, barBgColor, barValue] = ["barColorWeak", "colorWeak", 33];
-      }
-    }
-
-    setState({
-      ...state,
-      barBgColor: barBgColor,
-      barColor: barColor,
-      barValue: barValue,
-    });
-  };
 
   const onSubmit = (
     values: Values,
@@ -160,8 +128,8 @@ const Signup: React.FC = () => {
         validate={(values) => {
           if (state.error) state.error = undefined;
           if (state.success) state.success = undefined;
-          const { errors, conditionsFulfilled } = validate(values);
-          handleProgressBar(conditionsFulfilled);
+          const { errors, bar } = validate(values);
+          setState({ ...state, bar });
           return errors;
         }}
         onSubmit={onSubmit}
@@ -188,27 +156,8 @@ const Signup: React.FC = () => {
                 fullWidth
               />
             </Box>
-            <Grid
-              className={classes.progressContainer}
-              spacing={1}
-              container
-              justify="flex-end"
-            >
-              <Grid xs={3} item>
-                <LinearProgress
-                  classes={{
-                    colorPrimary:
-                      classes[state.barBgColor as keyof (string | undefined)],
-                    barColorPrimary:
-                      classes[state.barColor as keyof (string | undefined)],
-                  }}
-                  variant="determinate"
-                  value={state.barValue}
-                />
-              </Grid>
-            </Grid>
             <Box mb="24px">
-              <PasswordInputField />
+              <PasswordInputField state={state.bar} />
             </Box>
 
             <Box mb="24px" display="flex" justifyContent="flex-end">

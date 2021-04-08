@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const useCategoryFormStyles = makeStyles({
+export const useFormLayoutStyles = makeStyles({
   title: {
     marginLeft: "9%",
     marginBottom: "32px",
@@ -11,4 +11,4 @@ const useCategoryFormStyles = makeStyles({
   },
 });
 
-export default useCategoryFormStyles;
+export default useFormLayoutStyles;

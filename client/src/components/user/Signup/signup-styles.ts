@@ -4,7 +4,7 @@ import { hexToRgba } from "../../../helpers";
 const useSignupStyles = makeStyles((theme: Theme) =>
   createStyles({
     progressContainer: {
-      marginBottom: "1vh",
+      marginBottom: "8px",
     },
     colorPrimary: {
       backgroundColor: theme.palette.action.disabled,

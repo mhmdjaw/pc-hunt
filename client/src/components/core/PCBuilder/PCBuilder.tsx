@@ -3,9 +3,7 @@ import {
   CircularProgress,
   createStyles,
   makeStyles,
-  Paper,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import axios from "axios";
@@ -14,19 +12,11 @@ import { addManyToCart } from "../../../api/cart";
 import { getProducts, Product } from "../../../api/product";
 import { useFacets } from "../../../context";
 import { useCancelToken } from "../../../helpers";
-import { CustomButton } from "../../common";
+import { CustomButton, FormLayout } from "../../common";
 import autocompleteCategories from "./autocomplete-categories";
 
 const usePCBuilderStyles = makeStyles((theme) =>
   createStyles({
-    title: {
-      marginLeft: "9%",
-      marginBottom: "32px",
-      fontWeight: 500,
-    },
-    paper: {
-      padding: "9% 9% 10%",
-    },
     autocompletePaper: {
       boxShadow: theme.shadows[3],
     },
@@ -94,55 +84,50 @@ const PCBuilder: React.FC = () => {
   };
 
   return (
-    <Box m="60px auto 90px" p="0 16px" maxWidth="800px">
-      <Typography className={classes.title} variant="h4">
-        PC Builder
-      </Typography>
-      <Paper className={classes.paper} elevation={3}>
-        {autocompletes.map((autocomplete, i) => (
-          <Box key={i} mb="24px">
-            <Autocomplete
-              classes={{ paper: classes.autocompletePaper }}
-              options={autocomplete.products}
-              loading={autocomplete.loading}
-              getOptionLabel={(option) => option.name}
-              onOpen={() => loadProducts(autocomplete.category, i)}
-              onChange={(event, value) => handleOnChange(event, value, i)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={autocomplete.category}
-                  variant="outlined"
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <>
-                        {autocomplete.loading && (
-                          <CircularProgress color="primary" size={20} />
-                        )}
-                        {params.InputProps.endAdornment}
-                      </>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </Box>
-        ))}
-        <CustomButton
-          variant="contained"
-          color="primary"
-          disabled={
-            isSubmitting ||
-            !autocompletes.some((autocomplete) => autocomplete.value.length > 0)
-          }
-          isSubmitting={isSubmitting}
-          onClick={addItemsToCart}
-        >
-          add items to cart
-        </CustomButton>
-      </Paper>
-    </Box>
+    <FormLayout title="PC Builder" maxWidth={800}>
+      {autocompletes.map((autocomplete, i) => (
+        <Box key={i} mb="24px">
+          <Autocomplete
+            classes={{ paper: classes.autocompletePaper }}
+            options={autocomplete.products}
+            loading={autocomplete.loading}
+            getOptionLabel={(option) => option.name}
+            onOpen={() => loadProducts(autocomplete.category, i)}
+            onChange={(event, value) => handleOnChange(event, value, i)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={autocomplete.category}
+                variant="outlined"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <>
+                      {autocomplete.loading && (
+                        <CircularProgress color="primary" size={20} />
+                      )}
+                      {params.InputProps.endAdornment}
+                    </>
+                  ),
+                }}
+              />
+            )}
+          />
+        </Box>
+      ))}
+      <CustomButton
+        variant="contained"
+        color="primary"
+        disabled={
+          isSubmitting ||
+          !autocompletes.some((autocomplete) => autocomplete.value.length > 0)
+        }
+        isSubmitting={isSubmitting}
+        onClick={addItemsToCart}
+      >
+        add items to cart
+      </CustomButton>
+    </FormLayout>
   );
 };
 

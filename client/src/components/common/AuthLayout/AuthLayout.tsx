@@ -21,8 +21,8 @@ interface AuthLayoutProps {
   authType: "login" | "signup";
   footer: string;
   children: JSX.Element | null;
-  error: string | undefined;
-  success: string | undefined;
+  error?: string;
+  success?: string;
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({
@@ -73,8 +73,9 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
         <Paper className={classes.paper} elevation={7}>
           {(error || success) && (
             <Box mb="24px">
-              {error && <Alert severity="error">{error}</Alert>}
-              {success && <Alert severity="success">{success}</Alert>}
+              <Alert severity={error ? "error" : "success"}>
+                {success ? success : error}
+              </Alert>
             </Box>
           )}
           {children}

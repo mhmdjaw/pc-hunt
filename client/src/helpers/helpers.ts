@@ -1,6 +1,59 @@
 import axios, { CancelTokenSource } from "axios";
 import React, { useEffect, useRef } from "react";
 
+export const calculatePasswordStrength = (
+  password: string
+): {
+  error: string | null;
+  bar: { color: string; backgroundColor: string; value: number };
+} => {
+  let conditionsFulfilled = 0;
+  conditionsFulfilled += password.length > 7 ? 1 : 0;
+  conditionsFulfilled += /[a-z]/g.test(password) ? 1 : 0;
+  conditionsFulfilled += /[A-Z]/g.test(password) ? 1 : 0;
+  conditionsFulfilled += /[0-9]/g.test(password) ? 1 : 0;
+  conditionsFulfilled += /[ !"#$%&'()*+,-./:\\;<=>?@[\]^_`{|}~]/g.test(password)
+    ? 1
+    : 0;
+
+  let error = null;
+  if (conditionsFulfilled < 5) {
+    error =
+      "Your password should have at least 8 characters, one uppercase, one lowercase, one number and one special character";
+  }
+
+  const bar = {
+    color: "barColorPrimary",
+    backgroundColor: "colorPrimary",
+    value: 0,
+  };
+  if (conditionsFulfilled > 0) {
+    if (conditionsFulfilled > 2) {
+      if (conditionsFulfilled > 4) {
+        [bar.color, bar.backgroundColor, bar.value] = [
+          "barColorStrong",
+          "colorStrong",
+          100,
+        ];
+      } else {
+        [bar.color, bar.backgroundColor, bar.value] = [
+          "barColorMed",
+          "colorMed",
+          66,
+        ];
+      }
+    } else {
+      [bar.color, bar.backgroundColor, bar.value] = [
+        "barColorWeak",
+        "colorWeak",
+        33,
+      ];
+    }
+  }
+
+  return { error, bar };
+};
+
 export const hexToRgba = (hex: string, alpha: number): string => {
   let c = hex.substring(1).split("");
   if (c.length === 3) {
