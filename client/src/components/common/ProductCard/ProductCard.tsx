@@ -52,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         addOneToCart({ product: product?._id as string })
           .then((response) => {
             updateBadget(response.data.badget);
-            showSnackbar("Item successfully added to your cart.", true);
+            showSnackbar("Item successfully added to your cart", true);
             setIsSubmitting(false);
           })
           .catch((err) => {

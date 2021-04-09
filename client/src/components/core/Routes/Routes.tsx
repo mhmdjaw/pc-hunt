@@ -3,14 +3,6 @@ import React, { lazy, Suspense } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { ProvideFacets } from "../../../context";
 import LoadingPage from "../../common/LoadingPage";
-// import {
-//   Home,
-//   NavBar,
-//   Account,
-//   Product,
-//   Footer,
-//   CategoryForm,
-// } from "../../core";
 import {
   // Login,
   // Signup,
@@ -31,6 +23,7 @@ const Shop = lazy(() => import("../Shop"));
 const Product = lazy(() => import("../Product"));
 const PCBuilder = lazy(() => import("../PCBuilder"));
 const Cart = lazy(() => import("../Cart"));
+const Payment = lazy(() => import("../Payment"));
 const Address = lazy(() => import("../Address"));
 
 const Routes: React.FC = () => {
@@ -61,6 +54,9 @@ const Routes: React.FC = () => {
                 </AuthRoute>
                 <AuthRoute path="/cart" authType="protected">
                   <Cart />
+                </AuthRoute>
+                <AuthRoute path="/checkout/payment" authType="protected">
+                  <Payment />
                 </AuthRoute>
                 <AuthRoute exact path="/account" authType="protected">
                   <Account />

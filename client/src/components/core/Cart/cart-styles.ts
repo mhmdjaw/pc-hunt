@@ -7,7 +7,7 @@ const useCartStyles = makeStyles((theme) =>
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      marginBottom: "30px",
+      paddingBottom: "30px",
     },
     cart: {
       display: "flex",

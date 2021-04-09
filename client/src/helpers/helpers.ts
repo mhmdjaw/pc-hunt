@@ -1,5 +1,6 @@
 import axios, { CancelTokenSource } from "axios";
 import React, { useEffect, useRef } from "react";
+import { CartItem } from "../api/cart";
 
 export const calculatePasswordStrength = (
   password: string
@@ -81,6 +82,21 @@ export const displayCost = (num: number, fractionDigits: number): string =>
     currency: "USD",
     minimumFractionDigits: fractionDigits,
   });
+
+export const calculateOrderSummary = (
+  items: CartItem[]
+): { subtotal: number; taxes: number; loading: boolean } => {
+  const subtotal = items.reduce(
+    (accumulator, item) => accumulator + item.product.price * item.quantity,
+    0
+  );
+  const taxes = 0.13 * subtotal;
+  return {
+    subtotal: round(subtotal, 2),
+    taxes: round(taxes, 2),
+    loading: false,
+  };
+};
 
 const CancelToken = axios.CancelToken;
 

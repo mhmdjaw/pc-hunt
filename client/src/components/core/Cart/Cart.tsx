@@ -11,14 +11,15 @@ import { Link as RouterLink, useHistory } from "react-router-dom";
 import { addOneToCart, getCartItems, removeCartItem } from "../../../api/cart";
 import { getProductImage, Product } from "../../../api/product";
 import { useFacets } from "../../../context";
-import { newToken, round, useCancelToken } from "../../../helpers";
+import { newToken, useCancelToken } from "../../../helpers";
 import { CustomIconButton } from "../../common";
 import { Add, Delete, Remove } from "@material-ui/icons";
 import axios from "axios";
 import clsx from "clsx";
 import useCartStyles from "./cart-styles";
-import { CartItem, CartItemValues } from "../../../api/cart";
+import { CartItemValues } from "../../../api/cart";
 import OrderSummary from "../../common/OrderSummary";
+import { calculateOrderSummary } from "../../../helpers/helpers";
 
 interface CartItemsState {
   items: {
@@ -29,19 +30,6 @@ interface CartItemsState {
   }[];
   loaded: boolean;
 }
-
-const calculateOrderSummary = (items: CartItem[]) => {
-  const subtotal = items.reduce(
-    (accumulator, item) => accumulator + item.product.price * item.quantity,
-    0
-  );
-  const taxes = 0.13 * subtotal;
-  return {
-    subtotal: round(subtotal, 2),
-    taxes: round(taxes, 2),
-    loading: false,
-  };
-};
 
 const Cart: React.FC = () => {
   const classes = useCartStyles();
@@ -78,7 +66,7 @@ const Cart: React.FC = () => {
         })
         .catch((err) => {
           if (!axios.isCancel(err)) {
-            showSnackbar("Failed to load items.", false);
+            showSnackbar("Failed to load items", false);
             setCartItems({ items: [], loaded: true });
           }
         });
@@ -142,14 +130,14 @@ const Cart: React.FC = () => {
         updateBadget(response.data.badget);
         setCartItems({ ...cartItems });
         setOrderSummary(calculateOrderSummary(cartItems.items));
-        showSnackbar("Product quantity upated.", true);
+        showSnackbar("Product quantity upated", true);
       })
       .catch((err) => {
         if (!axios.isCancel(err)) {
           cartItems.items[i].quantityValue = cartItems.items[i].quantity;
           setCartItems({ ...cartItems });
           setOrderSummary({ ...orderSummary, loading: false });
-          showSnackbar("Failed to update the quantity of the product.", false);
+          showSnackbar("Failed to update the quantity of the product", false);
         }
       });
   };
@@ -170,7 +158,7 @@ const Cart: React.FC = () => {
         updateBadget(response.data.badget);
         setCartItems({ ...cartItems });
         setOrderSummary(calculateOrderSummary(cartItems.items));
-        showSnackbar("Product has been removed from cart.", true);
+        showSnackbar("Product has been removed from cart", true);
       })
       .catch((err) => {
         cartItems.items[i].removing = false;

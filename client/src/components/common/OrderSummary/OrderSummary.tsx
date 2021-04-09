@@ -11,6 +11,8 @@ interface OrderSummaryProps {
   subtotal: number;
   taxes: number;
   cart?: boolean;
+  onClick?: () => void;
+  isSubmitting?: boolean;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
@@ -18,6 +20,8 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   subtotal,
   taxes,
   cart,
+  onClick,
+  isSubmitting,
 }: OrderSummaryProps) => {
   const classes = useOrderSummaryStyles();
 
@@ -91,12 +95,15 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         </table>
         <CustomButton
           component={cart ? Link : undefined}
-          to={cart ? "/checkout" : undefined}
+          to={cart ? "/checkout/payment" : undefined}
           variant="contained"
           buttonClassName={classes.checkoutButton}
           color="secondary"
           size="large"
           fullWidth
+          onClick={onClick}
+          disabled={isSubmitting}
+          isSubmitting={isSubmitting}
         >
           {cart ? "Proceed to Checkout" : "Place Order"}
         </CustomButton>

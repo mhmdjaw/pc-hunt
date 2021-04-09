@@ -1,12 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  CircularProgress,
-  createStyles,
-  Grid,
-  makeStyles,
-  TextField,
-} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Box, CircularProgress, Grid, TextField } from "@material-ui/core";
 import { CustomButton, FormLayout } from "../../common";
 import {
   Address as IAddress,
@@ -17,22 +10,7 @@ import { useCancelToken } from "../../../helpers";
 import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik";
 import { TextField as TextFieldFormik } from "formik-material-ui";
 import { shallowEqual } from "recompose";
-
-const useAddressStyles = makeStyles((theme) =>
-  createStyles({
-    phoneContainer: {
-      marginBottom: "24px",
-      [theme.breakpoints.up("sm")]: {
-        width: "calc(50% - 12px)",
-      },
-    },
-    phone: {
-      "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
-        WebkitAppearance: "none",
-      },
-    },
-  })
-);
+import useAddressStyles from "./address-styles";
 
 interface State {
   error?: string;
@@ -76,7 +54,6 @@ const Address: React.FC = () => {
   });
   const [formValues, setFormValues] = useState<IAddress>(initialValues);
   const [loaded, setLoaded] = useState(false);
-  const phoneInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(
     () => {
@@ -116,11 +93,6 @@ const Address: React.FC = () => {
         });
         setSubmitting(false);
       });
-  };
-
-  const onWheel = () => {
-    phoneInputRef.current?.blur();
-    setTimeout(() => phoneInputRef.current?.focus(), 100);
   };
 
   return (
@@ -224,11 +196,6 @@ const Address: React.FC = () => {
                       error={props.meta.touched && Boolean(props.meta.error)}
                       helperText={props.meta.touched && <>{props.meta.error}</>}
                       fullWidth
-                      inputProps={{
-                        className: classes.phone,
-                        onWheel,
-                        ref: phoneInputRef,
-                      }}
                     />
                   )}
                 </Field>
