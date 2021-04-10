@@ -180,19 +180,19 @@ const Payment: React.FC = () => {
             paymentMethodNonce: nonce,
             amount: total,
           };
-          setState({ ...state, error: undefined });
+          setState((s) => ({ ...s, error: undefined }));
           processPayment(payment)
             .then((response) => {
               console.log(response.data);
-              setState({ ...state, isSubmitting: false });
+              setState((s) => ({ ...s, isSubmitting: false }));
             })
             .catch((err) => {
               console.log(err);
-              setState({ ...state, isSubmitting: false });
+              setState((s) => ({ ...s, isSubmitting: false }));
             });
         })
         .catch((err) => {
-          setState({ ...state, error: err.message, isSubmitting: false });
+          setState((s) => ({ ...s, error: err.message, isSubmitting: false }));
         });
     }
   };
@@ -207,24 +207,27 @@ const Payment: React.FC = () => {
       state.items.length > 0 &&
       state.loaded &&
       !productQuantityHigh ? (
-        <div className={classes.root}>
-          <div className={classes.mainContainer}>
-            {state.error && <Alert severity="error">{state.error}</Alert>}
-            <DropIn
-              options={{
-                authorization: clientToken.clientToken,
-              }}
-              onInstance={(instance) => (state.instance = instance)}
+        <>
+          {state.error && <Alert severity="error">{state.error}</Alert>}
+          <div className={classes.root}>
+            <div className={classes.mainContainer}>
+              <DropIn
+                options={{
+                  authorization: clientToken.clientToken,
+                  paypal: { flow: "vault" },
+                }}
+                onInstance={(instance) => (state.instance = instance)}
+              />
+            </div>
+            <OrderSummary
+              subtotal={state.orderSummary.subtotal}
+              taxes={state.orderSummary.taxes}
+              loading={state.orderSummary.loading}
+              onClick={buy}
+              isSubmitting={state.isSubmitting}
             />
           </div>
-          <OrderSummary
-            subtotal={state.orderSummary.subtotal}
-            taxes={state.orderSummary.taxes}
-            loading={state.orderSummary.loading}
-            onClick={buy}
-            isSubmitting={state.isSubmitting}
-          />
-        </div>
+        </>
       ) : (
         <div className={classes.loading}>
           <CircularProgress disableShrink size={50} />

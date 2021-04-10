@@ -38,6 +38,9 @@ export const lightTheme = responsiveFontSizes(
           a: {
             WebkitTapHighlightColor: "transparent",
           },
+          ".braintree-method__label": {
+            overflow: "visible !important",
+          },
         },
       },
     },

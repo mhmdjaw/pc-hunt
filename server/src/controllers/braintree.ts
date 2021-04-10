@@ -36,6 +36,6 @@ export const processPayment = (req: Request, res: Response): void => {
       res.json(result);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      res.status(400).json(err);
     });
 };
