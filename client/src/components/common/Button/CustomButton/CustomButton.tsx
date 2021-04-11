@@ -26,6 +26,7 @@ interface CustomButtonProps extends ButtonProps {
 
 const CustomButton: React.FC<CustomButtonProps> = ({
   isSubmitting,
+  buttonClassName,
   ...props
 }: CustomButtonProps) => {
   const theme = useTheme();
@@ -69,7 +70,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           {...props}
           color={props.color}
           focusVisibleClassName={classes.focusVisible}
-          className={clsx(classes.buttonActive, props.buttonClassName)}
+          className={clsx(classes.buttonActive, buttonClassName)}
         />
       </Box>
     </Box>

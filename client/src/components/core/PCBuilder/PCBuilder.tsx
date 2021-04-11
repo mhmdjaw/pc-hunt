@@ -59,7 +59,6 @@ const PCBuilder: React.FC = () => {
     i: number
   ) => {
     autocompletes[i].value = value ? value._id : "";
-    console.log(autocompletes[i].category + autocompletes[i].value);
     setAutocompletes([...autocompletes]);
   };
 
