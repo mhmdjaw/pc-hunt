@@ -1,9 +1,10 @@
 import mongoose, { Document, Model } from "mongoose";
+import { IProduct } from "./product";
 
 export interface ICart extends Document {
   user: mongoose.Types.ObjectId;
   cartItems: {
-    product: mongoose.Types.ObjectId;
+    product: mongoose.Types.ObjectId | IProduct;
     quantity: number;
   }[];
 }
@@ -25,6 +26,7 @@ const cartSchema = new mongoose.Schema(
         quantity: {
           type: Number,
           default: 1,
+          min: [1, "Quantity should be 1 or greater"],
         },
       },
     ],

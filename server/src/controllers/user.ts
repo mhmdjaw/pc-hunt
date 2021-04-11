@@ -10,7 +10,7 @@ export const update = (req: Request, res: Response): void => {
   User.findOneAndUpdate(
     { _id: req.user?.id },
     { $set: req.body },
-    { new: true },
+    { new: true, useFindAndModify: false },
     (err, user) => {
       if (err) {
         res.status(500).json({

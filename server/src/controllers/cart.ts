@@ -60,19 +60,20 @@ export const addOneItem = (req: Request, res: Response): void => {
         update = { $push: { cartItems: req.body } };
       }
 
-      Cart.findOneAndUpdate(condition, update, { new: true }).exec(
-        (err, cart) => {
-          if (err || !cart) {
-            res.status(400).json({ error: "Add to cart failed." });
-            return;
-          }
-          const badget = cart.cartItems.reduce(
-            (accumulator, item) => accumulator + item.quantity,
-            0
-          );
-          res.json({ badget });
+      Cart.findOneAndUpdate(condition, update, {
+        new: true,
+        useFindAndModify: false,
+      }).exec((err, cart) => {
+        if (err || !cart) {
+          res.status(400).json({ error: "Add to cart failed." });
+          return;
         }
-      );
+        const badget = cart.cartItems.reduce(
+          (accumulator, item) => accumulator + item.quantity,
+          0
+        );
+        res.json({ badget });
+      });
     } else {
       const newCart = new Cart({
         user: req.user?.id,
@@ -93,7 +94,7 @@ export const removeItem = (req: Request, res: Response): void => {
   Cart.findOneAndUpdate(
     { user: req.user?.id },
     { $pull: { cartItems: req.body } },
-    { new: true }
+    { new: true, useFindAndModify: false }
   ).exec((err, cart) => {
     if (err || !cart) {
       res.status(400).json({ error: "Failed to remove product from cart." });

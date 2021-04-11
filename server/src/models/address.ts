@@ -12,7 +12,7 @@ export interface IAddress extends Document {
   phone: string;
 }
 
-const addressSchema = new mongoose.Schema(
+export const addressSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Types.ObjectId,
