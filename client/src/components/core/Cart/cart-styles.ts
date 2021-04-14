@@ -48,7 +48,6 @@ const useCartStyles = makeStyles((theme) =>
       width: "112px",
       height: "112px",
       objectFit: "contain",
-      backgroundColor: "rgba(0,0,0,0.11)",
       cursor: "pointer",
       [theme.breakpoints.down("sm")]: {
         margin: "0 auto",

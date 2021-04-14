@@ -8,7 +8,7 @@ import { shallowEqual } from "recompose";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context";
 import { LocationState } from "../../core/Routes";
-import { calculatePasswordStrength } from "../../../helpers/helpers";
+import { calculatePasswordStrength } from "../../../helpers";
 
 interface Values {
   name: string;

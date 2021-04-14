@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, CancelToken } from "axios";
 import { API } from "../../config";
-import { ClientToken, PaymentValues } from "./braintree-types";
+import { ClientToken, OrderId, PaymentValues } from "./braintree-types";
 export type { ClientToken, PaymentValues } from "./braintree-types";
 
 export const getBraintreeClientToken = (
@@ -13,7 +13,7 @@ export const getBraintreeClientToken = (
 
 export const processPayment = (
   paymentValues: PaymentValues
-): Promise<AxiosResponse<Record<string, unknown>>> =>
-  axios.post(`${API}/braintree/payment`, paymentValues, {
+): Promise<AxiosResponse<OrderId>> =>
+  axios.post<OrderId>(`${API}/braintree/payment`, paymentValues, {
     withCredentials: true,
   });

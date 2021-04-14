@@ -83,6 +83,28 @@ export const displayCost = (num: number, fractionDigits: number): string =>
     minimumFractionDigits: fractionDigits,
   });
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+export const displayDate = (ISOdate: string): string => {
+  const date = new Date(ISOdate);
+  return `${
+    monthNames[date.getMonth()]
+  } ${date.getDate()}, ${date.getFullYear()}`;
+};
+
 export const calculateOrderSummary = (
   items: CartItem[]
 ): { subtotal: number; taxes: number; loading: boolean } => {

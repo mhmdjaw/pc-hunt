@@ -7,3 +7,7 @@ export interface PaymentValues {
   amount: number;
   paymentMethodNonce: string;
 }
+
+export interface OrderId {
+  orderId: string;
+}

@@ -11,7 +11,11 @@ import { Link as RouterLink, useHistory } from "react-router-dom";
 import { addOneToCart, getCartItems, removeCartItem } from "../../../api/cart";
 import { getProductImage, Product } from "../../../api/product";
 import { useFacets } from "../../../context";
-import { newToken, useCancelToken } from "../../../helpers";
+import {
+  newToken,
+  useCancelToken,
+  calculateOrderSummary,
+} from "../../../helpers";
 import { CustomIconButton } from "../../common";
 import { Add, Delete, Remove } from "@material-ui/icons";
 import axios from "axios";
@@ -19,7 +23,6 @@ import clsx from "clsx";
 import useCartStyles from "./cart-styles";
 import { CartItemValues } from "../../../api/cart";
 import OrderSummary from "../../common/OrderSummary";
-import { calculateOrderSummary } from "../../../helpers/helpers";
 
 interface CartItemsState {
   items: {

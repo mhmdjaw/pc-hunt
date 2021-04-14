@@ -1,4 +1,5 @@
 import {
+  Backdrop,
   Box,
   CircularProgress,
   createStyles,
@@ -8,6 +9,7 @@ import {
   DialogContentText,
   DialogTitle,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -22,8 +24,7 @@ import {
 } from "../../../api/braintree";
 import { CartItem, getCartItems } from "../../../api/cart";
 import { useFacets } from "../../../context";
-import { useCancelToken } from "../../../helpers";
-import { calculateOrderSummary } from "../../../helpers/helpers";
+import { useCancelToken, calculateOrderSummary } from "../../../helpers";
 import { CustomButton } from "../../common";
 import OrderSummary from "../../common/OrderSummary";
 import DropIn from "braintree-web-drop-in-react";
@@ -41,6 +42,9 @@ interface State {
   instance: { requestPaymentMethod: () => Promise<{ nonce: string }> } | null;
   error?: string;
   isSubmitting: boolean;
+  isProcessingPayment: boolean;
+  isOrderPlaced: boolean;
+  orderId?: string;
 }
 
 const usePaymentStyles = makeStyles((theme) =>
@@ -65,6 +69,21 @@ const usePaymentStyles = makeStyles((theme) =>
       justifyContent: "center",
       paddingBottom: "30px",
     },
+    alert: {
+      marginBottom: "8px",
+    },
+    backdrop: {
+      zIndex: 1300,
+    },
+    successText: {
+      fontWeight: 700,
+      marginBottom: "32px",
+      marginLeft: "24px",
+    },
+    orderID: {
+      paddingBottom: "30px",
+      marginLeft: "24px",
+    },
   })
 );
 
@@ -72,7 +91,7 @@ const Payment: React.FC = () => {
   const classes = usePaymentStyles();
   const history = useHistory();
   const cancelSource = useCancelToken();
-  const { showSnackbar } = useFacets();
+  const { showSnackbar, updateBadget } = useFacets();
   const [state, setState] = useState<State>({
     items: [],
     address: null,
@@ -84,6 +103,8 @@ const Payment: React.FC = () => {
     loaded: false,
     instance: null,
     isSubmitting: false,
+    isProcessingPayment: false,
+    isOrderPlaced: false,
   });
   const [clientToken, setClientToken] = useState<ClientToken | null>(null);
   const [productQuantityHigh, setProductQuantityHigh] = useState<
@@ -168,7 +189,7 @@ const Payment: React.FC = () => {
     []
   );
 
-  const buy = () => {
+  const placeOrder = () => {
     if (state.instance) {
       setState({ ...state, isSubmitting: true });
       state.instance
@@ -180,15 +201,30 @@ const Payment: React.FC = () => {
             paymentMethodNonce: nonce,
             amount: total,
           };
-          setState((s) => ({ ...s, error: undefined }));
+          setState((s) => ({
+            ...s,
+            isProcessingPayment: true,
+            error: undefined,
+          }));
           processPayment(payment)
             .then((response) => {
-              console.log(response.data);
-              setState((s) => ({ ...s, isSubmitting: false }));
+              setState((s) => ({
+                ...s,
+                isSubmitting: false,
+                isProcessingPayment: false,
+                isOrderPlaced: true,
+                orderId: response.data.orderId,
+              }));
+              updateBadget(0);
             })
             .catch((err) => {
               console.log(err);
-              setState((s) => ({ ...s, isSubmitting: false }));
+              setState((s) => ({
+                ...s,
+                isSubmitting: false,
+                isProcessingPayment: false,
+                error: err.response.data.error,
+              }));
             });
         })
         .catch((err) => {
@@ -199,39 +235,60 @@ const Payment: React.FC = () => {
 
   return (
     <Box m="60px auto" p="0 3vw" maxWidth="1500px">
-      <Box m="0 0 30px 16px" fontWeight={700} fontSize="h4.fontSize">
-        Payment
-      </Box>
-      {clientToken &&
-      state.address &&
-      state.items.length > 0 &&
-      state.loaded &&
-      !productQuantityHigh ? (
+      {!state.isOrderPlaced ? (
         <>
-          {state.error && <Alert severity="error">{state.error}</Alert>}
-          <div className={classes.root}>
-            <div className={classes.mainContainer}>
-              <DropIn
-                options={{
-                  authorization: clientToken.clientToken,
-                  paypal: { flow: "vault" },
-                }}
-                onInstance={(instance) => (state.instance = instance)}
-              />
+          <Box m="0 0 30px 16px" fontWeight={700} fontSize="h4.fontSize">
+            Payment
+          </Box>
+          {clientToken &&
+          state.address &&
+          state.items.length > 0 &&
+          state.loaded &&
+          !productQuantityHigh ? (
+            <>
+              {state.error && (
+                <Alert className={classes.alert} severity="error">
+                  {state.error}
+                </Alert>
+              )}
+              <div className={classes.root}>
+                <div className={classes.mainContainer}>
+                  <DropIn
+                    options={{
+                      authorization: clientToken.clientToken,
+                      paypal: { flow: "vault" },
+                    }}
+                    onInstance={(instance) => (state.instance = instance)}
+                  />
+                </div>
+                <OrderSummary
+                  subtotal={state.orderSummary.subtotal}
+                  taxes={state.orderSummary.taxes}
+                  loading={state.orderSummary.loading}
+                  onClick={placeOrder}
+                  isSubmitting={state.isSubmitting}
+                />
+              </div>
+            </>
+          ) : (
+            <div className={classes.loading}>
+              <CircularProgress disableShrink size={50} />
             </div>
-            <OrderSummary
-              subtotal={state.orderSummary.subtotal}
-              taxes={state.orderSummary.taxes}
-              loading={state.orderSummary.loading}
-              onClick={buy}
-              isSubmitting={state.isSubmitting}
-            />
-          </div>
+          )}
         </>
       ) : (
-        <div className={classes.loading}>
-          <CircularProgress disableShrink size={50} />
-        </div>
+        <>
+          <Typography
+            className={classes.successText}
+            variant="h3"
+            color="primary"
+          >
+            Thank you for your order!
+          </Typography>
+          <Typography className={classes.orderID} variant="h5">
+            Order ID: <b>{state.orderId}</b>
+          </Typography>
+        </>
       )}
       <Dialog open={Boolean(productQuantityHigh)}>
         <DialogTitle>Not Enough Stock</DialogTitle>
@@ -246,6 +303,9 @@ const Payment: React.FC = () => {
           </CustomButton>
         </DialogActions>
       </Dialog>
+      <Backdrop className={classes.backdrop} open={state.isProcessingPayment}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
     </Box>
   );
 };

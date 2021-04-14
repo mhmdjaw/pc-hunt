@@ -5,4 +5,7 @@ export {
   newToken,
   round,
   displayCost,
+  calculateOrderSummary,
+  calculatePasswordStrength,
+  displayDate,
 } from "./helpers";

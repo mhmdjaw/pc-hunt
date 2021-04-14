@@ -25,6 +25,7 @@ const PCBuilder = lazy(() => import("../PCBuilder"));
 const Cart = lazy(() => import("../Cart"));
 const Payment = lazy(() => import("../Payment"));
 const Address = lazy(() => import("../Address"));
+const Orders = lazy(() => import("../Orders"));
 
 const Routes: React.FC = () => {
   return (
@@ -57,6 +58,9 @@ const Routes: React.FC = () => {
                 </AuthRoute>
                 <AuthRoute path="/checkout/payment" authType="protected">
                   <Payment />
+                </AuthRoute>
+                <AuthRoute path="/orders" authType="protected">
+                  <Orders />
                 </AuthRoute>
                 <AuthRoute exact path="/account" authType="protected">
                   <Account />
