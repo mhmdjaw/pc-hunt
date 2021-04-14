@@ -214,7 +214,7 @@ export const listBySearch = (req: Request, res: Response): void => {
   const limit = req.query.limit ? Number(req.query.limit) : 500;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
 
-  const findArgs: Partial<FindArgs> = {};
+  const findArgs: FindArgs = {};
 
   if (req.query.category) {
     findArgs.categories = new mongoose.Types.ObjectId(
@@ -273,7 +273,7 @@ export const listBySearch = (req: Request, res: Response): void => {
     })
     .exec((err, data) => {
       if (err) {
-        res.status(400).json({ error: "Products not found" });
+        res.status(500).json({ error: err.message });
         return;
       }
       res.json(data[0]);
@@ -292,12 +292,14 @@ export const listRelated = (req: Request, res: Response): void => {
     _id: { $ne: req.product },
     categories: req.product.categories,
   })
+    .sort({ sold: "desc" })
     .limit(limit)
+    .select("-image")
     .populate("categories", "_id name")
     .exec((err, products) => {
       if (err) {
-        res.status(400).json({
-          error: "Products not found",
+        res.status(500).json({
+          error: err.message,
         });
         return;
       }

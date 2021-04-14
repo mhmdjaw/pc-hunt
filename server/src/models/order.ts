@@ -24,8 +24,8 @@ export interface IOrder extends Document {
     card?: {
       cardType: string;
       last4: string;
-    };
-    paypalEmail?: string;
+    } | null;
+    paypalEmail?: string | null;
     imageUrl: string;
   };
 }

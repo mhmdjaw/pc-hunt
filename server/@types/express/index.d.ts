@@ -1,4 +1,4 @@
-import { ICategory } from "src/models/category";
+import { ICategory } from "../../src/models/category";
 import { IProduct } from "../../src/models/product";
 
 declare global {

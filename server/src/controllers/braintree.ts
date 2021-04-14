@@ -121,16 +121,10 @@ export const processPayment = (req: Request, res: Response): void => {
 
                         Order.insertMany(orders, { ordered: false }, (err) => {
                           if (err) {
-                            res.json({
-                              success: true,
-                              orderId: result.transaction.id,
-                            });
+                            res.json({ orderId: result.transaction.id });
                             return;
                           }
-                          res.json({
-                            success: true,
-                            orderId: result.transaction.id,
-                          });
+                          res.json({ orderId: result.transaction.id });
                         });
                       } else {
                         const updates = cart.cartItems.map((cartItem) => ({
@@ -145,12 +139,14 @@ export const processPayment = (req: Request, res: Response): void => {
                           (err) => {
                             if (err) {
                               res.status(400).json({
-                                error: "Your transaction was declined.",
+                                error:
+                                  "Your transaction was declined. Please check with your bank or credit card information.",
                               });
                               return;
                             }
                             res.status(400).json({
-                              error: "Your transaction was declined.",
+                              error:
+                                "Your transaction was declined. Please check with your bank or credit card information.",
                             });
                           }
                         );
@@ -169,7 +165,7 @@ export const processPayment = (req: Request, res: Response): void => {
             } else {
               res.status(400).json({
                 error:
-                  "Looks like the quantities of some of the products reduced and no longer cover the quantities requested in your cart. Please refresh the page to see what changed.",
+                  "Looks like the quantities of some of the products decreased and no longer cover the quantities requested in your cart. Please refresh the page to see what changed.",
               });
             }
           } else {

@@ -2,12 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": [
-      "dom",
-      "es6",
-      "es2017",
-      "esnext.asynciterable"
-    ],
+    "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
     "sourceMap": true,
     "outDir": "./dist",
     "moduleResolution": "node",
@@ -27,19 +22,13 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "skipLibCheck": true,
-    "typeRoots": [
-      "@types",
-      "./node_modules/@types",
-    ] 
+    "typeRoots": ["@types", "./node_modules/@types"]
   },
   "exclude": [
     "node_modules",
     "./node_modules",
     "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts",
+    "./node_modules/@types/node/index.d.ts"
   ],
-  "include": [
-    "./src/**/*.tsx",
-    "./src/**/*.ts",
-  ]
+  "include": ["./src/**/*.tsx", "./src/**/*.ts"]
 }

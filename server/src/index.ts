@@ -11,6 +11,7 @@ import productRoutes from "./routes/product";
 import cartRoutes from "./routes/cart";
 import addressRoute from "./routes/address";
 import braintreeRoute from "./routes/braintree";
+import orderRouter from "./routes/orders";
 import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { mongooseConfig } from "./helpers";
@@ -94,6 +95,7 @@ app.use("/api", productRoutes);
 app.use("/api", cartRoutes);
 app.use("/api", addressRoute);
 app.use("/api", braintreeRoute);
+app.use("/api", orderRouter);
 
 const port = process.env.PORT || 4000;
 
