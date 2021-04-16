@@ -23,7 +23,6 @@ interface FindArgs {
       $regex: string;
       $options: "i";
     };
-    "item.quantity"?: number;
   }[];
 }
 

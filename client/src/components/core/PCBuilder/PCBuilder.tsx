@@ -47,7 +47,7 @@ const PCBuilder: React.FC = () => {
         .catch(() => {
           autocompletes[i].loading = false;
           autocompletes[i].loaded = false;
-          showSnackbar("There was a problem loading the products.", false);
+          showSnackbar("There was a problem loading the products.", "error");
           setAutocompletes([...autocompletes]);
         });
     }
@@ -70,13 +70,13 @@ const PCBuilder: React.FC = () => {
     addManyToCart({ products: items }, cancelSource.current?.token)
       .then((response) => {
         updateBadget(response.data.badget);
-        showSnackbar("Items successfully added to cart.", true);
+        showSnackbar("Items successfully added to cart.", "success");
         setIsSubmitting(false);
       })
       .catch((err) => {
         if (!axios.isCancel(err)) {
-          showSnackbar(err.response.data.error, false);
-          showSnackbar("Failed to add items to cart.", false);
+          console.log(err.response.data.error);
+          showSnackbar("Failed to add items to cart.", "error");
           setIsSubmitting(false);
         }
       });

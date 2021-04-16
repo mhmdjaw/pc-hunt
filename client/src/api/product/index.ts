@@ -46,3 +46,26 @@ export const getRelatedProducts = (
   cancelToken?: CancelToken
 ): Promise<AxiosResponse<Product[]>> =>
   axios.get(`${API}/products/related/${slug}`, { cancelToken });
+
+export const getMyProducts = (
+  cancelToken?: CancelToken
+): Promise<AxiosResponse<Product[]>> =>
+  axios.get(`${API}/products/seller`, { withCredentials: true, cancelToken });
+
+export const searchMyProducts = (
+  search: string,
+  cancelToken?: CancelToken
+): Promise<AxiosResponse<Product[]>> =>
+  axios.get(`${API}/products/seller/${search}`, {
+    withCredentials: true,
+    cancelToken,
+  });
+
+export const deleteProduct = (
+  slug: string,
+  cancelToken?: CancelToken
+): Promise<AxiosResponse<{ message: string }>> =>
+  axios.delete<{ message: string }>(`${API}/product/${slug}`, {
+    withCredentials: true,
+    cancelToken,
+  });

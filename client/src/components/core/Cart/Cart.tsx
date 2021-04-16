@@ -1,28 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Card,
-  CircularProgress,
-  Divider,
-  Link,
-  Typography,
-} from "@material-ui/core";
-import { Link as RouterLink, useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Box, Card, CircularProgress, Divider } from "@material-ui/core";
 import { addOneToCart, getCartItems, removeCartItem } from "../../../api/cart";
-import { getProductImage, Product } from "../../../api/product";
+import { Product } from "../../../api/product";
 import { useFacets } from "../../../context";
 import {
   newToken,
   useCancelToken,
   calculateOrderSummary,
 } from "../../../helpers";
-import { CustomIconButton } from "../../common";
-import { Add, Delete, Remove } from "@material-ui/icons";
 import axios from "axios";
-import clsx from "clsx";
 import useCartStyles from "./cart-styles";
 import { CartItemValues } from "../../../api/cart";
 import OrderSummary from "../../common/OrderSummary";
+import CartItem from "./CartItem";
 
 interface CartItemsState {
   items: {
@@ -36,9 +26,7 @@ interface CartItemsState {
 
 const Cart: React.FC = () => {
   const classes = useCartStyles();
-  const history = useHistory();
   const cancelSource = useCancelToken();
-  const inputRef = useRef<Array<HTMLInputElement | null>>([]);
   const { updateBadget, showSnackbar } = useFacets();
   const [cartItems, setCartItems] = useState<CartItemsState>({
     items: [],
@@ -54,7 +42,6 @@ const Cart: React.FC = () => {
     () => {
       getCartItems(cancelSource.current?.token)
         .then((response) => {
-          inputRef.current = new Array(response.data.length);
           const items = response.data;
           setCartItems({
             items: items.map((item) => ({
@@ -69,7 +56,7 @@ const Cart: React.FC = () => {
         })
         .catch((err) => {
           if (!axios.isCancel(err)) {
-            showSnackbar("Failed to load items", false);
+            showSnackbar("Failed to load items", "error");
             setCartItems({ items: [], loaded: true });
           }
         });
@@ -77,11 +64,6 @@ const Cart: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-
-  const onWheel = (i: number) => {
-    inputRef.current[i]?.blur();
-    setTimeout(() => inputRef.current[i]?.focus(), 100);
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -133,14 +115,14 @@ const Cart: React.FC = () => {
         updateBadget(response.data.badget);
         setCartItems({ ...cartItems });
         setOrderSummary(calculateOrderSummary(cartItems.items));
-        showSnackbar("Product quantity upated", true);
+        showSnackbar("Product quantity upated", "success");
       })
       .catch((err) => {
         if (!axios.isCancel(err)) {
           cartItems.items[i].quantityValue = cartItems.items[i].quantity;
           setCartItems({ ...cartItems });
           setOrderSummary({ ...orderSummary, loading: false });
-          showSnackbar("Failed to update the quantity of the product", false);
+          showSnackbar("Failed to update the quantity of the product", "error");
         }
       });
   };
@@ -156,19 +138,18 @@ const Cart: React.FC = () => {
       cancelSource.current.token
     )
       .then((response) => {
-        inputRef.current.splice(i, 1);
         cartItems.items.splice(i, 1);
         updateBadget(response.data.badget);
         setCartItems({ ...cartItems });
         setOrderSummary(calculateOrderSummary(cartItems.items));
-        showSnackbar("Product has been removed from cart", true);
+        showSnackbar("Product has been removed from cart", "success");
       })
       .catch((err) => {
         cartItems.items[i].removing = false;
         setCartItems({ ...cartItems });
         if (!axios.isCancel(err)) {
           setOrderSummary({ ...orderSummary, loading: false });
-          showSnackbar(err.response.data.error, false);
+          showSnackbar(err.response.data.error, "error");
         }
       });
   };
@@ -185,84 +166,18 @@ const Cart: React.FC = () => {
               <Card variant="outlined">
                 {cartItems.items.map((item, i) => (
                   <>
-                    <div
+                    <CartItem
                       key={item.product._id}
-                      className={clsx(classes.cartItem, {
-                        [classes.removingItem]: item.removing,
-                      })}
-                    >
-                      {item.removing && (
-                        <div className={classes.disableCartItem} />
-                      )}
-                      <img
-                        src={getProductImage(item.product.slug)}
-                        className={classes.img}
-                        onClick={() =>
-                          history.push(`/product/${item.product.slug}`)
-                        }
-                      />
-                      <div className={classes.productContent}>
-                        <div className={classes.productDetails}>
-                          <Link
-                            component={RouterLink}
-                            to={`/product/${item.product.slug}`}
-                            variant="body2"
-                            className={classes.productTitle}
-                          >
-                            {item.product.name}
-                          </Link>
-                          <Typography
-                            className={classes.productPrice}
-                            variant="h6"
-                          >
-                            ${item.product.price.toLocaleString()}
-                          </Typography>
-                        </div>
-                        <div className={classes.productActions}>
-                          <div className={classes.quantity}>
-                            <CustomIconButton
-                              className={classes.iconButton}
-                              color="primary"
-                              size="small"
-                              disabled={
-                                Boolean(item.quantityValue) &&
-                                item.quantityValue <= 1
-                              }
-                              onClick={() => quantityStepperClick(i, "remove")}
-                            >
-                              <Remove fontSize="inherit" />
-                            </CustomIconButton>
-                            <input
-                              className={classes.quantityInput}
-                              ref={(el) => (inputRef.current[i] = el)}
-                              type="number"
-                              name="quantity"
-                              min="1"
-                              max="99"
-                              autoComplete="off"
-                              onWheel={() => onWheel(i)}
-                              value={item.quantityValue}
-                              onChange={(e) => handleInputChange(e, i)}
-                            />
-                            <CustomIconButton
-                              className={classes.iconButton}
-                              color="primary"
-                              size="small"
-                              disabled={item.quantityValue >= 99}
-                              onClick={() => quantityStepperClick(i, "add")}
-                            >
-                              <Add fontSize="inherit" />
-                            </CustomIconButton>
-                          </div>
-                          <CustomIconButton
-                            color="primary"
-                            onClick={() => removeItem(i)}
-                          >
-                            <Delete />
-                          </CustomIconButton>
-                        </div>
-                      </div>
-                    </div>
+                      product={item.product}
+                      quantityValue={item.quantityValue}
+                      removing={item.removing}
+                      quantityStepperRemove={() =>
+                        quantityStepperClick(i, "remove")
+                      }
+                      quantityStepperAdd={() => quantityStepperClick(i, "add")}
+                      handleInputChange={(e) => handleInputChange(e, i)}
+                      removeItem={() => removeItem(i)}
+                    />
                     {i < cartItems.items.length - 1 && <Divider />}
                   </>
                 ))}

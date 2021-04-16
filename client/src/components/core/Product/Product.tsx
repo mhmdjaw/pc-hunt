@@ -65,11 +65,11 @@ const Product: React.FC = () => {
     addOneToCart({ product: product?._id as string })
       .then((response) => {
         updateBadget(response.data.badget);
-        showSnackbar("Item successfully added to your cart", true);
+        showSnackbar("Item successfully added to your cart", "success");
         setIsSubmitting(false);
       })
       .catch((err) => {
-        showSnackbar(err.response.data.error, false);
+        showSnackbar(err.response.data.error, "error");
         setIsSubmitting(false);
       });
   };

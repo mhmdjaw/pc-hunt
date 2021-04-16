@@ -29,7 +29,7 @@ export const ProvideFacets: React.FC<ProvideFacetsProps> = ({
           >
             <Alert
               onClose={closeSnackbar}
-              severity={snackbar.success ? "success" : "error"}
+              severity={snackbar.severity}
               elevation={6}
               variant="filled"
             >

@@ -15,6 +15,7 @@ import { CustomIconButton } from "../../common";
 import { Search } from "@material-ui/icons";
 import Order from "./Order";
 import useOrdersStyles from "./orders-styles";
+import axios from "axios";
 
 interface State {
   orders: IOrder[];
@@ -43,7 +44,9 @@ const Orders: React.FC = () => {
           });
         })
         .catch((err) => {
-          console.log(err.response.data.error);
+          if (!axios.isCancel(err)) {
+            console.log(err.response.data.error);
+          }
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,7 +67,9 @@ const Orders: React.FC = () => {
           setState({ orders: response.data, noOrders: false, loading: false });
         })
         .catch((err) => {
-          console.log(err.response.data.error);
+          if (!axios.isCancel(err)) {
+            console.log(err.response.data.error);
+          }
         });
     } else {
       getOrders(cancelSource.current?.token)
@@ -76,7 +81,9 @@ const Orders: React.FC = () => {
           });
         })
         .catch((err) => {
-          console.log(err.response.data.error);
+          if (!axios.isCancel(err)) {
+            console.log(err.response.data.error);
+          }
         });
     }
   };

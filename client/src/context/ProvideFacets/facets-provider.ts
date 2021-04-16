@@ -5,15 +5,21 @@ import { Category, getCategories } from "../../api/category";
 import { useAuth } from "../ProvideAuth";
 import { FacetsState } from "./facets-context-types";
 
+interface SnackBar {
+  open: boolean;
+  severity: "error" | "success" | "info" | "warning";
+  text: string;
+}
+
 const useProvideFacets = (): FacetsState => {
   const { user } = useAuth();
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [badget, setBadget] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [snackbar, setSnackbar] = useState({
+  const [snackbar, setSnackbar] = useState<SnackBar>({
     open: false,
-    success: true,
+    severity: "success",
     text: "",
   });
 
@@ -58,8 +64,11 @@ const useProvideFacets = (): FacetsState => {
     setBadget(number);
   };
 
-  const showSnackbar = (text: string, success: boolean) => {
-    setSnackbar({ open: true, success, text });
+  const showSnackbar = (
+    text: string,
+    severity: "error" | "success" | "info" | "warning"
+  ) => {
+    setSnackbar({ open: true, severity, text });
   };
 
   const closeSnackbar = () => {

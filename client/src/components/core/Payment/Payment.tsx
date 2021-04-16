@@ -2,13 +2,11 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  makeStyles,
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
@@ -29,6 +27,7 @@ import { CustomButton } from "../../common";
 import OrderSummary from "../../common/OrderSummary";
 import DropIn from "braintree-web-drop-in-react";
 import { Alert } from "@material-ui/lab";
+import usePaymentStyles from "./payment-styles";
 
 interface State {
   items: CartItem[];
@@ -46,46 +45,6 @@ interface State {
   isOrderPlaced: boolean;
   orderId?: string;
 }
-
-const usePaymentStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      [theme.breakpoints.down("sm")]: {
-        flexDirection: "column",
-      },
-    },
-    mainContainer: {
-      paddingBottom: "30px",
-      [theme.breakpoints.up("md")]: {
-        flex: "1 1 70%",
-        paddingRight: "24px",
-      },
-    },
-    loading: {
-      height: "120px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      paddingBottom: "30px",
-    },
-    alert: {
-      marginBottom: "8px",
-    },
-    backdrop: {
-      zIndex: 1300,
-    },
-    successText: {
-      fontWeight: 700,
-      marginBottom: "32px",
-      marginLeft: "24px",
-    },
-    orderID: {
-      paddingBottom: "30px",
-      marginLeft: "24px",
-    },
-  })
-);
 
 const Payment: React.FC = () => {
   const classes = usePaymentStyles();
@@ -121,7 +80,7 @@ const Payment: React.FC = () => {
     }
 
     if (!address) {
-      showSnackbar("Update your address before proceeding to checkout", true);
+      showSnackbar("Update your address before proceeding to checkout", "info");
       history.push("/address");
       return;
     }
@@ -151,7 +110,7 @@ const Payment: React.FC = () => {
             if (!axios.isCancel(err)) {
               showSnackbar(
                 "Failed to load items, please try again later",
-                false
+                "error"
               );
             }
             return null;
@@ -165,7 +124,7 @@ const Payment: React.FC = () => {
             if (!axios.get(err)) {
               showSnackbar(
                 "Failed to load your address, please try again later",
-                false
+                "error"
               );
             }
             return true;
@@ -181,7 +140,10 @@ const Payment: React.FC = () => {
         })
         .catch((err) => {
           if (!axios.isCancel(err)) {
-            showSnackbar("Something went wrong, please try again later", false);
+            showSnackbar(
+              "Something went wrong, please try again later",
+              "error"
+            );
           }
         });
     },

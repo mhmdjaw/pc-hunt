@@ -26,6 +26,7 @@ const Cart = lazy(() => import("../Cart"));
 const Payment = lazy(() => import("../Payment"));
 const Address = lazy(() => import("../Address"));
 const Orders = lazy(() => import("../Orders"));
+const MyProducts = lazy(() => import("../MyProducts"));
 
 const Routes: React.FC = () => {
   return (
@@ -77,7 +78,8 @@ const Routes: React.FC = () => {
                     <CategoryForm />
                   </AuthRoute>
                   <AuthRoute path="/product/create" authType="admin">
-                    <ProductForm />
+                    {/* <ProductForm /> */}
+                    <MyProducts />
                   </AuthRoute>
                   <AuthRoute
                     path={[

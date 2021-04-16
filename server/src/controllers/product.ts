@@ -111,6 +111,9 @@ export const create = (req: Request, res: Response): void => {
           (files.image as File).path
         ) as Buffer;
         product.image.contentType = (files.image as File).type;
+      } else {
+        res.status(400).json({ error: "No image provided" });
+        return;
       }
 
       saveProduct(res, product);
@@ -119,6 +122,10 @@ export const create = (req: Request, res: Response): void => {
 };
 
 export const remove = (req: Request, res: Response): void => {
+  if (slugify(req.user?.name as string) !== req.product.brand) {
+    res.status(400).json({ error: "Product doesn't belong to this brand" });
+    return;
+  }
   const product = req.product;
   product
     .remove()
@@ -130,7 +137,7 @@ export const remove = (req: Request, res: Response): void => {
         return;
       }
       res.json({
-        error: "Product successfully removed",
+        message: "Product successfully removed",
       });
     })
     .catch((err) => {
@@ -304,6 +311,44 @@ export const listRelated = (req: Request, res: Response): void => {
         return;
       }
 
+      res.json(products);
+    });
+};
+
+export const listSeller = (req: Request, res: Response): void => {
+  Product.find({ brand: slugify(req.user?.name as string) })
+    .select("-image")
+    .exec((err, products) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json(products);
+    });
+};
+
+interface SellerFindArgs {
+  brand: string;
+  name?: {
+    $regex: string;
+    $options: "i";
+  };
+}
+
+export const searchSeller = (req: Request, res: Response): void => {
+  const findArgs: SellerFindArgs = { brand: slugify(req.user?.name as string) };
+
+  if (req.params.search) {
+    findArgs.name = { $regex: req.params.search, $options: "i" };
+  }
+
+  Product.find(findArgs)
+    .select("-image")
+    .exec((err, products) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
       res.json(products);
     });
 };

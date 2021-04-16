@@ -11,6 +11,7 @@ import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik";
 import { TextField as TextFieldFormik } from "formik-material-ui";
 import { shallowEqual } from "recompose";
 import useAddressStyles from "./address-styles";
+import axios from "axios";
 
 interface State {
   error?: string;
@@ -57,12 +58,18 @@ const Address: React.FC = () => {
 
   useEffect(
     () => {
-      getAddress(cancelSource.current?.token).then((response) => {
-        if (response.data) {
-          setFormValues(response.data);
-        }
-        setLoaded(true);
-      });
+      getAddress(cancelSource.current?.token)
+        .then((response) => {
+          if (response.data) {
+            setFormValues(response.data);
+          }
+          setLoaded(true);
+        })
+        .catch((err) => {
+          if (!axios.isCancel(err)) {
+            console.log(err.response.data.error);
+          }
+        });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

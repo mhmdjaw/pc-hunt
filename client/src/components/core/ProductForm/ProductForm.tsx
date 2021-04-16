@@ -13,8 +13,8 @@ interface Values {
   name: string;
   description: string;
   category: string;
-  price?: number;
-  quantity?: number;
+  price: string;
+  quantity: string;
 }
 
 interface Errors {
@@ -40,6 +40,8 @@ const initialValues: Values = {
   name: "",
   description: "",
   category: "",
+  price: "",
+  quantity: "",
 };
 
 const validate = (values: Values) => {
@@ -54,14 +56,14 @@ const validate = (values: Values) => {
   if (!values.category) {
     errors.category = "Required";
   }
-  if (values.price !== 0 && !values.price) {
+  if (values.price.length === 0) {
     errors.price = "Required";
-  } else if (values.price < 0) {
+  } else if (Number(values.price) < 0) {
     errors.price = "Price can't be negative";
   }
-  if (values.quantity !== 0 && !values.quantity) {
+  if (values.quantity.length === 0) {
     errors.quantity = "Required";
-  } else if (values.quantity < 0) {
+  } else if (Number(values.quantity) < 0) {
     errors.quantity = "Quantity can't be negative";
   }
 
