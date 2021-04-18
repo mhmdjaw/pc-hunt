@@ -68,17 +68,17 @@ export const remove = (req: Request, res: Response): void => {
   const category = req.category;
 
   category
-    .remove()
-    .then((deletedCategory: ICategory) => {
-      if (!deletedCategory) {
+    .deleteOne()
+    .then((category) => {
+      if (category) {
+        res.json({
+          error: "Category successfully remove",
+        });
+      } else {
         res.status(400).json({
           error: "Category not found",
         });
-        return;
       }
-      res.json({
-        error: "Category successfully remove",
-      });
     })
     .catch((err) => {
       res.status(500).json({
@@ -111,7 +111,7 @@ const saveCategory = (res: Response, category: ICategory): void => {
         });
       } else {
         res.status(500).json({
-          error: err?.message,
+          error: err.message,
         });
       }
     } else {

@@ -55,10 +55,12 @@ export const productBySlug = (
   slug: string
 ): void => {
   Product.findOne({ slug }).exec((err, product) => {
-    if (err || !product) {
-      res.status(400).json({
-        error: "Product not found",
-      });
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (!product) {
+      res.status(400).json({ error: "Product doesn't exist" });
       return;
     }
     req.product = product;
@@ -128,17 +130,17 @@ export const remove = (req: Request, res: Response): void => {
   }
   const product = req.product;
   product
-    .remove()
-    .then((deletedProduct: IProduct) => {
-      if (!deletedProduct) {
+    .deleteOne()
+    .then((product) => {
+      if (product) {
+        res.json({
+          message: "Product successfully removed",
+        });
+      } else {
         res.status(400).json({
           error: "Product not found",
         });
-        return;
       }
-      res.json({
-        message: "Product successfully removed",
-      });
     })
     .catch((err) => {
       res.status(500).json({

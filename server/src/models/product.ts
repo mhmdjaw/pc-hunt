@@ -14,6 +14,8 @@ export interface IProduct extends Document {
     data: Buffer;
     contentType: string;
   };
+  rating: number;
+  numberOfReviews: number;
 }
 
 const productSchema = new mongoose.Schema(
@@ -58,6 +60,16 @@ const productSchema = new mongoose.Schema(
     image: {
       data: Buffer,
       contentType: String,
+    },
+    rating: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+    numberOfReviews: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
   },
   { timestamps: true }

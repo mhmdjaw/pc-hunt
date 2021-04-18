@@ -71,7 +71,7 @@ export const processPayment = (req: Request, res: Response): void => {
                     })
                     .then((result) => {
                       if (result.success) {
-                        cart.remove();
+                        cart.deleteOne();
                         const isCreditCard =
                           result.transaction.paymentInstrumentType ===
                           "credit_card";
