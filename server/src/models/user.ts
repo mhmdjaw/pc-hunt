@@ -11,9 +11,7 @@ export interface IUser extends Document {
   id: string;
   name: string;
   email: string;
-  about?: string;
   role: number;
-  history: Array<string>;
 }
 
 const userSchema = new mongoose.Schema(
@@ -31,18 +29,9 @@ const userSchema = new mongoose.Schema(
       required: [true, "Email is required"],
       unique: 32,
     },
-
-    about: {
-      type: String,
-      trim: true,
-    },
     role: {
       type: Number,
       default: 0,
-    },
-    history: {
-      type: Array,
-      default: [],
     },
   },
   { timestamps: true }

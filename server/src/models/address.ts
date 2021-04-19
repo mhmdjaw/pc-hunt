@@ -21,34 +21,42 @@ export const addressSchema = new mongoose.Schema(
     },
     firstName: {
       type: String,
+      trim: true,
       required: true,
     },
     lastName: {
       type: String,
+      trim: true,
       required: true,
     },
     addressLine: {
       type: String,
+      trim: true,
       required: true,
     },
     city: {
       type: String,
+      trim: true,
       required: true,
     },
     province: {
       type: String,
+      trim: true,
       required: true,
     },
     postalCode: {
       type: String,
+      trim: true,
       required: true,
     },
     country: {
       type: String,
+      trim: true,
       required: true,
     },
     phone: {
       type: String,
+      trim: true,
       required: true,
     },
   },

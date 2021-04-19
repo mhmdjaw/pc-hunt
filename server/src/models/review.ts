@@ -5,7 +5,8 @@ export interface IReview extends Document {
   product: mongoose.Types.ObjectId;
   rating: 1 | 2 | 3 | 4 | 5;
   description: string;
-  nickName: string;
+  nickname: string;
+  verified: boolean;
 }
 
 const reviewSchema = new mongoose.Schema(
@@ -26,11 +27,16 @@ const reviewSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, "Description is required"],
+      trim: true,
     },
-    nickName: {
+    nickname: {
       type: String,
+      trim: true,
       required: [true, "Nickname is required"],
+    },
+    verified: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
