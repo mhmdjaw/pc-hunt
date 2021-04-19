@@ -27,6 +27,7 @@ const Payment = lazy(() => import("../Payment"));
 const Address = lazy(() => import("../Address"));
 const Orders = lazy(() => import("../Orders"));
 const MyProducts = lazy(() => import("../MyProducts"));
+const ReviewForm = lazy(() => import("../ReviewForm"));
 
 const Routes: React.FC = () => {
   return (
@@ -77,9 +78,15 @@ const Routes: React.FC = () => {
                   <AuthRoute path="/category/create" authType="admin">
                     <CategoryForm />
                   </AuthRoute>
-                  <AuthRoute path="/product/create" authType="admin">
-                    {/* <ProductForm /> */}
+                  <AuthRoute path="/my/products" authType="admin">
                     <MyProducts />
+                  </AuthRoute>
+                  <AuthRoute
+                    exact
+                    path={["/product/create", "/product/update/:slug"]}
+                    authType="admin"
+                  >
+                    <ProductForm />
                   </AuthRoute>
                   <AuthRoute
                     path={[
@@ -92,8 +99,11 @@ const Routes: React.FC = () => {
                   >
                     <Shop />
                   </AuthRoute>
-                  <AuthRoute path="/product/:slug" authType="unprotected">
+                  <AuthRoute exact path="/product/:slug" authType="unprotected">
                     <Product />
+                  </AuthRoute>
+                  <AuthRoute path="/review/:slug" authType="protected">
+                    <ReviewForm />
                   </AuthRoute>
                 </Switch>
               </Box>

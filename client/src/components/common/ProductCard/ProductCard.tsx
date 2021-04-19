@@ -125,12 +125,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 <Grid component={Box} item display="flex">
                   <Rating
                     className={classes.rating}
-                    value={5}
+                    value={product?.rating}
                     precision={0.5}
                     readOnly
                   />
                 </Grid>
-                <Grid item>{"(99,999)"}</Grid>
+                <Grid item>{`(${product?.numberOfReviews})`}</Grid>
               </Grid>
             )}
           </Box>

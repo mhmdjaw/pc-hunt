@@ -10,6 +10,8 @@ export interface Product {
   brand: string;
   quantity: number;
   sold: number;
+  rating: number;
+  numberOfReviews: number;
 }
 
 export interface SearchResults {

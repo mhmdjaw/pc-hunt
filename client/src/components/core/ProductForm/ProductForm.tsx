@@ -1,13 +1,27 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import { Box, MenuItem, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Box,
+  CircularProgress,
+  MenuItem,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import { CustomIconButton, CustomButton, FormLayout } from "../../common";
 import { shallowEqual } from "recompose";
 import { Add, Delete } from "@material-ui/icons";
 import useProductFormStyles from "./product-form-styles";
-import { createProduct } from "../../../api/product";
+import {
+  createProduct,
+  getProduct,
+  getProductImage,
+  updateProduct,
+} from "../../../api/product";
 import { useFacets } from "../../../context";
+import { useCancelToken } from "../../../helpers";
+import { useParams } from "react-router";
+import axios from "axios";
 
 interface Values {
   name: string;
@@ -30,7 +44,7 @@ interface State {
   success?: string;
   lastSubmission: {
     values: Values;
-    image: File | null;
+    imageURL: string;
   };
   imageURL: string;
   image: File | null;
@@ -72,17 +86,55 @@ const validate = (values: Values) => {
 
 const ProductForm: React.FC = () => {
   const classes = useProductFormStyles();
+  const cancelSource = useCancelToken();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const { categories } = useFacets();
 
+  const { slug } = useParams<{ slug: string }>();
   const [state, setState] = useState<State>({
     error: undefined,
     success: undefined,
-    lastSubmission: { values: { ...initialValues }, image: null },
+    lastSubmission: { values: { ...initialValues }, imageURL: "" },
     imageURL: "",
     image: null,
   });
+  const [formValues, setFormValues] = useState<Values>(initialValues);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(
+    () => {
+      if (slug) {
+        getProduct(slug, cancelSource.current?.token)
+          .then((response) => {
+            const {
+              categories,
+              price,
+              quantity,
+              slug,
+              ...otherFields
+            } = response.data;
+            setFormValues({
+              ...otherFields,
+              category: categories[0] as string,
+              price: price.toString(),
+              quantity: quantity.toString(),
+            });
+            setState({ ...state, imageURL: getProductImage(slug) });
+            setLoaded(true);
+          })
+          .catch((err) => {
+            if (!axios.isCancel(err)) {
+              console.log(err.response.data.error);
+            }
+          });
+      } else {
+        setLoaded(true);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const onSubmit = (
     formikValues: Values,
@@ -101,19 +153,23 @@ const ProductForm: React.FC = () => {
       values.append("image", state.image);
     }
 
-    createProduct(values)
+    const request = slug ? updateProduct(slug, values) : createProduct(values);
+
+    request
       .then(() => {
         setState({
           success: "Product successfully created",
           error: undefined,
-          imageURL: "",
-          image: null,
+          imageURL: slug ? state.imageURL : "",
+          image: slug ? state.image : null,
           lastSubmission: {
             values: { ...formikValues },
-            image: state.image,
+            imageURL: state.imageURL,
           },
         });
-        resetForm();
+        if (slug) {
+          resetForm();
+        }
         setSubmitting(false);
       })
       .catch((err) => {
@@ -123,7 +179,7 @@ const ProductForm: React.FC = () => {
           success: undefined,
           lastSubmission: {
             values: { ...formikValues },
-            image: state.image,
+            imageURL: state.imageURL,
           },
         });
         setSubmitting(false);
@@ -153,138 +209,145 @@ const ProductForm: React.FC = () => {
 
   return (
     <FormLayout
-      title="Create Product"
+      title={slug ? "Update Product" : "Create Product"}
       maxWidth={700}
       error={state.error}
       success={state.success}
     >
-      <Formik
-        initialValues={initialValues}
-        validate={validate}
-        onSubmit={onSubmit}
-      >
-        {({ submitForm, isSubmitting, isValid, dirty, values }) => (
-          <Form>
-            <Box mb="24px" maxWidth="500px">
-              <Field
-                component={TextField}
-                variant="outlined"
-                name="name"
-                label="Product name"
-                fullWidth
-              />
-            </Box>
-            <Box mb="24px" maxWidth="500px">
-              <Field
-                component={TextField}
-                variant="outlined"
-                name="description"
-                label="Description"
-                multiline
-                rows={5}
-                fullWidth
-              />
-            </Box>
-            <Box mb="24px" maxWidth="350px">
-              <Field
-                component={TextField}
-                variant="outlined"
-                name="category"
-                label="Category"
-                select
-                fullWidth
-              >
-                {categories.map(
-                  (category, i) =>
-                    category.parent.slug !== "root" && (
-                      <MenuItem key={i} value={category._id}>
-                        {category.name}
-                      </MenuItem>
-                    )
-                )}
-              </Field>
-            </Box>
-            <Box
-              display="flex"
-              maxWidth="350px"
-              flexDirection={isMobile ? "column" : "row"}
-              justifyContent="space-between"
-            >
-              <Box mb="24px" maxWidth="200px">
+      {loaded ? (
+        <Formik
+          initialValues={formValues}
+          validate={validate}
+          onSubmit={onSubmit}
+          enableReinitialize
+        >
+          {({ submitForm, isSubmitting, isValid, dirty, values }) => (
+            <Form>
+              <Box mb="24px" maxWidth="500px">
                 <Field
                   component={TextField}
                   variant="outlined"
-                  name="price"
-                  type="number"
-                  label="Price $"
-                  inputProps={{ min: 0 }}
+                  name="name"
+                  label="Product name"
                   fullWidth
                 />
               </Box>
-              <Box mb="24px" maxWidth="126px">
+              <Box mb="24px" maxWidth="500px">
                 <Field
                   component={TextField}
                   variant="outlined"
-                  name="quantity"
-                  type="number"
-                  label="Quantity"
-                  inputProps={{ min: 0 }}
+                  name="description"
+                  label="Description"
+                  multiline
+                  rows={7}
                   fullWidth
                 />
               </Box>
-            </Box>
-            <Box mb="24px">
-              <CustomButton
-                component="label"
-                color="primary"
-                startIcon={<Add />}
-              >
-                add image
-                <input
-                  type="file"
-                  accept="image/jpg, image/png, image/jpeg, image/bmp"
-                  onChange={(event) => setImage(event)}
-                  hidden
-                />
-              </CustomButton>
-            </Box>
-            <Box mb="24px">
-              {state.image && (
-                <Box
-                  display="flex"
-                  maxWidth="200px"
-                  justifyContent="space-between"
-                  alignItems="center"
+              <Box mb="24px" maxWidth="350px">
+                <Field
+                  component={TextField}
+                  variant="outlined"
+                  name="category"
+                  label="Category"
+                  select
+                  fullWidth
                 >
-                  <img className={classes.image} src={state.imageURL} />
-                  <CustomIconButton
-                    aria-label="remove image"
-                    onClick={removeImage}
-                    color="primary"
-                  >
-                    <Delete />
-                  </CustomIconButton>
+                  {categories.map(
+                    (category, i) =>
+                      category.parent.slug !== "root" && (
+                        <MenuItem key={i} value={category._id}>
+                          {category.name}
+                        </MenuItem>
+                      )
+                  )}
+                </Field>
+              </Box>
+              <Box
+                display="flex"
+                maxWidth="350px"
+                flexDirection={isMobile ? "column" : "row"}
+                justifyContent="space-between"
+              >
+                <Box mb="24px" maxWidth="200px">
+                  <Field
+                    component={TextField}
+                    variant="outlined"
+                    name="price"
+                    type="number"
+                    label="Price $"
+                    inputProps={{ min: 0 }}
+                    fullWidth
+                  />
                 </Box>
-              )}
-            </Box>
-            <CustomButton
-              variant="contained"
-              color="primary"
-              disabled={
-                isSubmitting ||
-                !(dirty && isValid) ||
-                (shallowEqual(state.lastSubmission.values, values) &&
-                  state.lastSubmission.image?.size === state.image?.size) ||
-                !state.image
-              }
-              isSubmitting={isSubmitting}
-              onClick={submitForm}
-            >
-              create product
-            </CustomButton>
-          </Form>
-        )}
-      </Formik>
+                <Box mb="24px" maxWidth="126px">
+                  <Field
+                    component={TextField}
+                    variant="outlined"
+                    name="quantity"
+                    type="number"
+                    label="Quantity"
+                    inputProps={{ min: 0 }}
+                    fullWidth
+                  />
+                </Box>
+              </Box>
+              <Box mb="24px">
+                <CustomButton
+                  component="label"
+                  color="primary"
+                  startIcon={<Add />}
+                >
+                  add image
+                  <input
+                    type="file"
+                    accept="image/jpg, image/png, image/jpeg, image/bmp"
+                    onChange={(event) => setImage(event)}
+                    hidden
+                  />
+                </CustomButton>
+              </Box>
+              <Box mb="24px">
+                {state.imageURL.length > 0 && (
+                  <Box
+                    display="flex"
+                    maxWidth="200px"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <img className={classes.image} src={state.imageURL} />
+                    <CustomIconButton
+                      aria-label="remove image"
+                      onClick={removeImage}
+                      color="primary"
+                    >
+                      <Delete />
+                    </CustomIconButton>
+                  </Box>
+                )}
+              </Box>
+              <CustomButton
+                variant="contained"
+                color="primary"
+                disabled={
+                  isSubmitting ||
+                  !((dirty || (slug && state.image)) && isValid) ||
+                  (shallowEqual(state.lastSubmission.values, values) &&
+                    state.lastSubmission.imageURL === state.imageURL) ||
+                  state.imageURL.length === 0
+                }
+                isSubmitting={isSubmitting}
+                onClick={submitForm}
+              >
+                {slug ? "update product" : "create product"}
+              </CustomButton>
+            </Form>
+          )}
+        </Formik>
+      ) : (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress disableShrink />
+        </Box>
+      )}
     </FormLayout>
   );
 };

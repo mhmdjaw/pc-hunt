@@ -65,6 +65,13 @@ const useProductStyles = makeStyles((theme) =>
     overview: {
       whiteSpace: "pre-wrap",
     },
+    reviewButtonContainer: {
+      marginBottom: "64px",
+      display: "flex",
+    },
+    reviewButton: {
+      marginRight: "12px",
+    },
   })
 );
 

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Box, Divider, Grid, Tab, Typography } from "@material-ui/core";
 import { useParams } from "react-router";
-import { newToken, useCancelToken } from "../../../helpers";
+import { Link as RouterLink } from "react-router-dom";
+import { newToken, round, useCancelToken } from "../../../helpers";
 import {
   getProduct,
   getProductImage,
@@ -21,6 +22,8 @@ import clsx from "clsx";
 import useProductStyles from "./product-styles";
 import { useFacets } from "../../../context";
 import { addOneToCart } from "../../../api/cart";
+import { deleteReview, getReviews, Reviews } from "../../../api/review";
+import Review from "./Review";
 
 const Product: React.FC = () => {
   const classes = useProductStyles();
@@ -29,9 +32,11 @@ const Product: React.FC = () => {
   const cancelSource = useCancelToken();
   const [tabValue, setTabValue] = useState("overview");
   const [product, setProduct] = useState<IProduct | null>(null);
+  const [reviews, setReviews] = useState<Reviews | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<IProduct[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setProduct(null);
@@ -43,7 +48,16 @@ const Product: React.FC = () => {
       })
       .catch((err) => {
         if (!axios.isCancel(err)) {
-          console.log(err.response.data.err);
+          console.log(err.response.data.error);
+        }
+      });
+    getReviews(slug, cancelSource.current.token)
+      .then((response) => {
+        setReviews(response.data);
+      })
+      .catch((err) => {
+        if (!axios.isCancel(err)) {
+          console.log(err.response.data.error);
         }
       });
     getRelatedProducts(slug, cancelSource.current.token)
@@ -52,7 +66,7 @@ const Product: React.FC = () => {
       })
       .catch((err) => {
         if (!axios.isCancel(err)) {
-          console.log(err.response.data.err);
+          console.log(err.response.data.error);
         }
       });
     return () => {
@@ -71,6 +85,21 @@ const Product: React.FC = () => {
       .catch((err) => {
         showSnackbar(err.response.data.error, "error");
         setIsSubmitting(false);
+      });
+  };
+
+  const deleteReviewClick = () => {
+    setIsDeleting(true);
+    deleteReview(slug)
+      .then(() => {
+        if (reviews) {
+          setReviews({ ...reviews, myReview: null });
+        }
+        setIsDeleting(false);
+      })
+      .catch((err) => {
+        console.log(err.response.data.error);
+        setIsDeleting(false);
       });
   };
 
@@ -123,12 +152,12 @@ const Product: React.FC = () => {
                   <>
                     <Rating
                       className={classes.rating}
-                      value={4.3}
+                      value={round(product.rating, 1)}
                       precision={0.5}
                       readOnly
                     />
                     <Box fontSize="h3.fontSize" fontWeight={700} ml="24px">
-                      4.3
+                      {round(product.rating, 1)}
                     </Box>
                   </>
                 ) : (
@@ -141,7 +170,13 @@ const Product: React.FC = () => {
               </Box>
               <Typography variant="h6">
                 {product ? (
-                  "12 reviews"
+                  <>
+                    {product.numberOfReviews === 0
+                      ? "No"
+                      : product.numberOfReviews}
+                    {" review"}
+                    {product.numberOfReviews !== 1 && "s"}
+                  </>
                 ) : (
                   <Skeleton animation="wave" width={100} />
                 )}
@@ -207,7 +242,7 @@ const Product: React.FC = () => {
             />
           </TabList>
           <TabPanel value="overview">
-            <Typography className={classes.overview} variant="body1">
+            <Typography className={classes.overview}>
               {product ? (
                 product.description
               ) : (
@@ -219,7 +254,45 @@ const Product: React.FC = () => {
               )}
             </Typography>
           </TabPanel>
-          <TabPanel value="reviews">these are the reviews</TabPanel>
+          <TabPanel value="reviews">
+            {reviews?.myReview && (
+              <>
+                <Box fontWeight={700} fontSize="h5.fontSize" mb="16px">
+                  Your Review
+                </Box>
+                <Box mb="16px">
+                  <Review review={reviews.myReview} />
+                </Box>
+              </>
+            )}
+            {
+              <div className={classes.reviewButtonContainer}>
+                <CustomButton
+                  component={RouterLink}
+                  to={`/review/${slug}`}
+                  className={classes.reviewButton}
+                  color="primary"
+                >
+                  {reviews?.myReview ? "edit your review" : "write your review"}
+                </CustomButton>
+                {reviews?.myReview && (
+                  <CustomButton
+                    color="primary"
+                    disabled={isDeleting}
+                    onClick={deleteReviewClick}
+                  >
+                    delete
+                  </CustomButton>
+                )}
+              </div>
+            }
+            {reviews?.otherReviews &&
+              reviews.otherReviews.map((review) => (
+                <Box key={review._id} mb="32px">
+                  <Review review={review} />
+                </Box>
+              ))}
+          </TabPanel>
         </TabContext>
       </Box>
       <Box p="40px 0 90px">

@@ -61,6 +61,16 @@ export const searchMyProducts = (
     cancelToken,
   });
 
+export const updateProduct = (
+  slug: string,
+  formData: FormData,
+  cancelToken?: CancelToken
+): Promise<AxiosResponse<Product>> =>
+  axios.put(`${API}/product/${slug}`, formData, {
+    withCredentials: true,
+    cancelToken,
+  });
+
 export const deleteProduct = (
   slug: string,
   cancelToken?: CancelToken

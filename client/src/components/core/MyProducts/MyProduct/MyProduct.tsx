@@ -85,7 +85,12 @@ const MyProduct: React.FC<MyProductProps> = ({
           )}
         </div>
         <div className={classes.actions}>
-          <CustomButton color="primary" disabled={loading}>
+          <CustomButton
+            component={RouterLink}
+            to={`/product/update/${product?.slug}`}
+            color="primary"
+            disabled={loading}
+          >
             update
           </CustomButton>
           <CustomButton

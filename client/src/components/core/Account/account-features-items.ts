@@ -65,9 +65,9 @@ const accountFeaturesItems: AccountFeaturesItems[] = [
   },
   {
     Svg: ProductIcon,
-    title: "Create Product",
-    subtitle: "Create a new Product",
-    url: "/product/create",
+    title: "Your Products",
+    subtitle: "Create and manage products",
+    url: "/my/products",
     role: 1,
   },
 ];

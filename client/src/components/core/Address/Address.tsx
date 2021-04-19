@@ -81,8 +81,6 @@ const Address: React.FC = () => {
   ) => {
     saveAddress(values, cancelSource.current?.token)
       .then(() => {
-        console.log("hello");
-
         setState({
           success: "Your address has been saved",
           error: undefined,
@@ -91,8 +89,6 @@ const Address: React.FC = () => {
         setSubmitting(false);
       })
       .catch((err) => {
-        console.log(err);
-
         setState({
           error: err.response.data.error,
           success: undefined,
