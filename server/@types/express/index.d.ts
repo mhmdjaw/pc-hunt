@@ -1,15 +1,11 @@
 import { ICategory } from "../../src/models/category";
 import { IProduct } from "../../src/models/product";
+import { IUser } from "../../src/models/user";
 
 declare global {
   namespace Express {
-    interface User {
+    interface User extends IUser {
       id: string;
-      name: string;
-      email: string;
-      about?: string;
-      role: number;
-      history: Array<string>;
     }
     interface Request {
       product: IProduct;

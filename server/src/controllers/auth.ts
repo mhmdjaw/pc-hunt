@@ -3,7 +3,7 @@ import passport from "passport";
 import User from "../models/user";
 
 export const signup = (req: Request, res: Response): void => {
-  const user = new User(req.body);
+  const user = new User({ ...req.body, passwordAvailable: true });
 
   User.register(user, req.body.password, (err, user) => {
     if (err) {
@@ -96,6 +96,59 @@ export const logout = (req: Request, res: Response): void => {
   });
 };
 
+export const validateSession = (req: Request, res: Response): void => {
+  if (req.isAuthenticated())
+    res.json({
+      user: req.user,
+      message: "Session valid",
+    });
+  else
+    res.json({
+      message: "No available session",
+    });
+};
+
+export const changePassword = (req: Request, res: Response): void => {
+  User.findOne({ _id: req.user?.id }).exec((err, user) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (user) {
+      if (user.passwordAvailable) {
+        const { oldPassword, newPassword } = req.body;
+        user.changePassword(oldPassword, newPassword, (err) => {
+          if (err.message) {
+            res.status(400).json({ error: "Your old password is incorrect" });
+            return;
+          }
+          if (err) {
+            res.status(400).json({ error: err });
+          }
+          res.json({ message: "Your password has been changed" });
+        });
+      } else {
+        user.setPassword(req.body.newPassword, (err) => {
+          if (err) {
+            res.status(400).json({ error: "Couldn't set your password" });
+            return;
+          }
+          user.passwordAvailable = true;
+          user.save((err) => {
+            if (err) {
+              res.status(500).json({ error: err.message });
+              return;
+            }
+            res.json({ message: "Your password has been saved" });
+          });
+        });
+      }
+    } else {
+      res.status(500).json({ error: "Something went wrong. Please try again" });
+    }
+  });
+};
+
 export const isAuth = (
   req: Request,
   res: Response,
@@ -122,16 +175,4 @@ export const isAdmin = (
     return;
   }
   next();
-};
-
-export const validateSession = (req: Request, res: Response): void => {
-  if (req.isAuthenticated())
-    res.json({
-      user: req.user,
-      message: "Session valid",
-    });
-  else
-    res.json({
-      message: "No available session",
-    });
 };

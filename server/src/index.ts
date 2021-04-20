@@ -13,6 +13,7 @@ import addressRoute from "./routes/address";
 import braintreeRoute from "./routes/braintree";
 import orderRouter from "./routes/orders";
 import reviewRouter from "./routes/review";
+import wishlistRouter from "./routes/wishlist";
 import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { mongooseConfig } from "./helpers";
@@ -98,6 +99,7 @@ app.use("/api", addressRoute);
 app.use("/api", braintreeRoute);
 app.use("/api", orderRouter);
 app.use("/api", reviewRouter);
+app.use("/api", wishlistRouter);
 
 const port = process.env.PORT || 4000;
 

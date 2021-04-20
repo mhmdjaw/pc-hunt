@@ -1,17 +1,18 @@
 import mongoose, {
-  Document,
   PassportLocalSchema,
+  PassportLocalDocument,
   PassportLocalModel,
 } from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 import { options } from "../helpers";
 import findOrCreate from "mongoose-findorcreate";
 
-export interface IUser extends Document {
+export interface IUser extends PassportLocalDocument {
   id: string;
   name: string;
   email: string;
   role: number;
+  passwordAvailable: boolean;
 }
 
 const userSchema = new mongoose.Schema(
@@ -27,12 +28,13 @@ const userSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
       required: [true, "Email is required"],
-      unique: 32,
+      immutable: true,
     },
     role: {
       type: Number,
       default: 0,
     },
+    passwordAvailable: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
