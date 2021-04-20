@@ -24,6 +24,7 @@ import { useFacets } from "../../../context";
 import { addOneToCart } from "../../../api/cart";
 import { deleteReview, getReviews, Reviews } from "../../../api/review";
 import Review from "./Review";
+import { addToWishlist } from "../../../api/wishlist";
 
 const Product: React.FC = () => {
   const classes = useProductStyles();
@@ -80,6 +81,24 @@ const Product: React.FC = () => {
       .then((response) => {
         updateBadget(response.data.badget);
         showSnackbar("Item successfully added to your cart", "success");
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        showSnackbar(err.response.data.error, "error");
+        setIsSubmitting(false);
+      });
+  };
+
+  const addProductToWishlist = () => {
+    setIsSubmitting(true);
+    addToWishlist(product?.slug as string)
+      .then((response) => {
+        const exists = response.data.exists;
+        if (exists) {
+          showSnackbar("Item is already in your wishlist", "info");
+        } else {
+          showSnackbar("Item successfully added to your wishlist", "success");
+        }
         setIsSubmitting(false);
       })
       .catch((err) => {
@@ -221,6 +240,7 @@ const Product: React.FC = () => {
                 fullWidth
                 disabled={!product || isSubmitting}
                 isSubmitting={isSubmitting}
+                onClick={addProductToWishlist}
               >
                 add to wishlist
               </CustomButton>
