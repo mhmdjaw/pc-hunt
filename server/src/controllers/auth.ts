@@ -118,7 +118,7 @@ export const changePassword = (req: Request, res: Response): void => {
       if (user.passwordAvailable) {
         const { oldPassword, newPassword } = req.body;
         user.changePassword(oldPassword, newPassword, (err) => {
-          if (err.message) {
+          if (err?.message) {
             res.status(400).json({ error: "Your old password is incorrect" });
             return;
           }
@@ -136,7 +136,7 @@ export const changePassword = (req: Request, res: Response): void => {
           user.passwordAvailable = true;
           user.save((err) => {
             if (err) {
-              res.status(500).json({ error: err.message });
+              res.status(400).json({ error: "Couldn't set your password" });
               return;
             }
             res.json({ message: "Your password has been saved" });
