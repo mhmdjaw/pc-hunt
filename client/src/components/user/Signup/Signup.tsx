@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
-import { AuthLayout, CustomButton } from "../../common";
-import PasswordInputField from "./PasswordInputField";
+import { AuthLayout, CustomButton, PasswordInputField } from "../../common";
 import { shallowEqual } from "recompose";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context";
@@ -142,7 +141,7 @@ const Signup: React.FC = () => {
                 variant="outlined"
                 name="name"
                 type="name"
-                label="Name *"
+                label="Name"
                 fullWidth
               />
             </Box>
@@ -152,7 +151,7 @@ const Signup: React.FC = () => {
                 variant="outlined"
                 name="email"
                 type="email"
-                label="Email *"
+                label="Email"
                 fullWidth
               />
             </Box>

@@ -5,8 +5,14 @@ import {
   LoginValues,
   SessionResponse,
   UserResponse,
+  ResetPasswordValues,
 } from "./auth-types";
-export type { SignupValues, LoginValues, SessionResponse } from "./auth-types";
+export type {
+  SignupValues,
+  LoginValues,
+  SessionResponse,
+  ResetPasswordValues,
+} from "./auth-types";
 
 export const signup = (
   values: SignupValues
@@ -35,3 +41,10 @@ export const validateSession = (): Promise<AxiosResponse<SessionResponse>> =>
 
 export const logout = (): Promise<AxiosResponse> =>
   axios.get(`${AUTH}/logout`, { withCredentials: true });
+
+export const resetPassword = (
+  values: ResetPasswordValues
+): Promise<AxiosResponse<{ message: string }>> =>
+  axios.post<{ message: string }>(`${AUTH}/reset`, values, {
+    withCredentials: true,
+  });

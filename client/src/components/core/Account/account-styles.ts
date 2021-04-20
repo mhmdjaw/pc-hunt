@@ -2,17 +2,11 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 const useAccountStyles = makeStyles((theme) =>
   createStyles({
-    container: {
-      padding: "6%",
-    },
-    divider: {
-      margin: "10vh 0",
+    accountName: {
+      marginBottom: "12px",
     },
     icon: {
       marginRight: "5%",
-    },
-    accountDetails: {
-      marginBottom: "15vh",
     },
     card: {
       minHeight: 100,

@@ -7,3 +7,5 @@ export { default as ProductSlider } from "./ProductSlider";
 export { default as CustomButton } from "./Button/CustomButton";
 export { default as CustomIconButton } from "./Button/CustomIconButton";
 export { default as FormLayout } from "./FormLayout";
+export { default as OrderSummary } from "./OrderSummary";
+export { default as PasswordInputField } from "./PasswordInputField";

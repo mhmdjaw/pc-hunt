@@ -23,8 +23,7 @@ import {
 import { CartItem, getCartItems } from "../../../api/cart";
 import { useFacets } from "../../../context";
 import { useCancelToken, calculateOrderSummary } from "../../../helpers";
-import { CustomButton } from "../../common";
-import OrderSummary from "../../common/OrderSummary";
+import { CustomButton, OrderSummary } from "../../common";
 import DropIn from "braintree-web-drop-in-react";
 import { Alert } from "@material-ui/lab";
 import usePaymentStyles from "./payment-styles";

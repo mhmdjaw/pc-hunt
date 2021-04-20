@@ -9,11 +9,7 @@ const Account: React.FC = () => {
 
   return (
     <Box m="60px 5vw 90px">
-      <AccountDetails
-        name={user?.name || "Name"}
-        email={user?.email || "Email"}
-      />
-
+      <AccountDetails name={user?.name || "User"} />
       <AccountFeatures />
     </Box>
   );

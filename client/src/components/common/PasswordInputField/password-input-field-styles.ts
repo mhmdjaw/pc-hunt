@@ -1,7 +1,7 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { hexToRgba } from "../../../helpers";
 
-const useSignupStyles = makeStyles((theme: Theme) =>
+const usePasswordInputFieldStyles = makeStyles((theme: Theme) =>
   createStyles({
     progressContainer: {
       marginBottom: "8px",
@@ -33,4 +33,4 @@ const useSignupStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default useSignupStyles;
+export default usePasswordInputFieldStyles;

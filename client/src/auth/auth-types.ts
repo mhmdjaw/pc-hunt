@@ -19,3 +19,8 @@ export interface SessionResponse {
 export interface UserResponse {
   user: User;
 }
+
+export interface ResetPasswordValues {
+  oldPassword?: string;
+  newPassword: string;
+}

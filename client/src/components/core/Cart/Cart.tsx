@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import useCartStyles from "./cart-styles";
 import { CartItemValues } from "../../../api/cart";
-import OrderSummary from "../../common/OrderSummary";
+import { OrderSummary } from "../../common";
 import CartItem from "./CartItem";
 
 interface CartItemsState {

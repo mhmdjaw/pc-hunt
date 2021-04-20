@@ -12,7 +12,7 @@ import { Field, FieldProps } from "formik";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { CustomIconButton } from "../../common";
-import useSignupStyles from "./signup-styles";
+import usePasswordInputFieldStyles from "./password-input-field-styles";
 
 interface PasswordInputFieldProps {
   state: { color: string; backgroundColor: string; value: number };
@@ -21,7 +21,7 @@ interface PasswordInputFieldProps {
 const PasswordInputField: React.FC<PasswordInputFieldProps> = ({
   state: { color, backgroundColor, value },
 }: PasswordInputFieldProps) => {
-  const classes = useSignupStyles();
+  const classes = usePasswordInputFieldStyles();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
@@ -59,12 +59,12 @@ const PasswordInputField: React.FC<PasswordInputFieldProps> = ({
               fullWidth
             >
               <InputLabel htmlFor="outlined-adornment-password">
-                Password *
+                Password
               </InputLabel>
               <OutlinedInput
                 {...field}
                 id="outlined-adornment-password"
-                label="Password *"
+                label="Password"
                 type={showPassword ? "text" : "password"}
                 fullWidth
                 endAdornment={

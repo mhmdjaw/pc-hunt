@@ -1,14 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { User } from "../../api/user";
 import * as Auth from "../../auth";
 import history from "../../components/core/Routes/history";
-import { AuthContext, AuthResultCallback } from "./auth-context-types";
-
-interface State {
-  isLoading: boolean;
-  user: User | null;
-}
+import { AuthContext, AuthResultCallback, State } from "./auth-context-types";
 
 const useProvideAuth = (): AuthContext => {
   const [state, setState] = useState<State>({
@@ -96,6 +90,7 @@ const useProvideAuth = (): AuthContext => {
   return {
     user: state.user,
     loading: state.isLoading,
+    setUser: setState,
     signup,
     login,
     logout,
