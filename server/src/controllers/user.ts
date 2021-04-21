@@ -7,9 +7,13 @@ export const read = (req: Request, res: Response): void => {
 };
 
 export const update = (req: Request, res: Response): void => {
+  if (!req.body.name) {
+    res.status(400).json({ error: "Name not provided" });
+    return;
+  }
   User.findOneAndUpdate(
     { _id: req.user?.id },
-    { $set: req.body },
+    { name: req.body.name },
     { new: true, useFindAndModify: false },
     (err, user) => {
       if (err) {

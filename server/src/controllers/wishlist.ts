@@ -65,7 +65,7 @@ export const read = (req: Request, res: Response): void => {
         return;
       }
       if (wishlist) {
-        res.json(wishlist);
+        res.json(wishlist.products);
       } else {
         res.json([]);
       }
