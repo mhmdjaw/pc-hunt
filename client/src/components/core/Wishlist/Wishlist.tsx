@@ -33,7 +33,7 @@ const Wishlist: React.FC = () => {
       getWishlist(cancelSource.current?.token)
         .then((response) => {
           setState({
-            products: response.data.products.map((product) => ({
+            products: response.data.map((product) => ({
               product,
               removing: false,
             })),

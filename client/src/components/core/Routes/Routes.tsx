@@ -30,6 +30,7 @@ const MyProducts = lazy(() => import("../MyProducts"));
 const ReviewForm = lazy(() => import("../ReviewForm"));
 const Wishlist = lazy(() => import("../Wishlist"));
 const PasswordReset = lazy(() => import("../PasswordReset"));
+const AccountInformation = lazy(() => import("../AccountInformation"));
 
 const Routes: React.FC = () => {
   return (
@@ -66,13 +67,12 @@ const Routes: React.FC = () => {
                 <AuthRoute path="/orders" authType="protected">
                   <Orders />
                 </AuthRoute>
-                <AuthRoute exact path="/account" authType="protected">
+                <AuthRoute path="/account" authType="protected">
                   <Account />
                 </AuthRoute>
-                <AuthRoute
-                  path="/account/update"
-                  authType="protected"
-                ></AuthRoute>
+                <AuthRoute path="/account-information" authType="protected">
+                  <AccountInformation />
+                </AuthRoute>
                 <AuthRoute path="/address" authType="protected">
                   <Address />
                 </AuthRoute>

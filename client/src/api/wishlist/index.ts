@@ -1,11 +1,11 @@
 import axios, { AxiosResponse, CancelToken } from "axios";
 import { API } from "../../config";
-import { Wishlist } from "./wishlist-types";
+import { Product } from "../product";
 
 export const getWishlist = (
   cancelToken?: CancelToken
-): Promise<AxiosResponse<Wishlist>> =>
-  axios.get<Wishlist>(`${API}/wishlist`, {
+): Promise<AxiosResponse<Product[]>> =>
+  axios.get<Product[]>(`${API}/wishlist`, {
     withCredentials: true,
     cancelToken,
   });

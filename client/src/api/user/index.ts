@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { API } from "../../config";
 import { User } from "./user-types";
 export type { User } from "./user-types";
@@ -28,3 +28,6 @@ export const getAdmin = (): Promise<boolean> =>
     .catch(() => {
       return false;
     });
+
+export const updateUser = (name: string): Promise<AxiosResponse<User>> =>
+  axios.put<User>(`${API}/user`, { name }, { withCredentials: true });

@@ -163,7 +163,11 @@ const Address: React.FC = () => {
                 color="primary"
                 disabled={
                   isSubmitting ||
-                  !((dirty || state.ratingDirty) && isValid) ||
+                  !(
+                    (dirty || state.ratingDirty) &&
+                    isValid &&
+                    values.nickname
+                  ) ||
                   (shallowEqual(state.lastSubmission, values) &&
                     state.lastSubmission.rating === state.rating)
                 }

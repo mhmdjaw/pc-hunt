@@ -32,7 +32,7 @@ const accountFeaturesItems: AccountFeaturesItems[] = [
     Svg: AccountEditIcon,
     title: "Account Information",
     subtitle: "Edit your personal information",
-    url: "/account/update",
+    url: "/account-information",
     role: 0,
   },
   {
