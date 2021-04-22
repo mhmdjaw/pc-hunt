@@ -32,6 +32,8 @@ const Wishlist = lazy(() => import("../Wishlist"));
 const PasswordReset = lazy(() => import("../PasswordReset"));
 const AccountInformation = lazy(() => import("../AccountInformation"));
 const Brands = lazy(() => import("../Brands"));
+const MyPosts = lazy(() => import("../MyPosts"));
+const PostForm = lazy(() => import("../PostForm"));
 
 const Routes: React.FC = () => {
   return (
@@ -86,6 +88,9 @@ const Routes: React.FC = () => {
                 <AuthRoute path="/my/products" authType="admin">
                   <MyProducts />
                 </AuthRoute>
+                <AuthRoute path="/my/posts" authType="admin">
+                  <MyPosts />
+                </AuthRoute>
                 <AuthRoute path="/password" authType="protected">
                   <PasswordReset />
                 </AuthRoute>
@@ -116,6 +121,9 @@ const Routes: React.FC = () => {
                   </AuthRoute>
                   <AuthRoute exact path="/product/:slug" authType="unprotected">
                     <Product />
+                  </AuthRoute>
+                  <AuthRoute path="/post/create" authType="admin">
+                    <PostForm />
                   </AuthRoute>
                 </Switch>
               </Box>

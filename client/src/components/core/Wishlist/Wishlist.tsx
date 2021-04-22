@@ -78,12 +78,12 @@ const Wishlist: React.FC = () => {
       <Typography className={classes.title} variant="h4">
         Your Wishlist
       </Typography>
-      {!state.loading && state.products.length === 0 ? (
-        <Box fontSize="h4.fontSize">You have no products in your wishlist.</Box>
-      ) : state.loading ? (
+      {state.loading ? (
         <div className={classes.loading}>
           <CircularProgress disableShrink size={50} />
         </div>
+      ) : state.products.length === 0 ? (
+        <Box fontSize="h4.fontSize">You have no products in your wishlist.</Box>
       ) : (
         <Card variant="outlined">
           {state.products.map((product, i) => (

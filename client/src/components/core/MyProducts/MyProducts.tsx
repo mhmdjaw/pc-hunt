@@ -35,7 +35,7 @@ interface State {
   noProducts: boolean;
 }
 
-const Orders: React.FC = () => {
+const MyProducts: React.FC = () => {
   const classes = useMyProductsStyles();
   const cancelSource = useCancelToken();
   const { showSnackbar } = useFacets();
@@ -239,4 +239,4 @@ const Orders: React.FC = () => {
   );
 };
 
-export default Orders;
+export default MyProducts;

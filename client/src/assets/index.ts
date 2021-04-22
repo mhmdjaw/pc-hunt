@@ -8,5 +8,6 @@ export { CategoryIcon } from "./CategoryIcon";
 export { ProductIcon } from "./ProductIcon";
 export { LogOutIcon } from "./LogOutIcon";
 export { LogInIcon } from "./LogInIcon";
+export { PostIcon } from "./PostIcon";
 export { ReactComponent as LogoPrimary } from "./logo-primary.svg";
 export { ReactComponent as LogoSecondary } from "./logo-secondary.svg";

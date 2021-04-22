@@ -43,6 +43,7 @@ const useProductStyles = makeStyles((theme) =>
       borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
     },
     tab: {
+      fontWeight: 700,
       "&::before": {
         content: "''",
         position: "absolute",
@@ -63,6 +64,7 @@ const useProductStyles = makeStyles((theme) =>
       },
     },
     overview: {
+      fontWeight: 500,
       whiteSpace: "pre-wrap",
     },
     reviewButtonContainer: {

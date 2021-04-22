@@ -8,6 +8,7 @@ import {
   WishListIcon,
   CategoryIcon,
   ProductIcon,
+  PostIcon,
 } from "../../../assets";
 
 interface AccountFeaturesItems {
@@ -68,6 +69,13 @@ const accountFeaturesItems: AccountFeaturesItems[] = [
     title: "Your Products",
     subtitle: "Create and manage products",
     url: "/my/products",
+    role: 1,
+  },
+  {
+    Svg: PostIcon,
+    title: "Your Blog",
+    subtitle: "Create and manage posts",
+    url: "/my/posts",
     role: 1,
   },
 ];

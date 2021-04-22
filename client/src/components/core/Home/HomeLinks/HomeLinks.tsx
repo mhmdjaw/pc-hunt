@@ -19,7 +19,7 @@ const HomeLinks: React.FC<HomeLinksProps> = ({ links }: HomeLinksProps) => {
             <Link
               className={classes.link}
               component={RouterLink}
-              to="#"
+              to={link.to}
               underline="none"
             >
               {link.text}
