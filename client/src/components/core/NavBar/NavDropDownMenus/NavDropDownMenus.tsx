@@ -47,7 +47,7 @@ const NavDropDownMenus: React.FC<NavDropDownMenusProps> = ({
     toggleMenu(false, open.length - 1);
     if (slug === "brands") {
       // show all brands
-      console.log("brands");
+      history.push("brands");
     } else {
       // navigate to brand results using slug
       history.push(`/brand/${slug}`);
