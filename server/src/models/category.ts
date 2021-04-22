@@ -29,8 +29,8 @@ const categorySchema = new mongoose.Schema(
 );
 
 categorySchema.path("name").validate(async (name: string) => {
-  const nameCount = await mongoose.models.Category.countDocuments({ name });
-  return !nameCount;
+  const exists = await mongoose.models.Category.exists({ name });
+  return exists;
 }, "Category already exists");
 
 categorySchema.pre("save", async function (this: ICategory, next) {
