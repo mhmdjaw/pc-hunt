@@ -15,6 +15,7 @@
   "author": "mhmd jawhar",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
     "braintree": "^3.2.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

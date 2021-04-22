@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import User from "../models/user";
+import sgMail from "@sendgrid/mail";
+import { generatePassword } from "../helpers";
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const signup = (req: Request, res: Response): void => {
   const user = new User({ ...req.body, passwordAvailable: true });
@@ -145,6 +149,61 @@ export const changePassword = (req: Request, res: Response): void => {
       }
     } else {
       res.status(500).json({ error: "Something went wrong. Please try again" });
+    }
+  });
+};
+
+export const forgotPassword = (req: Request, res: Response): void => {
+  if (!req.body.email) {
+    res.status(400).json({ error: "Please provide an email" });
+    return;
+  }
+  const email = req.body.email;
+  const generatedPassword = generatePassword(8);
+  User.findOne({ email: email }).exec((err, user) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (user) {
+      user.setPassword(generatedPassword, (err) => {
+        if (err) {
+          res
+            .status(500)
+            .json({ error: "Something went wrong, please try again" });
+          return;
+        }
+        user.save((err) => {
+          if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+          }
+          const emailData: sgMail.MailDataRequired = {
+            to: email,
+            from: "customer.support@pchunt.com",
+            subject: "Forgot Password for PC Hunt",
+            html: `
+            <h1>Hey ${user.name},</h1>
+            <br>
+            <h2>Your password: <b>${generatedPassword}</b></h2>
+            <br>
+            <p>Please change your password when you login to your account</p>
+            `,
+          };
+          sgMail
+            .send(emailData)
+            .then((sent) => console.log("SENT", sent))
+            .catch((err) => console.log("ERROR", err));
+
+          res.json({
+            message: "A new password has been sent to your email address.",
+          });
+        });
+      });
+    } else {
+      res
+        .status(400)
+        .json({ error: "We couldn't find a user with this email address" });
     }
   });
 };

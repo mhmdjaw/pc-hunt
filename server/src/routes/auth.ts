@@ -8,6 +8,7 @@ import {
   validateSession,
   isAuth,
   changePassword,
+  forgotPassword,
 } from "../controllers/auth";
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.get("/google/pchunt", googleAuthResult);
 router.get("/logout", logout);
 router.get("/session", validateSession);
 router.post("/reset", isAuth, changePassword);
+router.post("/forgot-password", forgotPassword);
 
 export default router;

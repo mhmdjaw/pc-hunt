@@ -9,5 +9,6 @@ declare namespace NodeJS {
     BRAINTREE_PUBLIC_KEY: string;
     BRAINTREE_PRIVATE_KEY: string;
     CLIENT_BASE_URL: string;
+    SENDGRID_API_KEY: string;
   }
 }
