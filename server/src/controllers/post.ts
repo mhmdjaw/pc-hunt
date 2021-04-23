@@ -62,9 +62,15 @@ export const read = (req: Request, res: Response): void => {
   res.json(req.post);
 };
 
-export const list = (req: Request, res: Response): void => {
+export const list = async (req: Request, res: Response): Promise<void> => {
   const limit = req.query.limit ? Number(req.query.limit) : 500;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
+
+  let count: number | null = null;
+
+  if (skip === 0) {
+    count = await Post.count();
+  }
 
   Post.find()
     .sort({ createdAt: "desc" })
@@ -75,7 +81,7 @@ export const list = (req: Request, res: Response): void => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json(posts);
+      res.json({ posts, count });
     });
 };
 
