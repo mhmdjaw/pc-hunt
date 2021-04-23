@@ -4,6 +4,7 @@ export interface Post {
   title: string;
   slug: string;
   content: string;
+  createdAt: string;
 }
 
 export interface PostValues {

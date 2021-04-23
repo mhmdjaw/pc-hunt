@@ -8,4 +8,5 @@ export {
   calculateOrderSummary,
   calculatePasswordStrength,
   displayDate,
+  limitTextLength,
 } from "./helpers";

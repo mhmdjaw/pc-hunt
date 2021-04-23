@@ -120,6 +120,22 @@ export const calculateOrderSummary = (
   };
 };
 
+export const limitTextLength = (
+  text: string,
+  limitedLength: number
+): string => {
+  text.length > limitedLength
+    ? text.substring(0, limitedLength - 1) + "..."
+    : text;
+  if (text.length > limitedLength) {
+    text = text.substring(0, limitedLength);
+    const lastSpace = text.lastIndexOf(" ");
+    return text.substring(0, lastSpace) + "...";
+  } else {
+    return text;
+  }
+};
+
 const CancelToken = axios.CancelToken;
 
 export const newToken = (): CancelTokenSource => CancelToken.source();
