@@ -35,8 +35,6 @@ const useBlogStyles = makeStyles({
   },
   contentContainer: {
     padding: "24px 0",
-    fontWeight: 500,
-    whiteSpace: "pre-wrap",
   },
   content: {
     fontWeight: 500,

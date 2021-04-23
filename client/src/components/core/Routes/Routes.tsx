@@ -35,6 +35,7 @@ const Brands = lazy(() => import("../Brands"));
 const MyPosts = lazy(() => import("../MyPosts"));
 const PostForm = lazy(() => import("../PostForm"));
 const Blog = lazy(() => import("../Blog"));
+const Post = lazy(() => import("../Post"));
 
 const Routes: React.FC = () => {
   return (
@@ -128,6 +129,9 @@ const Routes: React.FC = () => {
                   </AuthRoute>
                   <AuthRoute path="/post/create" authType="admin">
                     <PostForm />
+                  </AuthRoute>
+                  <AuthRoute path="/post/:slug" authType="unprotected">
+                    <Post />
                   </AuthRoute>
                 </Switch>
               </Box>

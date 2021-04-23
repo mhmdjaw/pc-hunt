@@ -32,8 +32,8 @@ const Blog: React.FC = () => {
   const cancelSource = useCancelToken();
   const [state, setState] = useState<State>({
     posts: [],
-    limit: 1,
-    skip: -1,
+    limit: 10,
+    skip: -10,
     numberOfPosts: 0,
     isSubmitting: false,
     loading: true,
