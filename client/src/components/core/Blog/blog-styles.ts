@@ -54,6 +54,9 @@ const useBlogStyles = makeStyles({
     justifyContent: "center",
     paddingBottom: "30px",
   },
+  showMore: {
+    marginTop: "24px",
+  },
 });
 
 export default useBlogStyles;

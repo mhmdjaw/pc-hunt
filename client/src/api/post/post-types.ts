@@ -7,6 +7,11 @@ export interface Post {
   createdAt: string;
 }
 
+export interface Posts {
+  posts: Post[];
+  count: number;
+}
+
 export interface PostValues {
   title: string;
   content: string;

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, CancelToken } from "axios";
 import { API } from "../../config";
-import { Post, PostValues } from "./post-types";
+import { Post, Posts, PostValues } from "./post-types";
 export type { Post } from "./post-types";
 
 export const createPost = (post: PostValues): Promise<AxiosResponse<Post>> =>
@@ -19,9 +19,13 @@ export const getPost = (
   axios.get<Post>(`${API}/post/${slug}`, { cancelToken });
 
 export const getPosts = (
+  limit: number,
+  skip: number,
   cancelToken?: CancelToken
-): Promise<AxiosResponse<Post[]>> =>
-  axios.get<Post[]>(`${API}/posts/`, { cancelToken });
+): Promise<AxiosResponse<Posts>> =>
+  axios.get<Posts>(`${API}/posts?limit=${limit}&skip=${skip}`, {
+    cancelToken,
+  });
 
 export const getMyPosts = (
   cancelToken?: CancelToken

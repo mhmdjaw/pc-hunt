@@ -9,31 +9,63 @@ import { ArrowRightAlt } from "@material-ui/icons";
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import { getPosts, Post } from "../../../api/post";
-import { displayDate, limitTextLength, useCancelToken } from "../../../helpers";
+import {
+  displayDate,
+  limitTextLength,
+  newToken,
+  useCancelToken,
+} from "../../../helpers";
 import { CustomButton } from "../../common";
 import useBlogStyles from "./blog-styles";
 
 interface State {
   posts: Post[];
+  limit: number;
+  skip: number;
+  numberOfPosts: number;
+  isSubmitting: boolean;
   loading: boolean;
 }
 
 const Blog: React.FC = () => {
   const classes = useBlogStyles();
   const cancelSource = useCancelToken();
-  const [state, setState] = useState<State>({ posts: [], loading: false });
+  const [state, setState] = useState<State>({
+    posts: [],
+    limit: 1,
+    skip: -1,
+    numberOfPosts: 0,
+    isSubmitting: false,
+    loading: true,
+  });
+
+  const list = () => {
+    cancelSource.current?.cancel();
+    cancelSource.current = newToken();
+    state.skip = state.skip + state.limit;
+    state.isSubmitting = true;
+    setState({ ...state });
+    getPosts(state.limit, state.skip, cancelSource.current?.token)
+      .then((response) => {
+        setState({
+          ...state,
+          posts: [...state.posts, ...response.data.posts],
+          numberOfPosts:
+            state.skip === 0 ? response.data.count : state.numberOfPosts,
+          isSubmitting: false,
+          loading: false,
+        });
+      })
+      .catch((err) => {
+        if (!axios.isCancel(err)) {
+          console.log(err.response.data.error);
+        }
+      });
+  };
 
   useEffect(
     () => {
-      getPosts(cancelSource.current?.token)
-        .then((response) => {
-          setState({ posts: response.data, loading: false });
-        })
-        .catch((err) => {
-          if (!axios.isCancel(err)) {
-            console.log(err.response.data.error);
-          }
-        });
+      list();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -86,6 +118,18 @@ const Blog: React.FC = () => {
               )}
             </Fragment>
           ))
+        )}
+        {state.posts.length < state.numberOfPosts && (
+          <CustomButton
+            className={classes.showMore}
+            variant="contained"
+            color="primary"
+            disabled={state.isSubmitting}
+            isSubmitting={state.isSubmitting}
+            onClick={list}
+          >
+            show more
+          </CustomButton>
         )}
       </div>
     </Container>
