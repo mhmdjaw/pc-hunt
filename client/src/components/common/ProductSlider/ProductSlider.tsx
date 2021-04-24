@@ -94,12 +94,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({
 
   return (
     <>
-      <Box
-        fontSize="h3.fontSize"
-        fontWeight={700}
-        textAlign="center"
-        marginBottom="50px"
-      >
+      <Box fontSize="h3.fontSize" fontWeight={700} textAlign="center" mb="50px">
         {title}
       </Box>
       <Slider className={classes.slider} {...settings}>

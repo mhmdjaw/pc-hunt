@@ -12,6 +12,8 @@ import { ProductSlider } from "../../common";
 import { getProducts, Product } from "../../../api/product";
 import axios from "axios";
 import { useCancelToken } from "../../../helpers";
+import HomeBrands from "./HomeBrands";
+import homeBrands from "./home-brands";
 
 const Home: React.FC = () => {
   const cancelSource = useCancelToken();
@@ -67,10 +69,13 @@ const Home: React.FC = () => {
       }
       {
         // productsByArrival.length !== 0 &&
-        <Box mb="300px">
+        <Box mb="200px">
           <ProductSlider title="Newest Products" products={productsByArrival} />
         </Box>
       }
+      <Box mb="90px">
+        <HomeBrands brands={homeBrands} />
+      </Box>
     </>
   );
 };
