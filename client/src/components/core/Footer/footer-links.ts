@@ -14,15 +14,15 @@ const footerLinks: FooterLink[] = [
   },
   {
     text: "blog",
-    to: "#",
+    to: "/blog",
   },
   {
     text: "contact us",
-    to: "#",
+    to: "/contact-us",
   },
   {
     text: "about us",
-    to: "#",
+    to: "/about-us",
   },
 ];
 
