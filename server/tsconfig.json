@@ -30,8 +30,5 @@
     "./node_modules/*",
     "./node_modules/@types/node/index.d.ts"
   ],
-  "include": [
-    // "./src/**/*.tsx", "./src/**/*.ts"
-    "src"
-  ]
+  "include": ["./src/**/*.tsx", "./src/**/*.ts"]
 }

@@ -4,7 +4,7 @@ import User from "../models/user";
 import sgMail from "@sendgrid/mail";
 import { generatePassword } from "../helpers";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const signup = (req: Request, res: Response): void => {
   const user = new User({ ...req.body, passwordAvailable: true });

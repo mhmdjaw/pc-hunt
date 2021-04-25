@@ -27,14 +27,14 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_BASE_URL,
   })
 );
 app.use(morgan("dev"));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET as string,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
@@ -44,7 +44,7 @@ app.use(passport.session());
 
 // db
 mongoose
-  .connect(process.env.MONGO_URI as string, mongooseConfig)
+  .connect(process.env.MONGO_URI, mongooseConfig)
   .then(() => console.log("DB Connected"));
 
 mongoose.connection.on("error", (err) => {
@@ -71,8 +71,8 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "http://localhost:4000/auth/google/pchunt",
     },
     (_accessToken, _refreshToken, profile, cb) => {
