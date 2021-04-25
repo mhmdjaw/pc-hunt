@@ -44,7 +44,7 @@ app.use(passport.session());
 
 // db
 mongoose
-  .connect(process.env.MONGO_URI, mongooseConfig)
+  .connect(process.env.MONGO_URI as string, mongooseConfig)
   .then(() => console.log("DB Connected"));
 
 mongoose.connection.on("error", (err) => {
