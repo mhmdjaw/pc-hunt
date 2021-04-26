@@ -78,5 +78,6 @@
     "@types/react-slick": "^0.23.4",
     "@types/recompose": "^0.30.7",
     "@types/uuid": "^8.3.0"
-  }
+  },
+  "type": "module"
 }
