@@ -180,14 +180,18 @@ export const forgotPassword = (req: Request, res: Response): void => {
           }
           const emailData: sgMail.MailDataRequired = {
             to: email,
-            from: "customer.support@pchunt.com",
-            subject: "Forgot Password for PC Hunt",
+            from: {
+              email: "customer.support@pchunt.co",
+              name: "PC Hunt Support",
+            },
+            replyTo: "customer.support@pchunt.co",
+            subject: "Forgot Password",
             html: `
             <h1>Hey ${user.name},</h1>
             <br>
-            <h2>Your password: <b>${generatedPassword}</b></h2>
+            <h2>Your new password: <b>${generatedPassword}</b></h2>
             <br>
-            <p>Please change your password when you login to your account</p>
+            <p>Please change your password when you login to your account.</p>
             `,
           };
           sgMail
@@ -196,14 +200,16 @@ export const forgotPassword = (req: Request, res: Response): void => {
             .catch((err) => console.log("ERROR", err));
 
           res.json({
-            message: "A new password has been sent to your email address.",
+            message:
+              "If a user with this email address exists, you will soon get an email. It might also be in your spam folder.",
           });
         });
       });
     } else {
-      res
-        .status(400)
-        .json({ error: "We couldn't find a user with this email address" });
+      res.json({
+        message:
+          "If a user with this email address exists, you will soon get an email. It might also be in your spam folder.",
+      });
     }
   });
 };

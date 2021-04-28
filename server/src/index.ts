@@ -15,6 +15,7 @@ import orderRouter from "./routes/orders";
 import reviewRouter from "./routes/review";
 import wishlistRouter from "./routes/wishlist";
 import postRouter from "./routes/post";
+import contactUsRouter from "./routes/contact-us";
 import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { mongooseConfig } from "./helpers";
@@ -102,6 +103,7 @@ app.use("/api", orderRouter);
 app.use("/api", reviewRouter);
 app.use("/api", wishlistRouter);
 app.use("/api", postRouter);
+app.use("/api", contactUsRouter);
 
 const port = process.env.PORT || 4000;
 
