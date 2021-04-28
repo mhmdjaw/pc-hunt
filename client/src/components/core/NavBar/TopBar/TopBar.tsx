@@ -40,7 +40,7 @@ const TopBar: React.FC = () => {
           className={classes.topBarLink}
           underline="none"
           component={RouterLink}
-          to="#"
+          to="/contact-us"
         >
           Contact Us
         </Link>

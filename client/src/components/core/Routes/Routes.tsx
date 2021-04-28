@@ -38,6 +38,7 @@ const Blog = lazy(() => import("../Blog"));
 const Post = lazy(() => import("../Post"));
 const Testimonials = lazy(() => import("../Testimonials"));
 const AboutUs = lazy(() => import("../AboutUs"));
+const ContactUs = lazy(() => import("../ContactUs"));
 
 const Routes: React.FC = () => {
   return (
@@ -110,6 +111,9 @@ const Routes: React.FC = () => {
                   </AuthRoute>
                   <AuthRoute path="/about-us" authType="unprotected">
                     <AboutUs />
+                  </AuthRoute>
+                  <AuthRoute path="/contact-us" authType="unprotected">
+                    <ContactUs />
                   </AuthRoute>
                   <AuthRoute path="/category/create" authType="admin">
                     <CategoryForm />

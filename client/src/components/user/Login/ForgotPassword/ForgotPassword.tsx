@@ -1,32 +1,20 @@
 import React, { useState } from "react";
 import {
-  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Link,
-  makeStyles,
   TextField,
 } from "@material-ui/core";
 import { CustomButton } from "../../../common";
 import { forgotPassword } from "../../../../auth";
+import useForgotPasswordStyles from "./forgot-password-styles";
 
 interface ForgotPasswordProps {
   isSubmitting: boolean;
 }
-
-const useForgotPasswordStyles = makeStyles((theme) =>
-  createStyles({
-    link: {
-      cursor: "pointer",
-    },
-    disabled: {
-      color: theme.palette.grey[500],
-    },
-  })
-);
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = ({
   isSubmitting,
