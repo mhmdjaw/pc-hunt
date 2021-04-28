@@ -18,10 +18,11 @@ export const contactUs = (req: Request, res: Response): void => {
   const { name, email, subject, message } = req.body;
   const emailData: sgMail.MailDataRequired = {
     to: process.env.PERSONAL_EMAIL,
-    from: { email, name },
+    from: { email: "customer.support@pchunt.co", name },
+    replyTo: email,
     subject,
     html: `
-            <pre>${message},</pre>
+            <p>${message}</p>
             `,
   };
   sgMail
