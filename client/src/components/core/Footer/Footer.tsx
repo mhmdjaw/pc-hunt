@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
           </CustomIconButton>
         ))}
         <Box mt="50px" fontWeight={500} color="grey.300">
-          © 2021 PC hunt
+          © 2021 PC Hunt
         </Box>
       </Box>
     </footer>

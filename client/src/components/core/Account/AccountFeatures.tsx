@@ -22,7 +22,7 @@ const AccountFeatures: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
-    <Grid container spacing={isMobile ? 4 : 6} justify="center">
+    <Grid container spacing={isMobile ? 4 : 6}>
       {accountFeaturesItems.map((feature, i) => {
         const { Svg, title, subtitle, url, role } = feature;
 

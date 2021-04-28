@@ -21,7 +21,7 @@ const useProvideAuth = (): AuthContext => {
             isLoading: false,
             user: null,
           });
-          history.push("/login");
+          history.replace("/login", { from: history.location });
         }
         return Promise.reject(error);
       }

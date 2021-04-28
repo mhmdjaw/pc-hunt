@@ -2,7 +2,7 @@ import { Box } from "@material-ui/core";
 import React, { lazy, Suspense } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { ProvideFacets } from "../../../context";
-import LoadingPage from "../../common/LoadingPage";
+import { LoadingPage, PageNotFound } from "../../common";
 import {
   // Login,
   // Signup,
@@ -59,58 +59,58 @@ const Routes: React.FC = () => {
             <ProvideFacets>
               <Box flex="1 0 auto">
                 <NavBar />
-                <AuthRoute exact path="/" authType="unprotected">
-                  <Home />
-                </AuthRoute>
-                <AuthRoute path="/pc-builder" authType="unprotected">
-                  <PCBuilder />
-                </AuthRoute>
-                <AuthRoute path="/cart" authType="protected">
-                  <Cart />
-                </AuthRoute>
-                <AuthRoute path="/checkout/payment" authType="protected">
-                  <Payment />
-                </AuthRoute>
-                <AuthRoute path="/orders" authType="protected">
-                  <Orders />
-                </AuthRoute>
-                <AuthRoute path="/account" authType="protected">
-                  <Account />
-                </AuthRoute>
-                <AuthRoute path="/account-information" authType="protected">
-                  <AccountInformation />
-                </AuthRoute>
-                <AuthRoute path="/address" authType="protected">
-                  <Address />
-                </AuthRoute>
-                <AuthRoute path="/wishlist" authType="protected">
-                  <Wishlist />
-                </AuthRoute>
-                <AuthRoute path="/review/:slug" authType="protected">
-                  <ReviewForm />
-                </AuthRoute>
-                <AuthRoute path="/my/products" authType="admin">
-                  <MyProducts />
-                </AuthRoute>
-                <AuthRoute path="/my/posts" authType="admin">
-                  <MyPosts />
-                </AuthRoute>
-                <AuthRoute path="/password" authType="protected">
-                  <PasswordReset />
-                </AuthRoute>
-                <AuthRoute path="/brands" authType="unprotected">
-                  <Brands />
-                </AuthRoute>
-                <AuthRoute path="/blog" authType="unprotected">
-                  <Blog />
-                </AuthRoute>
-                <AuthRoute path="/reviews" authType="unprotected">
-                  <Testimonials />
-                </AuthRoute>
-                <AuthRoute path="/about-us" authType="unprotected">
-                  <AboutUs />
-                </AuthRoute>
                 <Switch>
+                  <AuthRoute exact path="/" authType="unprotected">
+                    <Home />
+                  </AuthRoute>
+                  <AuthRoute path="/pc-builder" authType="unprotected">
+                    <PCBuilder />
+                  </AuthRoute>
+                  <AuthRoute path="/cart" authType="protected">
+                    <Cart />
+                  </AuthRoute>
+                  <AuthRoute path="/checkout/payment" authType="protected">
+                    <Payment />
+                  </AuthRoute>
+                  <AuthRoute path="/orders" authType="protected">
+                    <Orders />
+                  </AuthRoute>
+                  <AuthRoute path="/account" authType="protected">
+                    <Account />
+                  </AuthRoute>
+                  <AuthRoute path="/account-information" authType="protected">
+                    <AccountInformation />
+                  </AuthRoute>
+                  <AuthRoute path="/address" authType="protected">
+                    <Address />
+                  </AuthRoute>
+                  <AuthRoute path="/wishlist" authType="protected">
+                    <Wishlist />
+                  </AuthRoute>
+                  <AuthRoute path="/review/:slug" authType="protected">
+                    <ReviewForm />
+                  </AuthRoute>
+                  <AuthRoute path="/my/products" authType="admin">
+                    <MyProducts />
+                  </AuthRoute>
+                  <AuthRoute path="/my/posts" authType="admin">
+                    <MyPosts />
+                  </AuthRoute>
+                  <AuthRoute path="/password" authType="protected">
+                    <PasswordReset />
+                  </AuthRoute>
+                  <AuthRoute path="/brands" authType="unprotected">
+                    <Brands />
+                  </AuthRoute>
+                  <AuthRoute path="/blog" authType="unprotected">
+                    <Blog />
+                  </AuthRoute>
+                  <AuthRoute path="/reviews" authType="unprotected">
+                    <Testimonials />
+                  </AuthRoute>
+                  <AuthRoute path="/about-us" authType="unprotected">
+                    <AboutUs />
+                  </AuthRoute>
                   <AuthRoute path="/category/create" authType="admin">
                     <CategoryForm />
                   </AuthRoute>
@@ -141,6 +141,9 @@ const Routes: React.FC = () => {
                   <AuthRoute path="/post/:slug" authType="unprotected">
                     <Post />
                   </AuthRoute>
+                  <Route path="*">
+                    <PageNotFound />
+                  </Route>
                 </Switch>
               </Box>
               <Footer />

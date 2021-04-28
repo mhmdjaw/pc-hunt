@@ -48,3 +48,8 @@ export const resetPassword = (
   axios.post<{ message: string }>(`${AUTH}/reset`, values, {
     withCredentials: true,
   });
+
+export const forgotPassword = (
+  email: string
+): Promise<AxiosResponse<{ message: string }>> =>
+  axios.post<{ message: string }>(`${AUTH}/forgot-password`, { email });

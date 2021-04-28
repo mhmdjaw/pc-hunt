@@ -7,6 +7,7 @@ import { shallowEqual } from "recompose";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context";
 import { LocationState } from "../../core/Routes";
+import ForgotPassword from "./ForgotPassword";
 
 interface Values {
   email: string;
@@ -123,7 +124,13 @@ const Login: React.FC = () => {
                 fullWidth
               />
             </Box>
-            <Box mb="24px" display="flex" justifyContent="flex-end">
+            <Box
+              mb="24px"
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <ForgotPassword isSubmitting={isSubmitting} />
               <CustomButton
                 variant="contained"
                 color="primary"

@@ -16,6 +16,11 @@ const additionalSearchOptions: SearchOption[] = [
     slug: "laptops",
     type: "category",
   },
+  {
+    name: "Graphics Card",
+    slug: "video-cards",
+    type: "category",
+  },
 ];
 
 export default additionalSearchOptions;
