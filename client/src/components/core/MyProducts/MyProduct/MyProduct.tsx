@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { getProductImage, Product } from "../../../../api/product";
 import { CustomButton } from "../../../common";
 import useMyProductStyles from "./my-product-styles";
+import { displayCost } from "../../../../helpers";
 
 type LoadingMyProductProps = {
   loading: true;
@@ -80,7 +81,7 @@ const MyProduct: React.FC<MyProductProps> = ({
           </div>
           {product && (
             <Typography className={classes.price} variant="h6">
-              ${product.price.toLocaleString()}
+              {displayCost(product.price, 2)}
             </Typography>
           )}
         </div>

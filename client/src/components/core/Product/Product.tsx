@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Divider, Grid, Tab, Typography } from "@material-ui/core";
 import { useParams } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
-import { newToken, round, useCancelToken } from "../../../helpers";
+import { displayCost, newToken, round, useCancelToken } from "../../../helpers";
 import {
   getProduct,
   getProductImage,
@@ -161,7 +161,7 @@ const Product: React.FC = () => {
             <Box m="24px 0 48px">
               <Box fontSize="h2.fontSize" fontWeight={700} mb="24px">
                 {product ? (
-                  "$" + product.price.toLocaleString()
+                  displayCost(product.price, 2)
                 ) : (
                   <Skeleton animation="wave" width={180} />
                 )}

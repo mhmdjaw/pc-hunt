@@ -167,7 +167,7 @@ const ProductForm: React.FC = () => {
             imageURL: state.imageURL,
           },
         });
-        if (slug) {
+        if (!slug) {
           resetForm();
         }
         setSubmitting(false);
@@ -301,6 +301,7 @@ const ProductForm: React.FC = () => {
                   <input
                     type="file"
                     accept="image/jpg, image/png, image/jpeg, image/bmp"
+                    value={[]}
                     onChange={(event) => setImage(event)}
                     hidden
                   />

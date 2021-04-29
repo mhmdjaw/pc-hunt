@@ -17,8 +17,18 @@ const additionalSearchOptions: SearchOption[] = [
     type: "category",
   },
   {
-    name: "Graphics Card",
+    name: "Graphics Cards",
     slug: "video-cards",
+    type: "category",
+  },
+  {
+    name: "Hard Drives",
+    slug: "storage",
+    type: "category",
+  },
+  {
+    name: "Fans",
+    slug: "coolers",
     type: "category",
   },
 ];

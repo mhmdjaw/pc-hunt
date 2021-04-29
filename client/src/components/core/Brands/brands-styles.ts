@@ -21,12 +21,12 @@ const useBrandsStyles = makeStyles((theme) =>
     alphabet: {
       fontWeight: 700,
       textAlign: "center",
-      padding: "3px 0",
+      padding: "5px 0",
     },
     link: {
       display: "block",
       textAlign: "center",
-      padding: "3px 0",
+      padding: "5px 0",
     },
   })
 );

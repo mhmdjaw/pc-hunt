@@ -8,6 +8,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { CustomIconButton } from "../../../common";
 import { Add, Delete, Remove } from "@material-ui/icons";
 import { Skeleton } from "@material-ui/lab";
+import { displayCost } from "../../../../helpers";
 
 interface CartItemProps {
   product: Product;
@@ -73,7 +74,7 @@ const CartItem: React.FC<CartItemProps> = ({
             {product.name}
           </Link>
           <Typography className={classes.productPrice} variant="h6">
-            ${product.price.toLocaleString()}
+            {displayCost(product.price, 2)}
           </Typography>
         </div>
         <div className={classes.productActions}>

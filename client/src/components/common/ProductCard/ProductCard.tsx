@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { useHistory } from "react-router";
 import { addOneToCart } from "../../../api/cart";
 import { useFacets } from "../../../context";
+import { displayCost } from "../../../helpers";
 
 type LoadingProductCardProps = {
   loading: true;
@@ -138,7 +139,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {loading ? (
               <Skeleton animation="wave" width={80} />
             ) : (
-              `$${product?.price.toLocaleString()}`
+              `${displayCost(product?.price as number, 2)}`
             )}
           </Box>
         </CardContent>

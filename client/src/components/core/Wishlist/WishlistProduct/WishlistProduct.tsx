@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
 import { getProductImage, Product } from "../../../../api/product";
+import { displayCost } from "../../../../helpers";
 import { CustomIconButton } from "../../../common";
 import useWishlistProductStyles from "./wishlist-product-styles";
 
@@ -71,7 +72,7 @@ const WishlistProduct: React.FC<WishlistProductProps> = ({
           </div>
           {product && (
             <Typography className={classes.price} variant="h6">
-              ${product.price.toLocaleString()}
+              {displayCost(product.price, 2)}
             </Typography>
           )}
         </div>
