@@ -9,9 +9,14 @@ export interface AutocompleteCategory {
 }
 
 const autocompleteCategories: AutocompleteCategory[] = [
-  "Gaming Desktops",
-  "Everyday Desktops",
-  "Gaming Laptops",
+  "Memory (RAM)",
+  "CPUs",
+  "Video Cards",
+  "Motherboards",
+  "Storage",
+  "Computer Cases",
+  "Coolers",
+  "Power Supplies",
 ].map((category) => ({
   products: [],
   category,

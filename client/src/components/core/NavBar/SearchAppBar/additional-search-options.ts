@@ -31,6 +31,16 @@ const additionalSearchOptions: SearchOption[] = [
     slug: "coolers",
     type: "category",
   },
+  {
+    name: "Headphones",
+    slug: "headsets",
+    type: "category",
+  },
+  {
+    name: "Mousepads",
+    slug: "mouse-pads",
+    type: "category",
+  },
 ];
 
 export default additionalSearchOptions;
