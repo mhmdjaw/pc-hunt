@@ -52,7 +52,7 @@ const Routes: React.FC = () => {
           <AuthRoute path="/signup" authType="guest">
             <Signup />
           </AuthRoute>
-          <Route exact path="/auth-success">
+          <Route exact path="/success/auth">
             <AuthSuccess />
           </Route>
 

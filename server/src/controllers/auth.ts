@@ -86,7 +86,7 @@ export const googleAuthResult = (req: Request, res: Response): void => {
         });
         return;
       }
-      res.redirect(`${process.env.CLIENT_BASE_URL}/auth-success`);
+      res.redirect(`${process.env.CLIENT_BASE_URL}/success/auth`);
     });
   })(req, res);
 };
