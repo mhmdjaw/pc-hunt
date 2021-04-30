@@ -320,6 +320,7 @@ export const listRelated = (req: Request, res: Response): void => {
 export const listSeller = (req: Request, res: Response): void => {
   Product.find({ brand: slugify(req.user?.name as string) })
     .select("-image")
+    .sort({ createdAt: "desc" })
     .exec((err, products) => {
       if (err) {
         res.status(500).json({ error: err.message });

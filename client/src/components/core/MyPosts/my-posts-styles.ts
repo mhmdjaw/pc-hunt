@@ -62,10 +62,6 @@ const useMyPostsStyles = makeStyles((theme) =>
     },
     postTitle: {
       fontWeight: 700,
-      color: "#000",
-      "&:hover": {
-        color: theme.palette.primary.main,
-      },
     },
     postTitleContainer: {
       maxWidth: "500px",

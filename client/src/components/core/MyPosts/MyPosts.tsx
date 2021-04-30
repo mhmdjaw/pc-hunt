@@ -113,14 +113,9 @@ const MyPosts: React.FC = () => {
               >
                 {item.removing && <div className={classes.disablePost} />}
                 <div className={classes.postTitleContainer}>
-                  <Link
-                    className={classes.postTitle}
-                    component={RouterLink}
-                    to={`post/${item.post.slug}`}
-                    variant="body1"
-                  >
+                  <Typography className={classes.postTitle} variant="body1">
                     {item.post.title}
-                  </Link>
+                  </Typography>
                 </div>
                 <CustomIconButton color="primary" onClick={() => removePost(i)}>
                   <Delete />
