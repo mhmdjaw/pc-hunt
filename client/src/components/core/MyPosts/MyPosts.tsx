@@ -9,7 +9,6 @@ import {
   DialogContentText,
   Divider,
   Fab,
-  Link,
   Typography,
 } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";

@@ -158,6 +158,12 @@ export const forgotPassword = (req: Request, res: Response): void => {
     res.status(400).json({ error: "Please provide an email" });
     return;
   }
+  if (req.body.email === "asus@pchunt.co") {
+    res.json({
+      message:
+        "Using this email is not allowed. This account's password is public.",
+    });
+  }
   const email = req.body.email;
   const generatedPassword = generatePassword(8);
   User.findOne({ email: email }).exec((err, user) => {

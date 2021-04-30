@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { slugify } from "../helpers";
 import User from "../models/user";
 
@@ -41,4 +41,16 @@ export const readSellers = (_req: Request, res: Response): void => {
       }));
       res.json(brands);
     });
+};
+
+export const checkProhibitedAction = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (req.user?.email === "asus@pchunt.co") {
+    res.status(400).json({ error: "Action prohibited in this admin account." });
+    return;
+  }
+  next();
 };

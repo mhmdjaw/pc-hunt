@@ -1,4 +1,5 @@
 import express from "express";
+import { checkProhibitedAction } from "../controllers/user";
 import { isAdmin, isAuth } from "../controllers/auth";
 import {
   create,
@@ -11,8 +12,14 @@ import {
 
 const router = express.Router();
 
-router.post("/post", isAuth, isAdmin, create);
-router.delete("/post/:postSlug", isAuth, isAdmin, remove);
+router.post("/post", isAuth, checkProhibitedAction, isAdmin, create);
+router.delete(
+  "/post/:postSlug",
+  isAuth,
+  checkProhibitedAction,
+  isAdmin,
+  remove
+);
 router.get("/post/:postSlug", read);
 router.get("/posts", list);
 router.get("/posts/seller", isAuth, isAdmin, listSeller);

@@ -1,4 +1,5 @@
 import express from "express";
+import { checkProhibitedAction } from "../controllers/user";
 import { isAdmin, isAuth } from "../controllers/auth";
 import {
   create,
@@ -17,9 +18,21 @@ import {
 const router = express.Router();
 
 router.get("/product/:productSlug", read);
-router.post("/product/create", isAuth, isAdmin, create);
-router.delete("/product/:productSlug", isAuth, isAdmin, remove);
-router.put("/product/:productSlug", isAuth, isAdmin, update);
+router.post("/product/create", isAuth, checkProhibitedAction, isAdmin, create);
+router.delete(
+  "/product/:productSlug",
+  isAuth,
+  checkProhibitedAction,
+  isAdmin,
+  remove
+);
+router.put(
+  "/product/:productSlug",
+  isAuth,
+  checkProhibitedAction,
+  isAdmin,
+  update
+);
 
 router.get("/products/search", listBySearch);
 router.get("/products/related/:productSlug", listRelated);

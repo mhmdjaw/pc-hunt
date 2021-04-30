@@ -5,6 +5,7 @@ declare namespace NodeJS {
     SESSION_SECRET: string;
     GOOGLE_CLIENT_ID: string;
     GOOGLE_CLIENT_SECRET: string;
+    GOOGLE_CALLBACK_URL: string;
     BRAINTREE_MERCHANT_ID: string;
     BRAINTREE_PUBLIC_KEY: string;
     BRAINTREE_PRIVATE_KEY: string;

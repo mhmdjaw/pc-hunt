@@ -10,6 +10,7 @@ interface State {
   edit: boolean;
   value: string;
   isSubmitting: boolean;
+  error?: string;
 }
 
 const AccountInformation: React.FC = () => {
@@ -39,13 +40,17 @@ const AccountInformation: React.FC = () => {
         setUser({ user: updatedUser, isLoading: false });
       })
       .catch((err) => {
-        console.log(err);
-        setState({ ...state, isSubmitting: false });
+        setState({
+          isSubmitting: false,
+          value: user?.name as string,
+          edit: false,
+          error: err.response.data.error,
+        });
       });
   };
 
   return (
-    <FormLayout title="Account Information" maxWidth={700}>
+    <FormLayout title="Account Information" maxWidth={700} error={state.error}>
       {state.edit ? (
         <Box maxWidth="400px">
           <TextField
