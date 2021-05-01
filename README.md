@@ -34,6 +34,10 @@ To explore the features of a seller account use the following credentials:
 
 However, in order to keep the project demo clean, this admin account is prohibited from making actual changes. You can still make changes using some of the basic features, but it is recommended to create your own account to test those features fully.
 
+### Note
+
+Google OAuth is in sandbox mode, and the allowed user cap is 100. If you find yourself unable to login with google, this means the limit has been reached.
+
 ## License
 
 This project is licensed under the MIT license.
