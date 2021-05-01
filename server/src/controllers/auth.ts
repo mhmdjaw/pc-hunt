@@ -163,6 +163,7 @@ export const forgotPassword = (req: Request, res: Response): void => {
       message:
         "Using this email is not allowed. This account's password is public.",
     });
+    return;
   }
   const email = req.body.email;
   const generatedPassword = generatePassword(8);

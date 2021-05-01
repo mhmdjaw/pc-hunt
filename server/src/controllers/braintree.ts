@@ -50,7 +50,12 @@ export const processPayment = (req: Request, res: Response): void => {
               const updates = cart.cartItems.map((cartItem) => ({
                 updateOne: {
                   filter: { _id: (cartItem.product as IProduct).id },
-                  update: { $inc: { quantity: -cartItem.quantity } },
+                  update: {
+                    $inc: {
+                      quantity: -cartItem.quantity,
+                      sold: cartItem.quantity,
+                    },
+                  },
                 },
               }));
               Product.bulkWrite(updates, { ordered: false })
@@ -130,7 +135,12 @@ export const processPayment = (req: Request, res: Response): void => {
                         const updates = cart.cartItems.map((cartItem) => ({
                           updateOne: {
                             filter: { _id: (cartItem.product as IProduct).id },
-                            update: { $inc: { quantity: cartItem.quantity } },
+                            update: {
+                              $inc: {
+                                quantity: cartItem.quantity,
+                                sold: -cartItem.quantity,
+                              },
+                            },
                           },
                         }));
                         Product.bulkWrite(
