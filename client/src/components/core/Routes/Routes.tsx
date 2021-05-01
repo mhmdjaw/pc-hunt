@@ -8,7 +8,6 @@ import {
   // Signup,
   AuthRoute,
   AuthSuccess,
-  GoogleConsentScreen,
 } from "../../user";
 import history from "./history";
 import ScrollToTop from "./ScrollToTop";
@@ -55,9 +54,6 @@ const Routes: React.FC = () => {
           </AuthRoute>
           <Route exact path="/success/auth">
             <AuthSuccess />
-          </Route>
-          <Route path="/google/auth">
-            <GoogleConsentScreen />
           </Route>
 
           <AuthRoute path="/" authType="unprotected">
