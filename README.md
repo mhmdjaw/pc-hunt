@@ -2,7 +2,7 @@
 
 PC Hunt is an eCommerce web app for PC hardware, computer parts and accessories, built with MERN stack.
 
-Link: https://pchunt.co
+Link (use Google Chrome!): https://pchunt.co
 
 ## Valid Payment Methods
 
