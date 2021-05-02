@@ -17,6 +17,7 @@
   "dependencies": {
     "@sendgrid/mail": "^7.4.2",
     "braintree": "^3.2.2",
+    "connect-mongo": "^4.4.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "dotenv-safe": "^8.2.0",

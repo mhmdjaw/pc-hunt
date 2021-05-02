@@ -20,6 +20,7 @@ import User, { IUser } from "./models/user";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { mongooseConfig } from "./helpers";
 import morgan from "morgan";
+import MongoStore from "connect-mongo";
 
 const app = express();
 
@@ -35,12 +36,14 @@ app.use(morgan("dev"));
 
 app.use(
   session({
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+      ttl: 60 * 30,
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 1800000,
-    },
   })
 );
 app.use(passport.initialize());
@@ -59,14 +62,10 @@ mongoose.connection.on("error", (err) => {
 passport.use(User.createStrategy());
 
 passport.serializeUser((user: IUser, done) => {
-  console.log(user.id);
-
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log(id);
-
   User.findById(id, (err: CallbackError, user: IUser) => {
     done(err, user);
   });

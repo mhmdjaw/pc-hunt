@@ -231,8 +231,6 @@ export const isAuth = (
       error: "Not authenticated",
     });
   } else {
-    const hour = 1800000;
-    req.session.cookie.expires = new Date(Date.now() + hour);
     next();
   }
 };

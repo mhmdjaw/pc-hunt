@@ -6,7 +6,7 @@ Link (use Google Chrome!): https://pchunt.co
 
 ## Valid Payment Methods
 
-The Braintree sandbox only accepts specific test values. To create a successful transaction in your app, be sure to use one of the following test cases:
+The Braintree sandbox only accepts specific test values. To create a successful transaction, be sure to use one of the following test cases:
 
 **Credit Card:**
 
