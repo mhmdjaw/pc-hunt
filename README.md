@@ -38,6 +38,10 @@ However, in order to keep the project demo clean, this admin account is prohibit
 
 Google OAuth is in sandbox mode, and the allowed user cap is 100. If you find yourself unable to login with google, this means the limit has been reached.
 
+## Screenshots
+
+<img src="assets/screenshot.png">
+
 ## License
 
 This project is licensed under the MIT license.
