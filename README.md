@@ -40,7 +40,7 @@ Google OAuth is in sandbox mode, and the allowed user cap is 100. If you find yo
 
 ## Screenshots
 
-<img src="assets/screenshot.png">
+<img src="assets/screenshot.PNG">
 
 ## License
 
