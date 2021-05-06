@@ -35,6 +35,8 @@ const PCBuilder: React.FC = () => {
       (category) => category.name === categoryName
     )?._id;
     if (!(autocompletes[i].loading || autocompletes[i].loaded)) {
+      autocompletes[i].loading = true;
+      setAutocompletes([...autocompletes]);
       getProducts({ category: categoryId }, cancelSource.current?.token)
         .then((response) => {
           autocompletes[i].products = response.data.products.filter(
