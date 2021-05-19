@@ -1,9 +1,15 @@
 import { makeStyles } from "@material-ui/core";
 
 const useNavBarStyles = makeStyles((theme) => ({
-  logo: {
+  logoContainer: {
     marginLeft: "calc(4% - 4px)",
     maxWidth: "224px",
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "140px",
+    },
+  },
+  logo: {
+    width: "100%",
     padding: "4px",
     "@media(hover: hover) and (pointer: fine)": {
       "&:hover": {
@@ -18,9 +24,6 @@ const useNavBarStyles = makeStyles((theme) => ({
     },
     "&:focus": {
       outline: "none",
-    },
-    [theme.breakpoints.down("xs")]: {
-      maxWidth: "140px",
     },
   },
   link: {

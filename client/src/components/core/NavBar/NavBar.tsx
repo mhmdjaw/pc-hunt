@@ -63,13 +63,15 @@ const NavBar: React.FC = () => {
         <AppBar>
           <TopBar />
           <Toolbar className={classes.toolbar}>
-            <LogoSecondary
-              tabIndex={0}
-              className={classes.logo}
-              fill={pathname === "/" ? theme.palette.secondary.main : "#fff"}
-              onClick={() => history.push("/")}
-              onKeyDown={(e) => e.key === "Enter" && history.push("/")}
-            />
+            <div className={classes.logoContainer}>
+              <LogoSecondary
+                tabIndex={0}
+                className={classes.logo}
+                fill={pathname === "/" ? theme.palette.secondary.main : "#fff"}
+                onClick={() => history.push("/")}
+                onKeyDown={(e) => e.key === "Enter" && history.push("/")}
+              />
+            </div>
             <Box flexGrow={1} textAlign="center" p="0 2%">
               {!isMobile && (
                 <Box

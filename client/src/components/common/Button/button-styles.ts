@@ -2,7 +2,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 interface StylesProps {
   focusBackgroundColor: string;
-  activeBackgroundColor?: string;
 }
 
 const useButtonStyles = makeStyles(
@@ -11,7 +10,7 @@ const useButtonStyles = makeStyles(
       backgroundColor: (props: StylesProps) => props.focusBackgroundColor,
     },
     buttonActive: {
-      transition: "all 0.15s",
+      transition: "all .15s",
       "&::before": {
         content: "''",
         position: "absolute",
@@ -23,7 +22,7 @@ const useButtonStyles = makeStyles(
         borderRadius: "inherit",
         backgroundColor: "currentColor",
         opacity: 0,
-        transition: "opacity 0.15s",
+        transition: "opacity .15s",
       },
       "&:active": {
         "&::before": {
